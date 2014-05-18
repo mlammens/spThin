@@ -1,20 +1,21 @@
+#' @export spThin
 #' @title A 'wrapper' function for the spatial thinning algorithm
 #'
-#'   @param loc.file: A *.csv file of locations. This file can include several
+#' @param loc.file: A *.csv file of locations. This file can include several
 #'   columnns, but must include at minimum a column of latitude and a
 #'   column of longitude values
-#'   @param lat.col: Name of column of latitude values. Caps sensitive.
-#'   @param long.col: Name of column of longitude values. Caps sensitive.
-#'   @param spec.col: Name of column of species name. Caps sensitive.
-#'   @param thin.par: Thinning parameter - the distance (in kilometers) that you want
+#' @param lat.col: Name of column of latitude values. Caps sensitive.
+#' @param long.col: Name of column of longitude values. Caps sensitive.
+#' @param spec.col: Name of column of species name. Caps sensitive.
+#' @param thin.par: Thinning parameter - the distance (in kilometers) that you want
 #'   records to be separated by.
-#'   @param reps: The number of times to repete the thinning process. Given the random
+#' @param reps: The number of times to repete the thinning process. Given the random
 #'   process of removing nearest-neighbors there should be 'rep' number of different
 #'   sets of coordinates.
-#'   @param locs.thinned.list.return: TRUE/FALSE - If true, the `list` of 
+#' @param locs.thinned.list.return: TRUE/FALSE - If true, the `list` of 
 #'   the data.frame of thinned locs resulting from each replication 
 #'   is returned (see Returns below).
-#'   @param write.files: TRUE/FALSE - If true, new *.csv files will be 
+#' @param write.files: TRUE/FALSE - If true, new *.csv files will be 
 #'   written with the thinned locs data
 #' @param max.files: The maximum number of *csv files to be written based on the
 #'   thinned data

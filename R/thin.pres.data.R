@@ -1,17 +1,15 @@
+#' @export thin.pres.data
 #' @title A spatial thinning algorithm
-#'
-#'   @param rec.df.orig: A data frame of long/lat points for each presence record. The 
-#'   data.frame should be a two-column data frame, one column of long and one of 
-#'   lat
-#'
-#'   @param thin.par: Thinning parameter - the distance (in kilometers) that you want
-#'   records to be separated by.
-#'
-#'   @param reps: The number of times to repete the thinning process. Given the random
-#'   process of removing nearest-neighbors there should be 'rep' number of different
-#'   sets of coordinates.
-#'   @return reduced.rec.dfs: A list object of length 'rep'. Each list element is a different
-#'   data.frame of spatially thinned presence records.
+#' @param rec.df.orig: A data frame of long/lat points for each presence record. The 
+#' data.frame should be a two-column data frame, one column of long and one of 
+#' lat
+#' @param thin.par: Thinning parameter - the distance (in kilometers) that you want
+#' records to be separated by.
+#' @param reps: The number of times to repete the thinning process. Given the random
+#' process of removing nearest-neighbors there should be 'rep' number of different
+#' sets of coordinates.
+#' @return reduced.rec.dfs: A list object of length 'rep'. Each list element is a different
+#' data.frame of spatially thinned presence records.
 thin.pres.data <- function( rec.df.orig, thin.par, reps ) {
   ##
   ## General Algorithm:
@@ -26,7 +24,7 @@ thin.pres.data <- function( rec.df.orig, thin.par, reps ) {
   ## 4. Continue until no points have nearest neighbor closer than thinning parameter
   ## 5. Repeat many times 
   ##      
-  require( fields )
+  #require( fields )
   
   reduced.rec.dfs <- list()
   

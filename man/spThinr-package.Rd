@@ -3,11 +3,12 @@
 \alias{spThinr}
 \docType{package}
 \title{
-Spatially thins species occurence data
+Spatially thin species occurence data
 }
 \description{
-spThin is a set of functions that can be used to spatially thin
-species occurence data. The resulting thinned data can be used in ecological
+spThinr is a set of functions to spatially thin
+species occurence data. The resulting thinned dataset 
+can be used in ecological
 modeling, such as ecological niche modeling.
 }
 \details{
@@ -18,7 +19,14 @@ Version: \tab 0.1.0\cr
 Date: \tab 2014-05-18\cr
 License: \tab GPL-3\cr
 }
-ToDo - An overview of how to use the package, including the most important functions
+spThinr includes two functions, \code{thin.pres.data} and
+\code{spThin}. \code{thin.pres.data} implements a randomization
+approach to thinning spatial datasets given a user defined
+minimum nearest neighbor distance. \code{spThin} is a wrapper
+function for \code{thin.pres.data} that facilitates the writing
+of CSV files for resulting datasets and drawing of diagnostic
+plots. Additionally, a log file is written to file during
+implementation.
 }
 \author{
 Matthew Aiello-Lammens
@@ -26,14 +34,14 @@ Matthew Aiello-Lammens
 Maintainer: Matthew Aiello-Lammens <matt.lammens@gmail.com>
 }
 \references{
-ToDo - Literature or other references for background information
+Aiello-Lammens, ME, Boria, RA, Radosavljevic, A, and Anderson, RP.
+2014. spThinr: An R package for spatial thinning of species occurence
+records for use in ecological niche modeling. In Preparation.
 }
-ToDo - Optionally other standard keywords, one per line, from file KEYWORDS in the R documentation directory ~~
 \keyword{ package }
 \seealso{
-ToDo - Optional links to other man pages, e.g. ~~
-\code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
+
 }
 \examples{
-ToDo - simple examples of the most important functions ~~
+
 }
