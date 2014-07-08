@@ -1,6 +1,6 @@
 \name{spThin}
 \alias{spThin}
-\title{A 'wrapper' function for the spatial thinning algorithm}
+\title{Spatially thin species occurence data}
 \usage{
 spThin(loc.file, lat.col = "LAT", long.col = "LONG", spec.col = "SPEC",
   thin.par, reps, locs.thinned.list.return = FALSE, write.files = TRUE,
@@ -51,6 +51,15 @@ the spatially thinned locations of the algorithm for a
 single replication. This list will have `reps` elements.
 }
 \description{
-A 'wrapper' function for the spatial thinning algorithm
+\code{spThin} returns spatially thinned species occurence
+data sets. A randomizaiton algorithm
+(\code{\link{thin.pres.data}}) is used to create data set
+in which all occurnece locations are at least
+\code{thin.par} distance apart. Spatial thinning helps to
+reduce the effect of uneven, or biased, species occurence
+collections on spatial model outcomes.
+}
+\seealso{
+\code{\link{thin.pres.data}}
 }
 

@@ -1,6 +1,6 @@
 \name{thin.pres.data}
 \alias{thin.pres.data}
-\title{A spatial thinning algorithm}
+\title{Implements random spatial thinning algorithm}
 \usage{
 thin.pres.data(rec.df.orig, thin.par, reps)
 }
@@ -23,6 +23,8 @@ element is a different data.frame of spatially thinned
 presence records.
 }
 \description{
-A spatial thinning algorithm
+\code{thin.pres.data} implements a randomization approach
+to spatially thinning species occurence data. It is the
+algorithm underlying the \code{\link{spThin}} function.
 }
 

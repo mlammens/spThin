@@ -1,6 +1,13 @@
 #' @export spThin
-#' @title A 'wrapper' function for the spatial thinning algorithm
-#'
+#' @title Spatially thin species occurence data
+#' 
+#' @description
+#' \code{spThin} returns spatially thinned species occurence data sets.
+#' A randomizaiton algorithm (\code{\link{thin.pres.data}}) is used to create
+#' data set in which all occurnece locations are at least \code{thin.par}
+#' distance apart. Spatial thinning helps to reduce the effect of uneven,
+#' or biased, species occurence collections on spatial model outcomes.
+#' 
 #' @param loc.file: A *.csv file of locations. This file can include several
 #'   columnns, but must include at minimum a column of latitude and a
 #'   column of longitude values
@@ -25,6 +32,8 @@
 #' @return locs.thinned.dfs: A list of data.frames, each data.frame
 #'   the spatially thinned locations of the algorithm for a 
 #'   single replication. This list will have `reps` elements.
+#'   
+#' @seealso \code{\link{thin.pres.data}}
 #'
 spThin <- function( loc.file, lat.col="LAT", long.col="LONG", spec.col="SPEC",
                     thin.par, reps,

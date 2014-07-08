@@ -1,5 +1,10 @@
 #' @export thin.pres.data
-#' @title A spatial thinning algorithm
+#' @title Implements random spatial thinning algorithm
+#' 
+#' @description \code{thin.pres.data} implements a randomization approach to
+#' spatially thinning species occurence data. It is the algorithm underlying
+#' the \code{\link{spThin}} function.
+#' 
 #' @param rec.df.orig: A data frame of long/lat points for each presence record. The 
 #' data.frame should be a two-column data frame, one column of long and one of 
 #' lat
@@ -10,6 +15,7 @@
 #' sets of coordinates.
 #' @return reduced.rec.dfs: A list object of length 'rep'. Each list element is a different
 #' data.frame of spatially thinned presence records.
+
 thin.pres.data <- function( rec.df.orig, thin.par, reps ) {
   ##
   ## General Algorithm:
