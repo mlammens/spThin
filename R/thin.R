@@ -1,9 +1,9 @@
-#' @export spThin
+#' @export thin
 #' @title Spatially thin species occurence data
 #' 
 #' @description
-#' \code{spThin} returns spatially thinned species occurence data sets.
-#' A randomizaiton algorithm (\code{\link{thin.pres.data}}) is used to create
+#' \code{thin} returns spatially thinned species occurence data sets.
+#' A randomizaiton algorithm (\code{\link{thin.algorithm}}) is used to create
 #' data set in which all occurnece locations are at least \code{thin.par}
 #' distance apart. Spatial thinning helps to reduce the effect of uneven,
 #' or biased, species occurence collections on spatial model outcomes.
@@ -33,26 +33,15 @@
 #'   the spatially thinned locations of the algorithm for a 
 #'   single replication. This list will have `reps` elements.
 #'   
-#' @seealso \code{\link{thin.pres.data}}
+#' @seealso \code{\link{thin.algorithm}}
 #'
-spThin <- function( loc.file, lat.col="LAT", long.col="LONG", spec.col="SPEC",
+thin <- function( loc.file, lat.col="LAT", long.col="LONG", spec.col="SPEC",
                     thin.par, reps,
                     locs.thinned.list.return=FALSE,
                     write.files=TRUE, max.files=5, out.dir, 
                     log.file='spatial_thin_log.txt' ){ 
-  #,
-  # thin.pres.data='thin.pres.data.R') {
   
-  ## Source thin.pres.data.R function - change this structure in 
-  ## the future to allow for all functions to be sourced at once
-#   if( !file.exists(thin.pres.data) ){
-#     log.thin.pres.data <- paste( "\nERROR: Did not find thin.pres.data.R file:",
-#                                  thin.pres.data)
-#     write(log.thin.pres.data, file=log.file, append=TRUE)
-#     stop(log.thin.pres.data)
-#   }
-#   #source(thin.pres.data)
-  
+  ## Begin writing to log file
   log.begin <- paste("**********************************************","\n",
                      "Beginning Spatial Thinning of location data in:",
                      loc.file,"\n",
@@ -105,7 +94,7 @@ spThin <- function( loc.file, lat.col="LAT", long.col="LONG", spec.col="SPEC",
   
   # Keep track of how much time it takes to run this algorithm
   thin.time <- system.time( 
-    locs.thinned <- thin.pres.data( rec.df.orig=locs.long.lat,
+    locs.thinned <- thin.algorithm( rec.df.orig=locs.long.lat,
                                     thin.par=thin.par, reps=reps )
   )
   
