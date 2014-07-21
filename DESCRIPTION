@@ -4,7 +4,8 @@ Title: Functions for spatial thinning of species occurrence records for use in
     ecological models
 Version: 0.1.0
 Date: 2014-05-17
-Author: Matthew E. Aiello-Lammens, Robert A. Boria, Aleksandar Radosavljevic, and Robert P. Anderson
+Author: Matthew E. Aiello-Lammens, Robert A. Boria, Aleksandar Radosavljevic,
+    and Robert P. Anderson
 Maintainer: Matthew E. Aiello-Lammens <matt.lammens@gmail.com>
 Description: spThin is a set of functions that can be used to spatially thin
     species occurence data. The resulting thinned data can be used in ecological

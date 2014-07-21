@@ -1,8 +1,8 @@
-\name{thin.pres.data}
-\alias{thin.pres.data}
+\name{thin.algorithm}
+\alias{thin.algorithm}
 \title{Implements random spatial thinning algorithm}
 \usage{
-thin.pres.data(rec.df.orig, thin.par, reps)
+thin.algorithm(rec.df.orig, thin.par, reps)
 }
 \arguments{
   \item{rec.df.orig:}{A data frame of long/lat points for
@@ -23,8 +23,8 @@ element is a different data.frame of spatially thinned
 presence records.
 }
 \description{
-\code{thin.pres.data} implements a randomization approach
+\code{thin.algorithm} implements a randomization approach
 to spatially thinning species occurence data. It is the
-algorithm underlying the \code{\link{spThin}} function.
+algorithm underlying the \code{\link{thin}} function.
 }
 
