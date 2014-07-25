@@ -2,7 +2,7 @@
 #' @title Implements random spatial thinning algorithm
 #' 
 #' @description \code{thin.algorithm} implements a randomization approach to
-#' spatially thinning species occurence data. It is the algorithm underlying
+#' spatially thinning species occurence data. This function is the algorithm underlying
 #' the \code{\link{thin}} function.
 #' 
 #' @param rec.df.orig: A data frame of long/lat points for each presence record. The 
@@ -15,27 +15,65 @@
 #' sets of coordinates.
 #' @return reduced.rec.dfs: A list object of length 'rep'. Each list element is a different
 #' data.frame of spatially thinned presence records.
+#' 
+
 
 thin.algorithm <- function( rec.df.orig, thin.par, reps ) {
 
+  ## Create empty list object to store thinned occurrence datasets
   reduced.rec.dfs <- list()
   
   for ( Rep in 1:reps ){
-    rec.df <- rec.df.orig    
-    DistMat <- rdist.earth(x1=rec.df,miles=FALSE)
+    
+    rec.df <- rec.df.orig
+    
+    ## Calculate distance matrix using fields::rdist.earth
+    ## ***
+    ## This function returns distances, correcting for change in distance
+    ## of degree of longitude based on distance from equator
+    DistMat <- rdist.earth( x1=rec.df, miles=FALSE )
+    
+    ## Set diagonal elements of distance matrix to NAs, as these are all 
+    ## 0 in this case.
     diag(DistMat) <- NA
     
-    while(min(DistMat, na.rm=TRUE) < thin.par & nrow(rec.df) > 1) {      
-      CloseRecs <- which(DistMat < thin.par, arr.ind=TRUE)[, 1]
-      RemoveRec <- as.numeric(names(which(table(CloseRecs) == max(table(CloseRecs)))))
+    ## Perform while loop based on two criteria
+    ## 1. The minimum distance between to occurences is less than the 
+    ##    thinning parameter 
+    ## 2. The number of rows in the data.frame is greater than 1
+    while( min( DistMat, na.rm=TRUE ) < thin.par & nrow( rec.df ) > 1 ) {
       
-      if(length(RemoveRec) > 1) {
-        RemoveRec <- sample(RemoveRec, 1)
+      ## Find array indices for all occurrences that are less than thin.par
+      ## away from another occurence, and return the distance matrix **row** 
+      ## values for these occurrences
+      CloseRecs <- which( DistMat < thin.par, arr.ind=TRUE )[ , 1]
+      
+      ## Multiple steps in this one line:
+      ## ***
+      ## a. For each row (occurrence) in the distance matrix, determine how
+      ##    many other occurrences are within thin.par away.
+      ## b. Determine which occurence(s) have the greatest number of occurrences
+      ##    within thin.par distance.
+      ## c. Identify these occurences by name and convert them into numeric values
+      ##    (to be used as indexs of occurrences to remove).
+      RemoveRec <- as.numeric( names( which( table( CloseRecs ) == max( table( CloseRecs ) ) ) ) )
+      
+      ## If there are more than one occurrences meeting the above
+      ## conditions, choose one to remove at random.
+      if( length( RemoveRec ) > 1 ) {
+        RemoveRec <- sample( RemoveRec, 1 )
       }
       
+      ## Remove a single occurrence that has the most occurrences within 
+      ## thin.par distance from the dataset
       rec.df <-rec.df[ -RemoveRec, ]
-      DistMat <- DistMat[ -RemoveRec, -RemoveRec ]     
+      
+      ## Remove the occurence from the distance matrix
+      DistMat <- DistMat[ -RemoveRec, -RemoveRec ]    
+      
     }
+    
+    ## Save the thinned dataset to reduced.rec.dfs data.frame
     reduced.rec.dfs[[Rep]] <- rec.df
   }
   return( reduced.rec.dfs )

@@ -24,7 +24,8 @@ presence records.
 }
 \description{
 \code{thin.algorithm} implements a randomization approach
-to spatially thinning species occurence data. It is the
-algorithm underlying the \code{\link{thin}} function.
+to spatially thinning species occurence data. This function
+is the algorithm underlying the \code{\link{thin}}
+function.
 }
 
