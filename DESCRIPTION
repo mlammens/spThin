@@ -12,4 +12,5 @@ Description: spThin is a set of functions that can be used to spatially thin
     modeling, such as ecological niche modeling.
 Depends:
     fields
+LazyData: TRUE
 License: GPL-3
