@@ -1,4 +1,4 @@
-#' Occurrence record locations for Heteromys anamalus
+#' Occurrence record locations for Heteromys anomalus
 #' 
 #' 
 #' A dataset containing compiled occurrence record locations for 

@@ -1,7 +1,7 @@
 \docType{data}
 \name{Heteromys_anomalus_South_America}
 \alias{Heteromys_anomalus_South_America}
-\title{Occurrence record locations for Heteromys anamalus}
+\title{Occurrence record locations for Heteromys anomalus}
 \format{A data frame with 201 rows and 4 variables}
 \description{
 A dataset containing compiled occurrence record locations
