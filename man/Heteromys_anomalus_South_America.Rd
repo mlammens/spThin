@@ -2,7 +2,7 @@
 \name{Heteromys_anomalus_South_America}
 \alias{Heteromys_anomalus_South_America}
 \title{Occurrence record locations for Heteromys anamalus}
-\format{A data frame with 201 rows and 3 variables}
+\format{A data frame with 201 rows and 4 variables}
 \description{
 A dataset containing compiled occurrence record locations
 for Heteromys anomalus in northern coastal South America.
@@ -12,7 +12,8 @@ species identification.
 \details{
 \itemize{ \item SPEC. species name assigned to occurrence
 record \item LAT. decimal degree latitude value \item LONG.
-decimal degree longitude value }
+decimal degree longitude value \item REGION. region, or
+island, of occurrence }
 }
 \keyword{datasets}
 
