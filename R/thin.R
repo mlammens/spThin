@@ -8,7 +8,7 @@
 #' distance apart. Spatial thinning helps to reduce the effect of uneven,
 #' or biased, species occurence collections on spatial model outcomes.
 #' 
-#' @param loc.file: A *.csv file of locations. This file can include several
+#' @param loc.data: A data.frame of occurence locations. It can include several
 #'   columnns, but must include at minimum a column of latitude and a
 #'   column of longitude values
 #' @param lat.col: Name of column of latitude values. Caps sensitive.
@@ -27,6 +27,7 @@
 #' @param max.files: The maximum number of *csv files to be written based on the
 #'   thinned data
 #' @param out.dir: Directory to write new *csv files to
+#' @param out.base: A file basename to give to the thinned datasets created
 #' @param log.file: Text log file 
 #' @param thin.pred.data: Location of thin.pres.data.R file.
 #' @return locs.thinned.dfs: A list of data.frames, each data.frame
@@ -35,16 +36,17 @@
 #'   
 #' @seealso \code{\link{thin.algorithm}}
 #'
-thin <- function( loc.file, lat.col="LAT", long.col="LONG", spec.col="SPEC",
-                    thin.par, reps,
-                    locs.thinned.list.return=FALSE,
-                    write.files=TRUE, max.files=5, out.dir, 
-                    log.file='spatial_thin_log.txt' ){ 
+thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
+                  thin.par, reps,
+                  locs.thinned.list.return=FALSE,
+                  write.files=TRUE, max.files=5, 
+                  out.dir, 
+                  out.base = "thinned_data",
+                  log.file='spatial_thin_log.txt' ){ 
   
   ## Begin writing to log file
   log.begin <- paste("**********************************************","\n",
-                     "Beginning Spatial Thinning of location data in:",
-                     loc.file,"\n",
+                     "Beginning Spatial Thinning.\n",
                      "Script Started at:",
                      date(), sep=" ")
   ## Print information to the console
@@ -52,15 +54,8 @@ thin <- function( loc.file, lat.col="LAT", long.col="LONG", spec.col="SPEC",
   ## Write information to the log.file
   write( log.begin, file=log.file, append = TRUE )
   
-  ## Read in the loc.file
-  # Check if file exists
-  if ( !file.exists( loc.file ) ){
-    log.loc.file <- paste( "\nERROR: '", loc.file, 
-                           "' not found. Check file name and path.", sep="" )
-    write( log.loc.file, file=log.file, append = TRUE )
-    stop( log.loc.file )
-  }
-  locs.df <- read.csv( loc.file )
+  ## Copy loc.data to new data.frame names locs.df
+  locs.df <- loc.data
   
   ## Get the species name used in the `locs.df`
   species <- unique( locs.df[[ which( names(locs.df) == spec.col ) ]] )
@@ -179,13 +174,8 @@ thin <- function( loc.file, lat.col="LAT", long.col="LONG", spec.col="SPEC",
       out.dir <- paste( out.dir, '/', sep='' )
     }
     
-    ## Make a file base name
-    # Use the same base name of the `loc.file`
-    csv.base <- basename( loc.file )
-    # Remove csv tag
-    csv.base <- sub( '.csv$','', csv.base )
-    # Make new csv file names
-    csv.files <- paste( out.dir, csv.base, "_thin", rep(1:n.csv), 
+    ## Make csv file names for thinned datasets
+    csv.files <- paste( out.dir, out.base, "_thin", rep(1:n.csv), 
                         ".csv", sep="")
     
     for ( df in 1:n.csv ){
