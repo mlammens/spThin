@@ -2,14 +2,15 @@
 \alias{thin}
 \title{Spatially thin species occurence data}
 \usage{
-thin(loc.file, lat.col = "LAT", long.col = "LONG", spec.col = "SPEC",
+thin(loc.data, lat.col = "LAT", long.col = "LONG", spec.col = "SPEC",
   thin.par, reps, locs.thinned.list.return = FALSE, write.files = TRUE,
-  max.files = 5, out.dir, log.file = "spatial_thin_log.txt")
+  max.files = 5, out.dir, out.base = "thinned_data",
+  log.file = "spatial_thin_log.txt")
 }
 \arguments{
-  \item{loc.file:}{A *.csv file of locations. This file can
-  include several columnns, but must include at minimum a
-  column of latitude and a column of longitude values}
+  \item{loc.data:}{A data.frame of occurence locations. It
+  can include several columnns, but must include at minimum
+  a column of latitude and a column of longitude values}
 
   \item{lat.col:}{Name of column of latitude values. Caps
   sensitive.}
@@ -39,6 +40,9 @@ thin(loc.file, lat.col = "LAT", long.col = "LONG", spec.col = "SPEC",
   written based on the thinned data}
 
   \item{out.dir:}{Directory to write new *csv files to}
+
+  \item{out.base:}{A file basename to give to the thinned
+  datasets created}
 
   \item{log.file:}{Text log file}
 
