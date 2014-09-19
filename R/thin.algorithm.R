@@ -69,7 +69,10 @@ thin.algorithm <- function( rec.df.orig, thin.par, reps ) {
       rec.df <-rec.df[ -RemoveRec, ]
       
       ## Remove the occurence from the distance matrix
-      DistMat <- DistMat[ -RemoveRec, -RemoveRec ]    
+      DistMat <- DistMat[ -RemoveRec, -RemoveRec ]
+      
+      ## Break out of while loop if there is only one record left
+      if( length( DistMat ) == 1 ){ break }
       
     }
     
