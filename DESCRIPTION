@@ -14,3 +14,5 @@ Depends:
     fields
 LazyData: TRUE
 License: GPL-3
+VignetteBuilder: knitr
+
