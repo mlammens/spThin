@@ -122,6 +122,7 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
   ## locs count
   locs.thinned.tbl <- table(lat.long.thin.count)
   ## Print `locs.thinned.tbl` to console
+  cat("\n")
   print(locs.thinned.tbl)
   ## Print `locs.thinned.tbl` to log file
   write("\nNumber of data.frames per locations retained\nloc.cnt df.freq",
@@ -136,7 +137,7 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
   ## Find max number of records
   max.thin.recs <- max( lat.long.thin.count)
   ## Save to log and Print this out for user to see
-  log.max.rec <- paste( "\nMaximum number of records after thinning:\n", max.thin.recs)
+  log.max.rec <- paste( "Maximum number of records after thinning:", max.thin.recs)
   print(log.max.rec)
   write(log.max.rec, file=log.file, append=TRUE)
   
@@ -144,7 +145,7 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
   ## have max.no. records
   max.dfs <- which( lat.long.thin.count == max.thin.recs)
   max.dfs.length <- length(max.dfs)
-  log.max.df.cnt <- paste( "Number of data.frames with max records:\n", 
+  log.max.df.cnt <- paste( "Number of data.frames with max records:", 
                            max.dfs.length)
   print(log.max.df.cnt)
   write(log.max.df.cnt, file=log.file, append=TRUE)
@@ -161,7 +162,7 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
     ## Write the first `n.csv` max data.frames
     # Check that `out.dir` exists. If not, create this directory.
     if ( !file.exists( out.dir ) ) {
-      log.dir <- paste('\nWARNING: Created new output directory: ', out.dir, sep="") 
+      log.dir <- paste('WARNING: Created new output directory: ', out.dir, sep="") 
       dir.create( out.dir, recursive=TRUE )
     } else {
       log.dir <- paste('Writing new *.csv files to output directory: ', out.dir, sep="")
@@ -190,7 +191,7 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
       while( file.exists( csv.files[df] ) ){
         # Change file name
         csv.files[df] <- sub( '.csv$', '_new.csv', csv.files[df] )
-        log.csv.overwrite <- paste("\nWARNING: '", csv.files[df], 
+        log.csv.overwrite <- paste("WARNING: '", csv.files[df], 
                                    "' already exists. Renaming file to avoid overwriting.")
         print(log.csv.overwrite)
         write(log.csv.overwrite, file=log.file, append=TRUE )
@@ -204,7 +205,7 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
     }
     
   } else {
-    log.write.file <- "\nNo files written for this run."
+    log.write.file <- "No files written for this run."
     print(log.write.file)
     write(log.write.file, file=log.file, append=TRUE)
   }
