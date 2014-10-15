@@ -60,12 +60,13 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
   species <- unique( locs.df[[ which( names(locs.df) == spec.col ) ]] )
   ## Send a warning message if there are more than one species in the df
   if( length( species ) > 1 ){
-    log.spec.warn.1 <- "WARNING: There appear to be more than one species name in this *.csv file."
+    log.spec.warn.1 <- "There appear to be more than one species name in
+                        this *.csv file."
     print(log.spec.warn.1)
     write( log.spec.warn.1, file=log.file, append=TRUE )
     species <- species[1]
     log.spec.warn.2 <- paste( "Only using species name:", species )
-    print(log.spec.warn.2)
+    warning(log.spec.warn.2)
     write( log.spec.warn.2, file=log.file, append=TRUE )
   }
   
@@ -137,7 +138,8 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
   ## Find max number of records
   max.thin.recs <- max( lat.long.thin.count)
   ## Save to log and Print this out for user to see
-  log.max.rec <- paste( "Maximum number of records after thinning:", max.thin.recs)
+  log.max.rec <- paste( "Maximum number of records after thinning:",
+                        max.thin.recs)
   print(log.max.rec)
   write(log.max.rec, file=log.file, append=TRUE)
   
@@ -162,12 +164,13 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
     ## Write the first `n.csv` max data.frames
     # Check that `out.dir` exists. If not, create this directory.
     if ( !file.exists( out.dir ) ) {
-      log.dir <- paste('WARNING: Created new output directory: ', out.dir, sep="") 
+      log.dir <- paste('Created new output directory: ', out.dir, sep="") 
       dir.create( out.dir, recursive=TRUE )
     } else {
-      log.dir <- paste('Writing new *.csv files to output directory: ', out.dir, sep="")
+      log.dir <- paste('Writing new *.csv files to output directory: ',
+                       out.dir, sep="")
     }
-    print(log.dir)
+    warning(log.dir)
     write(log.dir, file=log.file, append=TRUE)
     # Check that `out.dir` terminates in a '/'
     if( !grepl( '/$', out.dir ) ){
@@ -191,9 +194,10 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
       while( file.exists( csv.files[df] ) ){
         # Change file name
         csv.files[df] <- sub( '.csv$', '_new.csv', csv.files[df] )
-        log.csv.overwrite <- paste("WARNING: '", csv.files[df], 
-                                   "' already exists. Renaming file to avoid overwriting.")
-        print(log.csv.overwrite)
+        log.csv.overwrite <- paste(csv.files[df],
+                                   "' already exists. Renaming file 
+                                   to avoid overwriting.")
+        warning(log.csv.overwrite)
         write(log.csv.overwrite, file=log.file, append=TRUE )
       }
       # Write new *.csv file with new name
