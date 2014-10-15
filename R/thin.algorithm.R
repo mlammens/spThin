@@ -5,12 +5,12 @@
 #' spatially thinning species occurence data. This function is the algorithm underlying
 #' the \code{\link{thin}} function.
 #' 
-#' @param rec.df.orig: A data frame of long/lat points for each presence record. The 
+#' @param rec.df.orig A data frame of long/lat points for each presence record. The 
 #' data.frame should be a two-column data frame, one column of long and one of 
 #' lat
-#' @param thin.par: Thinning parameter - the distance (in kilometers) that you want
+#' @param thin.par Thinning parameter - the distance (in kilometers) that you want
 #' records to be separated by.
-#' @param reps: The number of times to repete the thinning process. Given the random
+#' @param reps The number of times to repete the thinning process. Given the random
 #' process of removing nearest-neighbors there should be 'rep' number of different
 #' sets of coordinates.
 #' @return reduced.rec.dfs: A list object of length 'rep'. Each list element is a different

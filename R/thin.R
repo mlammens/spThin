@@ -8,29 +8,28 @@
 #' distance apart. Spatial thinning helps to reduce the effect of uneven,
 #' or biased, species occurence collections on spatial model outcomes.
 #' 
-#' @param loc.data: A data.frame of occurence locations. It can include several
+#' @param loc.data A data.frame of occurence locations. It can include several
 #'   columnns, but must include at minimum a column of latitude and a
 #'   column of longitude values
-#' @param lat.col: Name of column of latitude values. Caps sensitive.
-#' @param long.col: Name of column of longitude values. Caps sensitive.
-#' @param spec.col: Name of column of species name. Caps sensitive.
-#' @param thin.par: Thinning parameter - the distance (in kilometers) that you want
+#' @param lat.col Name of column of latitude values. Caps sensitive.
+#' @param long.col Name of column of longitude values. Caps sensitive.
+#' @param spec.col Name of column of species name. Caps sensitive.
+#' @param thin.par Thinning parameter - the distance (in kilometers) that you want
 #'   records to be separated by.
-#' @param reps: The number of times to repete the thinning process. Given the random
+#' @param reps The number of times to repete the thinning process. Given the random
 #'   process of removing nearest-neighbors there should be 'rep' number of different
 #'   sets of coordinates.
-#' @param locs.thinned.list.return: TRUE/FALSE - If true, the `list` of 
+#' @param locs.thinned.list.return TRUE/FALSE - If true, the `list` of 
 #'   the data.frame of thinned locs resulting from each replication 
 #'   is returned (see Returns below).
-#' @param write.files: TRUE/FALSE - If true, new *.csv files will be 
+#' @param write.files TRUE/FALSE - If true, new *.csv files will be 
 #'   written with the thinned locs data
-#' @param max.files: The maximum number of *csv files to be written based on the
+#' @param max.files The maximum number of *csv files to be written based on the
 #'   thinned data
-#' @param out.dir: Directory to write new *csv files to
-#' @param out.base: A file basename to give to the thinned datasets created
-#' @param log.file: Text log file 
-#' @param thin.pred.data: Location of thin.pres.data.R file.
-#' @return locs.thinned.dfs: A list of data.frames, each data.frame
+#' @param out.dir Directory to write new *csv files to
+#' @param out.base A file basename to give to the thinned datasets created
+#' @param log.file Text log file 
+#' @return locs.thinned.dfs A list of data.frames, each data.frame
 #'   the spatially thinned locations of the algorithm for a 
 #'   single replication. This list will have `reps` elements.
 #'   
