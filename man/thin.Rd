@@ -6,7 +6,7 @@
 thin(loc.data, lat.col = "LAT", long.col = "LONG", spec.col = "SPEC",
   thin.par, reps, locs.thinned.list.return = FALSE, write.files = TRUE,
   max.files = 5, out.dir, out.base = "thinned_data",
-  log.file = "spatial_thin_log.txt")
+  write.log.file = TRUE, log.file = "spatial_thin_log.txt")
 }
 \arguments{
 \item{loc.data}{A data.frame of occurence locations. It can include several
@@ -39,6 +39,8 @@ thinned data}
 \item{out.dir}{Directory to write new *csv files to}
 
 \item{out.base}{A file basename to give to the thinned datasets created}
+
+\item{write.log.file}{TRUE/FALSE create/append log file of thinning run}
 
 \item{log.file}{Text log file}
 }
