@@ -5,7 +5,7 @@
 #' Three plots (selected by \code{which}) are currently available: 
 #' a plot of the number of repetitions versus the number of maximum records retained
 #' at each repetition ([1] observed values; [2] log transformed) and 
-#' a histogram of the maximun records retained (3).
+#' a histogram of the maximun records retained [3].
 #' 
 #' @param thinned A list of data.frames returned by \code{\link{thin}} function.
 #' @param which if a subset of the plots is required, specify a subset of the numbers 1:3.
