@@ -30,6 +30,8 @@
 #' @param out.base A file basename to give to the thinned datasets created
 #' @param write.log.file TRUE/FALSE create/append log file of thinning run
 #' @param log.file Text log file 
+#' @param print TRUE/FALSE - If true, running details of the function are print at the console.
+#' 
 #' @return locs.thinned.dfs A list of data.frames, each data.frame
 #'   the spatially thinned locations of the algorithm for a 
 #'   single replication. This list will have `reps` elements.
@@ -43,7 +45,8 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
                   out.dir, 
                   out.base = "thinned_data",
                   write.log.file = TRUE,
-                  log.file='spatial_thin_log.txt' ){ 
+                  log.file='spatial_thin_log.txt',
+                  print=TRUE){ 
   
   ## Begin writing to log file
   log.begin <- paste("**********************************************","\n",
@@ -51,7 +54,7 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
                      "Script Started at:",
                      date(), sep=" ")
   ## Print information to the console
-  cat(log.begin)
+  if(print){cat(log.begin)}
   ## Write information to the log.file
   if( write.log.file ){ write( log.begin, file=log.file, append = TRUE ) }
   
@@ -124,8 +127,8 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
   ## locs count
   locs.thinned.tbl <- table(lat.long.thin.count)
   ## Print `locs.thinned.tbl` to console
-  cat("\n")
-  print(locs.thinned.tbl)
+  if(print){cat("\n")
+  print(locs.thinned.tbl)}
   ## Print `locs.thinned.tbl` to log file
   if( write.log.file ){ write("\nNumber of data.frames per locations retained\nloc.cnt df.freq",
                               file=log.file, append=TRUE) }
@@ -142,7 +145,7 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
   ## Save to log and Print this out for user to see
   log.max.rec <- paste( "Maximum number of records after thinning:",
                         max.thin.recs)
-  print( log.max.rec )
+  if(print){print( log.max.rec )}
   if( write.log.file ){ write( log.max.rec, file=log.file, append=TRUE) }
   
   ## Determine which data.frames
@@ -151,12 +154,12 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
   max.dfs.length <- length(max.dfs)
   log.max.df.cnt <- paste( "Number of data.frames with max records:", 
                            max.dfs.length)
-  print(log.max.df.cnt)
+  if(print){print(log.max.df.cnt)}
   if( write.log.file ){ write(log.max.df.cnt, file=log.file, append=TRUE) }
   
   ## Write files if `write.files==TRUE`
   if( write.files ){
-    print("Writing new *.csv files")
+    if(print){print("Writing new *.csv files")}
     if( write.log.file ){ write("\n**New *.csv file creation:**", file=log.file, append=TRUE) }
     
     # Determine number of files to write - should be the min
@@ -206,13 +209,13 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
       write.csv( df.temp, file=csv.files[df], quote=FALSE,
                  row.names=FALSE)
       log.write.file <- paste( "Writing file:", csv.files[df] )
-      print( log.write.file )
+      if(print){print( log.write.file )}
       if( write.log.file ){ write( log.write.file, file=log.file, append=TRUE ) }
     }
     
   } else {
     log.write.file <- "No files written for this run."
-    print( log.write.file )
+    if(print){print( log.write.file )}
     if( write.log.file ){ write( log.write.file, file=log.file, append=TRUE) }
   }
   
