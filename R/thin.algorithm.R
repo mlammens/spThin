@@ -77,6 +77,7 @@ thin.algorithm <- function( rec.df.orig, thin.par, reps ) {
     }
     
     ## Save the thinned dataset to reduced.rec.dfs data.frame
+    colnames(rec.df) <- c("Longitude", "Latitude")
     reduced.rec.dfs[[Rep]] <- rec.df
   }
   return( reduced.rec.dfs )

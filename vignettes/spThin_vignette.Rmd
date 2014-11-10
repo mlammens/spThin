@@ -50,7 +50,7 @@ data( Heteromys_anomalus_South_America )
 head( Heteromys_anomalus_South_America )
 ```
 
-Here we load and examine the dataset. The name assinged to this dataset
+Here we load and examine the dataset. The name assigned to this dataset
 is `Heteromys_anomalus_South_America`.
 Note that this dataset includes a column indicating which REGION the 
 occurrences was collected. Regions here refer to either the mainland or
@@ -80,6 +80,7 @@ thinned_dataset_full <-
         write.files = TRUE, 
         max.files = 5, 
         out.dir = "hanomalus_thinned_full/", out.base = "hanomalus_thinned", 
+        write.log.file = TRUE,
         log.file = "hanomalus_thinned_full_log_file.txt" )
 ```
 
@@ -87,8 +88,20 @@ In the case above, we found that 10 repetitions were sufficient
 to return spatially thinned datasets with the optimal number of 
 occurrence records (124). Because this is a random process, 
 it is possible that a similarly repeated run would not return **any**
-datasets with the optimal number of occurrence records. However,
-looking at the plot of cumulative maximum records retained 
+datasets with the optimal number of occurrence records. 
+To visually assess whether we are using enough `reps` to 
+approach the optimal number we use the function `plotThin`,
+This function produces three plots: 1) the cumulative number of 
+records retained versus the number of repetitions, 2) the log
+cumulative number of records retained versus the log number of
+repetitions, and 3) a histogram of the maximum number of records
+retained for each thinned dataset.
+
+```{r}
+plotThin( thinned_dataset_full )
+```
+
+Looking at the plot of cumulative maximum records retained 
 versus number of repetitions, we see that in this run, this value
 is constant through out the dataset creation process, indicating
 that a single repetition would have sufficed to reach 124. This is
@@ -110,6 +123,7 @@ thinned_dataset_mainland <-
         write.files = TRUE, 
         max.files = 5, 
         out.dir = "hanomalus_thinned_mainland/", out.base = "hanomalus_thinned", 
+        write.log.file = TRUE,
         log.file = "hanomalus_thinned_mainland_log_file.txt" )
 ```
 
@@ -125,6 +139,7 @@ thinned_dataset_trin <-
         write.files = TRUE, 
         max.files = 5, 
         out.dir = "hanomalus_thinned_trin/", out.base = "hanomalus_thinned", 
+        write.log.file = TRUE,
         log.file = "hanomalus_thinned_trin_log_file.txt" )
 ```
 
@@ -140,6 +155,7 @@ thinned_dataset_mar <-
         write.files = TRUE, 
         max.files = 5, 
         out.dir = "hanomalus_thinned_mar/", out.base = "hanomalus_thinned", 
+        write.log.file = TRUE,
         log.file = "hanomalus_thinned_mar_log_file.txt" )
 ```
 
@@ -155,6 +171,7 @@ thinned_dataset_tobago <-
         write.files = TRUE, 
         max.files = 5, 
         out.dir = "hanomalus_thinned_tobago/", out.base = "hanomalus_thinned", 
+        write.log.file = TRUE,
         log.file = "hanomalus_thinned_tobago_log_file.txt" )
 ```
 
