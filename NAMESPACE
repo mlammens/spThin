@@ -1,3 +1,5 @@
+export(plotThin)
+export(summaryThin)
 export(thin)
 export(thin.algorithm)
 import(fields)

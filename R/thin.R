@@ -62,7 +62,7 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
   if( length( species ) > 1 ){
     log.spec.warn.1 <- "There appear to be more than one species name in
                         this *.csv file."
-    print(log.spec.warn.1)
+    warning(log.spec.warn.1)
     write( log.spec.warn.1, file=log.file, append=TRUE )
     species <- species[1]
     log.spec.warn.2 <- paste( "Only using species name:", species )
