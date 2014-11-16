@@ -6,7 +6,8 @@
 thin(loc.data, lat.col = "LAT", long.col = "LONG", spec.col = "SPEC",
   thin.par, reps, locs.thinned.list.return = FALSE, write.files = TRUE,
   max.files = 5, out.dir, out.base = "thinned_data",
-  write.log.file = TRUE, log.file = "spatial_thin_log.txt", print = TRUE)
+  write.log.file = TRUE, log.file = "spatial_thin_log.txt",
+  verbose = TRUE)
 }
 \arguments{
 \item{loc.data}{A data.frame of occurence locations. It can include several
@@ -44,7 +45,7 @@ thinned data}
 
 \item{log.file}{Text log file}
 
-\item{print}{TRUE/FALSE - If true, running details of the function are print at the console.}
+\item{verbose}{TRUE/FALSE - If true, running details of the function are print at the console.}
 }
 \value{
 locs.thinned.dfs A list of data.frames, each data.frame
