@@ -30,7 +30,7 @@
 #' @param out.base A file basename to give to the thinned datasets created
 #' @param write.log.file TRUE/FALSE create/append log file of thinning run
 #' @param log.file Text log file 
-#' @param print TRUE/FALSE - If true, running details of the function are print at the console.
+#' @param verbose TRUE/FALSE - If true, running details of the function are print at the console.
 #' 
 #' @return locs.thinned.dfs A list of data.frames, each data.frame
 #'   the spatially thinned locations of the algorithm for a 
@@ -40,13 +40,14 @@
 #'
 thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
                   thin.par, reps,
-                  locs.thinned.list.return=FALSE,
-                  write.files=TRUE, max.files=5, 
+                  locs.thinned.list.return = FALSE,
+                  write.files = TRUE, 
+                  max.files = 5, 
                   out.dir, 
                   out.base = "thinned_data",
                   write.log.file = TRUE,
-                  log.file='spatial_thin_log.txt',
-                  print=TRUE){ 
+                  log.file = 'spatial_thin_log.txt',
+                  verbose = TRUE ){ 
   
   ## Begin writing to log file
   log.begin <- paste("**********************************************","\n",
@@ -54,7 +55,7 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
                      "Script Started at:",
                      date(), sep=" ")
   ## Print information to the console
-  if(print){cat(log.begin)}
+  if( verbose ){ cat( log.begin ) }
   ## Write information to the log.file
   if( write.log.file ){ write( log.begin, file=log.file, append = TRUE ) }
   
@@ -66,7 +67,7 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
   ## Send a warning message if there are more than one species in the df
   if( length( species ) > 1 ){
     log.spec.warn.1 <- "There appear to be more than one species name in this *.csv file."
-    warning(log.spec.warn.1)
+    warning( log.spec.warn.1 )
     if( write.log.file ){ write( log.spec.warn.1, file=log.file, append=TRUE ) }
     species <- species[1]
     log.spec.warn.2 <- paste( "Only using species name:", species )
@@ -104,31 +105,13 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
   ## Look at the number of locs kept in each thinned dataset
   ## by determining the number of rows in each returned data.frame
   lat.long.thin.count <- unlist(lapply(locs.thinned, nrow ))
-
-#   ## Create a vector of cummulative maximum records at each 
-#   ## repetition number
-#   cummax.lat.long.thin.count <- cummax(lat.long.thin.count)
-#   ## Plot the number of repetitions versus the number 
-#   ## of maximum records retained at each repetition
-#   plot( (1:reps), cummax.lat.long.thin.count,
-#         xlab='Number Repetitions',
-#         ylab='Cummulative Maximum Records Retained',
-#         #ylim=c(0,max(cummax.lat.long.thin.count)),  
-#         xlim=c(0,reps) )
-#   ## Make a log-log plot of the number of repetitions versus
-#   ## the number of maximum records retained
-#   plot( log(1:reps), log(cummax.lat.long.thin.count),
-#         xlab='Log Number Repetitions',
-#         ylab='Log Cummulative Maximum Records Retained',
-#         #ylim=c(0,log(max(cummax.lat.long.thin.count))), 
-#         xlim=c(0,log(reps)) )
   
   ## Use `table` to deterine number of dfs for each
   ## locs count
   locs.thinned.tbl <- table(lat.long.thin.count)
   ## Print `locs.thinned.tbl` to console
-  if(print){cat("\n")
-  print(locs.thinned.tbl)}
+  if( verbose ){ cat("\n")
+                 print(locs.thinned.tbl) }
   ## Print `locs.thinned.tbl` to log file
   if( write.log.file ){ write("\nNumber of data.frames per locations retained\nloc.cnt df.freq",
                               file=log.file, append=TRUE) }
@@ -145,7 +128,7 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
   ## Save to log and Print this out for user to see
   log.max.rec <- paste( "Maximum number of records after thinning:",
                         max.thin.recs)
-  if(print){print( log.max.rec )}
+  if( verbose ){ print( log.max.rec ) }
   if( write.log.file ){ write( log.max.rec, file=log.file, append=TRUE) }
   
   ## Determine which data.frames
@@ -154,12 +137,12 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
   max.dfs.length <- length(max.dfs)
   log.max.df.cnt <- paste( "Number of data.frames with max records:", 
                            max.dfs.length)
-  if(print){print(log.max.df.cnt)}
+  if( verbose ){ print( log.max.df.cnt ) }
   if( write.log.file ){ write(log.max.df.cnt, file=log.file, append=TRUE) }
   
   ## Write files if `write.files==TRUE`
   if( write.files ){
-    if(print){print("Writing new *.csv files")}
+    if( verbose ){ print( "Writing new *.csv files" ) }
     if( write.log.file ){ write("\n**New *.csv file creation:**", file=log.file, append=TRUE) }
     
     # Determine number of files to write - should be the min
@@ -209,13 +192,13 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
       write.csv( df.temp, file=csv.files[df], quote=FALSE,
                  row.names=FALSE)
       log.write.file <- paste( "Writing file:", csv.files[df] )
-      if(print){print( log.write.file )}
+      if( verbose ){ print( log.write.file ) }
       if( write.log.file ){ write( log.write.file, file=log.file, append=TRUE ) }
     }
     
   } else {
     log.write.file <- "No files written for this run."
-    if(print){print( log.write.file )}
+    if( verbose ){ print( log.write.file ) }
     if( write.log.file ){ write( log.write.file, file=log.file, append=TRUE) }
   }
   
