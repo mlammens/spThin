@@ -55,7 +55,7 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
                      "Script Started at:",
                      date(), sep=" ")
   ## Print information to the console
-  if( verbose ){ cat( log.begin ) }
+  if( verbose ){ cat( log.begin ,'\n' ) }
   ## Write information to the log.file
   if( write.log.file ){ write( log.begin, file=log.file, append = TRUE ) }
   
@@ -94,9 +94,13 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
   
   # Keep track of how much time it takes to run this algorithm
   thin.time <- system.time( 
-    locs.thinned <- thin.algorithm( rec.df.orig=locs.long.lat,
-                                    thin.par=thin.par, reps=reps )
+    locs.thinned <- rcpp_thin_algorithm(locs.long.lat[[1]],
+								   locs.long.lat[[2]],
+                                   thin.par,
+								   reps
+		)
   )
+  locs.thinned <- lapply(locs.thinned, function(x) {return(locs.long.lat[x,,drop=FALSE])})
   
   ## Record in log file elapsed system time for running the script
   if( write.log.file ){ write( "\nElapsed time for thinning completion", file=log.file, append = TRUE ) }
@@ -111,7 +115,7 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
   locs.thinned.tbl <- table(lat.long.thin.count)
   ## Print `locs.thinned.tbl` to console
   if( verbose ){ cat("\n")
-                 print(locs.thinned.tbl) }
+                 cat(locs.thinned.tbl,'\n') }
   ## Print `locs.thinned.tbl` to log file
   if( write.log.file ){ write("\nNumber of data.frames per locations retained\nloc.cnt df.freq",
                               file=log.file, append=TRUE) }
@@ -128,7 +132,7 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
   ## Save to log and Print this out for user to see
   log.max.rec <- paste( "Maximum number of records after thinning:",
                         max.thin.recs)
-  if( verbose ){ print( log.max.rec ) }
+  if( verbose ){ cat( log.max.rec,'\n') }
   if( write.log.file ){ write( log.max.rec, file=log.file, append=TRUE) }
   
   ## Determine which data.frames
@@ -137,12 +141,12 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
   max.dfs.length <- length(max.dfs)
   log.max.df.cnt <- paste( "Number of data.frames with max records:", 
                            max.dfs.length)
-  if( verbose ){ print( log.max.df.cnt ) }
+  if( verbose ){ cat( log.max.df.cnt, '\n') }
   if( write.log.file ){ write(log.max.df.cnt, file=log.file, append=TRUE) }
   
   ## Write files if `write.files==TRUE`
   if( write.files ){
-    if( verbose ){ print( "Writing new *.csv files" ) }
+    if( verbose ){ cat( "Writing new *.csv files\n" ) }
     if( write.log.file ){ write("\n**New *.csv file creation:**", file=log.file, append=TRUE) }
     
     # Determine number of files to write - should be the min
@@ -192,18 +196,19 @@ thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
       write.csv( df.temp, file=csv.files[df], quote=FALSE,
                  row.names=FALSE)
       log.write.file <- paste( "Writing file:", csv.files[df] )
-      if( verbose ){ print( log.write.file ) }
+      if( verbose ){ cat( log.write.file, '\n' ) }
       if( write.log.file ){ write( log.write.file, file=log.file, append=TRUE ) }
     }
     
   } else {
     log.write.file <- "No files written for this run."
-    if( verbose ){ print( log.write.file ) }
+    if( verbose ){ cat( log.write.file, '\n' ) }
     if( write.log.file ){ write( log.write.file, file=log.file, append=TRUE) }
   }
   
   ## Return `locs.thinned.list` if that setting is TRUE
   if ( locs.thinned.list.return ){
+	class(locs.thinned) = 'spThin'
     return( locs.thinned )
   }
 }

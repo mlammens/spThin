@@ -1,0 +1,4 @@
+ifeq "$(CXX)" "g++"
+PKG_CXXFLAGS+=-std=c++0x
+endif
+

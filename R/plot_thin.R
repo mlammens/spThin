@@ -1,4 +1,4 @@
-#' @export plotThin
+#' @export plot.spThin
 #' @title Plot diagnosis for results of thin function 
 #' 
 #' @description
@@ -12,12 +12,8 @@
 #' @param ask logical; if \code{TRUE}, the user is asked before each plot, see par(ask=.).
 #' @param ... other parameters to be passed through to plotting functions.
 #'
-#' @seealso \code{\link{thin.algorithm}}
 #' @seealso \code{\link{thin}}
-
-
-
-plotThin <- function(thinned, which=c(1:3), 
+plot.spThin <- function(thinned, which=c(1:3), 
                       ask=prod(par("mfcol")) < length(which)
                       && dev.interactive(), ...){
   
