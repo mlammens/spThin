@@ -1,4 +1,4 @@
-#' @export summaryThin
+#' @export summary.spThin
 #' @title Summary method for results of thin function
 #' 
 #' @description
@@ -11,11 +11,10 @@
 #' with maximun number of records and (3) a table with the number of data frames per 
 #' number of records.
 #' 
-#' @seealso \code{\link{thin.algorithm}}
 #' @seealso \code{\link{thin}}
 
 
-summaryThin <- function(thinned, show=TRUE){
+summary.spThin <- function(thinned, show=TRUE){
 
   ## Repetition number
   reps <- length(thinned)
