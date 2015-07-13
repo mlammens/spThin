@@ -6,10 +6,11 @@ using namespace Rcpp;
 #include <vector>
 #include <algorithm>
 #include <limits>
-#include <string>
 #include <random>
 #include <chrono>
-#include <iostream>
+// #include <string>
+// #include <iostream>
+#include <cmath>
 #include <Rcpp.h>
 
 // The usual PI/180 constant
@@ -44,17 +45,17 @@ double ArcInRadians(double lon1, double lat1, double lon2, double lat2) {
     return 2.0 * asin(sqrt(latitudeH + tmp*longitudeH));
 }
 
-/** @brief Computes the distance, in meters, between two WGS-84 positions.
-  *
-  * The result is equal to <code>EARTH_RADIUS_IN_METERS*ArcInRadians(from,to)</code>
-  *
-  * @sa ArcInRadians
-  */
-double DistanceInMeters(double lon1, double lat1, double lon2, double lat2) {
+// great circle distance
+double GcDistanceInMeters(double lon1, double lat1, double lon2, double lat2) {
     return EARTH_RADIUS_IN_METERS*ArcInRadians(lon1, lat1, lon2, lat2);
 }
 
-//	};
+// euclidean distance
+double EucDistanceInMeters(double x1, double y1, double x2, double y2) {
+	double d1=(x1-x2);
+	double d2=(y1-y2);
+	return std::sqrt((d1*d1) + (d2*d2));
+}
 
 // random integer generator class
 class Random {
@@ -75,7 +76,7 @@ class Random {
 
 
 // [[Rcpp::export]]
-Rcpp::List rcpp_thin_algorithm(std::vector<double> lon, std::vector<double> lat, double thin_par, int reps) {
+Rcpp::List rcpp_thin_algorithm(std::vector<double> lon, std::vector<double> lat, double thin_par, int reps, bool great_circle_distance) {
 	/// init
 	// declare objects
 	int currSite;
@@ -92,14 +93,24 @@ Rcpp::List rcpp_thin_algorithm(std::vector<double> lon, std::vector<double> lat,
 	sites.resize(reps);
 	int seed=std::chrono::high_resolution_clock::now().time_since_epoch().count();
 	Random rgen(seed);
-	thin_par*=1000.0;
 	
 	// create distance matrix
 	Rcpp::NumericMatrix dist(nSites, nSites);
-	for (int i=0; i<(nSites-1); ++i) {
-		for (int j=(i+1); j<nSites; ++j) {
-			dist(i,j)=DistanceInMeters(lon[i], lat[i], lon[j], lat[j]);
-			dist(j,i)=dist(i,j);
+	if (great_circle_distance) {
+		// using great circle distances
+		for (int i=0; i<(nSites-1); ++i) {
+			for (int j=(i+1); j<nSites; ++j) {
+				dist(i,j)=GcDistanceInMeters(lon[i], lat[i], lon[j], lat[j]);
+				dist(j,i)=dist(i,j);
+			}
+		}
+	} else {
+		// using euclidean circle distances
+		for (int i=0; i<(nSites-1); ++i) {
+			for (int j=(i+1); j<nSites; ++j) {
+				dist(i,j)=EucDistanceInMeters(lon[i], lat[i], lon[j], lat[j]);
+				dist(j,i)=dist(i,j);
+			}
 		}
 	}
 	for (int i=0; i<nSites; ++i)

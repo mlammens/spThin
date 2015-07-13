@@ -4,21 +4,30 @@ Title: Functions for Spatial Thinning of Species Occurrence Records for Use in
     Ecological Models
 Version: 0.1.1
 Date: 2015-07-12
-Author: Matthew E. Aiello-Lammens, Robert A. Boria, Aleksandar Radosavljevic, Bruno Vilela, and Robert P. Anderson
+Author: Matthew E. Aiello-Lammens, Robert A. Boria, Aleksandar Radosavljevic,
+    Bruno Vilela, and Robert P. Anderson
 Maintainer: Matthew E. Aiello-Lammens <matt.lammens@gmail.com>
 Description: spThin is a set of functions that can be used to spatially thin
     species occurrence data. The resulting thinned data can be used in ecological
     modelling, such as ecological niche modelling.
 Imports:
-	Rcpp
+    Rcpp
 Depends:
     sp,
     knitr,
-	ggplot2,
-	gridExtra
+    ggplot2,
+    gridExtra,
+    plyr
 LinkingTo: Rcpp
 LazyData: TRUE
 License: GPL-3
 VignetteBuilder: knitr
 Suggests:
     testthat
+Collate:
+    'Heteromys_anomalus_South_America.R'
+    'RcppExports.R'
+    'generics.R'
+    'dependencies.R'
+    'SpThin.R'
+    'thin.R'

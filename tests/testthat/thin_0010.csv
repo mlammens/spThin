@@ -1,0 +1,12 @@
+"SPEC","LAT","LONG","REGION","LONG.1","LAT.1","optional"
+"anomalus",11.23333333,-74.16666667,"mainland",-74.16666667,11.23333333,TRUE
+"anomalus",9.5,-75.35,"mainland",-75.35,9.5,TRUE
+"anomalus",11.23333333,-69.6,"mainland",-69.6,11.23333333,TRUE
+"anomalus",8,-72.26666667,"mainland",-72.26666667,8,TRUE
+"anomalus",10.85,-72.26666667,"mainland",-72.26666667,10.85,TRUE
+"anomalus",8.616666667,-64.06666667,"mainland",-64.06666667,8.616666667,TRUE
+"anomalus",8.883333333,-70.46666667,"mainland",-70.46666667,8.883333333,TRUE
+"anomalus",9.533333333,-68.66666667,"mainland",-68.66666667,9.533333333,TRUE
+"anomalus",10.61666667,-66.71666667,"mainland",-66.71666667,10.61666667,TRUE
+"anomalus",11.05,-63.85,"mar",-63.85,11.05,TRUE
+"anomalus",10.71666667,-61.35,"trin",-61.35,10.71666667,TRUE
