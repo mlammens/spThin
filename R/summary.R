@@ -12,8 +12,6 @@
 #' number of records.
 #' 
 #' @seealso \code{\link{thin}}
-
-
 summary.spThin <- function(thinned, show=TRUE){
 
   ## Repetition number

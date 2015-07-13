@@ -69,10 +69,8 @@ test_that('plot method doesn\'t work', {
         locs.thinned.list.return = TRUE, 
         write.files = FALSE
 	)
-	plot(result, 1)
-	plot(result, 2)
-	plot(result, 3)
-	dev.off()
+	plot(result)
+	# dev.off()
 })
 
 

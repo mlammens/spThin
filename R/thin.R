@@ -1,23 +1,23 @@
 #' @export thin
-#' @title Spatially thin species occurence data
+#' @title Spatially thin species occurrence data
 #' 
 #' @description
-#' \code{thin} returns spatially thinned species occurence data sets.
+#' \code{thin} returns spatially thinned species occurrence data sets.
 #' A randomizaiton algorithm (\code{\link{thin.algorithm}}) is used to create
-#' data set in which all occurnece locations are at least \code{thin.par}
+#' data set in which all occurrence locations are at least \code{thin.par}
 #' distance apart. Spatial thinning helps to reduce the effect of uneven,
-#' or biased, species occurence collections on spatial model outcomes.
+#' or biased, species occurrence collections on spatial model outcomes.
 #' 
-#' @param loc.data A data.frame of occurence locations. It can include several
-#'   columnns, but must include at minimum a column of latitude and a
+#' @param loc.data A data.frame of occurrence locations. It can include several
+#'   columns, but must include at minimum a column of latitude and a
 #'   column of longitude values
 #' @param lat.col Name of column of latitude values. Caps sensitive.
 #' @param long.col Name of column of longitude values. Caps sensitive.
 #' @param spec.col Name of column of species name. Caps sensitive.
-#' @param thin.par Thinning parameter - the distance (in kilometers) that you want
+#' @param thin.par Thinning parameter - the distance (in kilometres) that you want
 #'   records to be separated by.
-#' @param reps The number of times to repete the thinning process. Given the random
-#'   process of removing nearest-neighbors there should be 'rep' number of different
+#' @param reps The number of times to repeat the thinning process. Given the random
+#'   process of removing nearest-neighbours there should be 'rep' number of different
 #'   sets of coordinates.
 #' @param locs.thinned.list.return TRUE/FALSE - If true, the `list` of 
 #'   the data.frame of thinned locs resulting from each replication 
@@ -40,14 +40,14 @@
 #'
 thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
                   thin.par, reps,
-                  locs.thinned.list.return = FALSE,
-                  write.files = TRUE, 
+                  locs.thinned.list.return = TRUE,
+                  write.files = FALSE, 
                   max.files = 5, 
                   out.dir, 
                   out.base = "thinned_data",
-                  write.log.file = TRUE,
+                  write.log.file = FALSE,
                   log.file = 'spatial_thin_log.txt',
-                  verbose = TRUE ){ 
+                  verbose = FALSE ){ 
   
   ## Begin writing to log file
   log.begin <- paste("**********************************************","\n",

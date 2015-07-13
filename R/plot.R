@@ -16,7 +16,6 @@
 plot.spThin <- function(
 	thinned, 
 	which=c(1:3), 
-	ask=prod(par("mfcol")) < length(which) && dev.interactive(), 
 	...) {
 
 	## Repetition number
@@ -32,55 +31,73 @@ plot.spThin <- function(
 
 	## Plot the number of repetitions versus the number 
 	## of maximum records retained at each repetition
+	plotList=list()
 	if(any(1==which)){
-		p1=ggplot(
-			data.frame(
-				x=seq_len(reps),
-				y=cummax.lat.long.thin.count
-			),
-			aes(x,y)
-		) + 
-		geom_point() +
-		xlab('Number Repetitions') +
-		ylab('Cumulative Maximum Records Retained') +
-		coord_cartesian(xlim=c(1,reps))  + 
-		theme_classic()
+		print('here1')
+		plotList=append(plotList, list(
+			ggplot(
+				data.frame(
+					x=seq_len(reps),
+					y=cummax.lat.long.thin.count
+				),
+				aes(x,y)
+			) + 
+			geom_point() +
+			xlab('Number Repetitions') +
+			ylab('Cumulative Maximum Records Retained') +
+			coord_cartesian(xlim=c(1,reps))  + 
+			theme_classic() +
+			theme(axis.title.y=element_text(vjust=1)) +
+			theme(axis.title.x=element_text(vjust=-0.5))
+		))
 	}
  
 	## Make a log-log plot of the number of repetitions versus
 	## the number of maximum records retained
 	if(any(2==which)) {
-		p2=ggplot(
-			data.frame(
-				x=seq_len(reps),
-				y=cummax.lat.long.thin.count
-			),
-			aes(x,y)
-		) + 
-		geom_point() +
-		xlab('Log Number Repetitions') +
-		ylab('Log Cumulative Maximum Records Retained') +
-		coord_trans(y="log", x="log") +
-		theme_classic()	
-	
-	plot( log(1:reps), log(cummax.lat.long.thin.count),
-		xlab='Log Number Repetitions',
-		ylab='Log Cummulative Maximum Records Retained',
-		#ylim=c(0,log(max(cummax.lat.long.thin.count))), 
-		xlim=c(0,log(reps)), ...)
-	
-	
+		print('here2')
+		plotList=append(plotList, list(
+			ggplot(
+				data.frame(
+					x=seq_len(reps),
+					y=cummax.lat.long.thin.count
+				),
+				aes(x,y)
+			) + 
+			geom_point() +
+			xlab('Log Number Repetitions') +
+			ylab('Log Cumulative Maximum Records Retained') +
+			coord_trans(y="log", x="log") +
+			theme_classic() +
+			theme(axis.title.y=element_text(vjust=1)) +
+			theme(axis.title.x=element_text(vjust=-0.5))
+		))
 	}
-	## Plot a histogram of lat.long.thin.count
+	## histogram of lat.long.thin.count
 	if (any(3==which)) {
-		p3=ggplot(
-			data=data.frame(x=lat.long.thin.count)
-			aes(x)
-		) + 
-		geom_histogram(y=..density.., col='transparent', fill='grey20') +
-		geom_density(col='transparent', fill='blue', alpha=0.3) +
-		xlab('Maximum records retained') +
-		ylab('Density') + 
-		theme_classic()
+		print('here3')
+		plotList=append(plotList, list(
+			ggplot(
+				data=data.frame(x=lat.long.thin.count),
+				aes(x)
+			) + 
+			geom_histogram(aes(y=..density..), col='transparent', fill='grey20') +
+			geom_density(col='transparent', fill='blue', alpha=0.3) +
+			xlab('Maximum records retained') +
+			ylab('Density') + 
+			theme_classic() +
+			theme(axis.title.y=element_text(vjust=1)) +
+			theme(axis.title.x=element_text(vjust=-0.5))
+		))
 	}
+	
+	# print plots	
+	if (length(plotList)==1) {
+		print(plotList[[1]])
+	} else if (length(plotList)==2) {
+		grid.arrange(plotList[[1]], plotList[[2]], ncol=2)
+	} else {
+		grid.arrange(plotList[[1]], plotList[[2]], plotList[[3]], ncol=2, nrow=2)
+	}
+		
 }

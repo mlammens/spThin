@@ -16,7 +16,8 @@ Depends:
     grid,
     fields,
     knitr,
-	ggplot2
+	ggplot2,
+	gridExtra
 LinkingTo: Rcpp
 LazyData: TRUE
 License: GPL-3
