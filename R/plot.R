@@ -33,7 +33,6 @@ plot.spThin <- function(
 	## of maximum records retained at each repetition
 	plotList=list()
 	if(any(1==which)){
-		print('here1')
 		plotList=append(plotList, list(
 			ggplot(
 				data.frame(
@@ -55,7 +54,6 @@ plot.spThin <- function(
 	## Make a log-log plot of the number of repetitions versus
 	## the number of maximum records retained
 	if(any(2==which)) {
-		print('here2')
 		plotList=append(plotList, list(
 			ggplot(
 				data.frame(
@@ -75,13 +73,16 @@ plot.spThin <- function(
 	}
 	## histogram of lat.long.thin.count
 	if (any(3==which)) {
-		print('here3')
 		plotList=append(plotList, list(
 			ggplot(
 				data=data.frame(x=lat.long.thin.count),
-				aes(x)
+				aes(x=x)
 			) + 
-			geom_histogram(aes(y=..density..), col='transparent', fill='grey20') +
+			geom_histogram(
+				aes(y=..density..),
+				col='transparent',
+				fill='grey20'
+			) +
 			geom_density(col='transparent', fill='blue', alpha=0.3) +
 			xlab('Maximum records retained') +
 			ylab('Density') + 

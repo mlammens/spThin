@@ -5,8 +5,8 @@ test_that('rcpp_thin_algorithm function doesn\'t work', {
 	result=spThin:::rcpp_thin_algorithm(
 		Heteromys_anomalus_South_America[[3]],
 		Heteromys_anomalus_South_America[[2]],
-		100,
-		1
+		200,
+		100
 	)
 	dists=fields::rdist.earth(
 		Heteromys_anomalus_South_America[result[[1]],3:2],
@@ -27,8 +27,8 @@ test_that('thin function doesn\'t work', {
         lat.col = "LAT",
 		long.col = "LONG", 
         spec.col = "SPEC", 
-        thin.par = 100,
-		reps = 1,
+        thin.par = 200,
+		reps = 10,
         locs.thinned.list.return = TRUE, 
         write.files = FALSE
 	)
@@ -36,7 +36,7 @@ test_that('thin function doesn\'t work', {
 	
 	expect_true(
 		all(
-			dists[lower.tri(dists)] > 100
+			dists[lower.tri(dists)] > 200
 		)
 	)
 	
@@ -64,7 +64,7 @@ test_that('plot method doesn\'t work', {
         lat.col = "LAT",
 		long.col = "LONG", 
         spec.col = "SPEC", 
-        thin.par = 100,
+        thin.par = 200,
 		reps = 100,
         locs.thinned.list.return = TRUE, 
         write.files = FALSE

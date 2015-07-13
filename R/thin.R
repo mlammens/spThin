@@ -3,7 +3,7 @@
 #' 
 #' @description
 #' \code{thin} returns spatially thinned species occurrence data sets.
-#' A randomizaiton algorithm (\code{\link{thin.algorithm}}) is used to create
+#' A randomizaiton algorithm is used to create
 #' data set in which all occurrence locations are at least \code{thin.par}
 #' distance apart. Spatial thinning helps to reduce the effect of uneven,
 #' or biased, species occurrence collections on spatial model outcomes.
@@ -13,7 +13,6 @@
 #'   column of longitude values
 #' @param lat.col Name of column of latitude values. Caps sensitive.
 #' @param long.col Name of column of longitude values. Caps sensitive.
-#' @param spec.col Name of column of species name. Caps sensitive.
 #' @param thin.par Thinning parameter - the distance (in kilometres) that you want
 #'   records to be separated by.
 #' @param reps The number of times to repeat the thinning process. Given the random
@@ -38,177 +37,59 @@
 #'   
 #' @seealso \code{\link{thin.algorithm}}
 #'
-thin <- function( loc.data, lat.col="LAT", long.col="LONG", spec.col="SPEC",
-                  thin.par, reps,
-                  locs.thinned.list.return = TRUE,
-                  write.files = FALSE, 
-                  max.files = 5, 
-                  out.dir, 
-                  out.base = "thinned_data",
-                  write.log.file = FALSE,
-                  log.file = 'spatial_thin_log.txt',
-                  verbose = FALSE ){ 
-  
-  ## Begin writing to log file
-  log.begin <- paste("**********************************************","\n",
-                     "Beginning Spatial Thinning.\n",
-                     "Script Started at:",
-                     date(), sep=" ")
-  ## Print information to the console
-  if( verbose ){ cat( log.begin ,'\n' ) }
-  ## Write information to the log.file
-  if( write.log.file ){ write( log.begin, file=log.file, append = TRUE ) }
-  
-  ## Copy loc.data to new data.frame names locs.df
-  locs.df <- loc.data
-  
-  ## Get the species name used in the `locs.df`
-  species <- unique( locs.df[[ which( names(locs.df) == spec.col ) ]] )
-  ## Send a warning message if there are more than one species in the df
-  if( length( species ) > 1 ){
-    log.spec.warn.1 <- "There appear to be more than one species name in this *.csv file."
-    warning( log.spec.warn.1 )
-    if( write.log.file ){ write( log.spec.warn.1, file=log.file, append=TRUE ) }
-    species <- species[1]
-    log.spec.warn.2 <- paste( "Only using species name:", species )
-    warning( log.spec.warn.2 )
-    if( write.log.file ){ write( log.spec.warn.2, file=log.file, append=TRUE ) }
-  }
-  
-  ## Determine the columns associated with Lat and Long
-  lat <- which( names(locs.df) == lat.col )
-  long <- which( names(locs.df) == long.col )
-  
-  ## Make a data.frame that contains only the Long and 
-  ## Lat values, in that order (ie df$Long, df$Lat)
-  locs.long.lat <- as.data.frame( cbind( locs.df[[long]], locs.df[[lat]] ))
+thin<-function(x, ...) {UseMethod('thin')}
 
-  ## Note in the log file what thinning parameter is being used
-  log.thin.par <- paste("\nThinning Parameter Used (in km):", thin.par)
-  if( write.log.file ){ write( log.thin.par, file=log.file, append = TRUE ) }
-  log.num.reps <- paste("Number of replicates of thinning script:", reps )
-  if( write.log.file ){ write( log.num.reps, file=log.file, append = TRUE ) }
-  
-  ## Execute spatial thinning function `thin.pres.data.R`. This
-  ## function returns a `list` of spatially thinned data.frames
-  
-  # Keep track of how much time it takes to run this algorithm
-  thin.time <- system.time( 
-    locs.thinned <- rcpp_thin_algorithm(locs.long.lat[[1]],
-								   locs.long.lat[[2]],
-                                   thin.par,
-								   reps
+#' @export
+thin.data.frame<-function(x, lon.col, lat.col, mindist, nrep, great.circle.distance=TRUE) {
+	# check validity of inputs
+	if (!lon.col %in% names(x))
+		stop('lon.col not column in x')
+	if (!lat.col %in% names(x))
+		stop('lat.col not column in x')
+	if (!is.numeric(mindist))
+		stop('mindist is not numeric')
+	if (!is.numeric(nrep))
+		stop('nrep is not numeric')
+	if (!is.logical(great.circle.distance))
+		stop('great.circle.distance is not logical')
+	# coerce x to Spatial object
+	x=SpatialPointsData.frame(
+		coords=as.matrix(x[,c(lon.col,lat.cal)])
+		data=x
+		proj4string=CRS('+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs')
+	)
+	# generate samples and return spThin object
+	return(
+		spThin(
+			x,
+			rcpp_thin_algorithm(
+				x@coords[,1],
+				x@coords[,2],
+				mindist,
+				reps,
+				FALSE
+			),
+			mindist,
+			match.call()
 		)
-  )
-  locs.thinned <- lapply(locs.thinned, function(x) {return(locs.long.lat[x,,drop=FALSE])})
-  
-  ## Record in log file elapsed system time for running the script
-  if( write.log.file ){ write( "\nElapsed time for thinning completion", file=log.file, append = TRUE ) }
-  if( write.log.file ){ write( thin.time, file=log.file, append = TRUE ) }
-    
-  ## Look at the number of locs kept in each thinned dataset
-  ## by determining the number of rows in each returned data.frame
-  lat.long.thin.count <- unlist(lapply(locs.thinned, nrow ))
-  
-  ## Use `table` to deterine number of dfs for each
-  ## locs count
-  locs.thinned.tbl <- table(lat.long.thin.count)
-  ## Print `locs.thinned.tbl` to console
-  if( verbose ){ cat("\n")
-                 cat(locs.thinned.tbl,'\n') }
-  ## Print `locs.thinned.tbl` to log file
-  if( write.log.file ){ write("\nNumber of data.frames per locations retained\nloc.cnt df.freq",
-                              file=log.file, append=TRUE) }
-  if( write.log.file ){ write(names(locs.thinned.tbl),file=log.file, append=TRUE, 
-                              ncolumns=length(names(locs.thinned.tbl)),sep="\t") }
-  if( write.log.file ){ write(locs.thinned.tbl, file=log.file, append=TRUE, 
-                              ncolumns=length(locs.thinned.tbl),sep="\t") }
-  
-#   ## Plot a histogram of lat.long.thin.count
-#   hist(lat.long.thin.count)
-  
-  ## Find max number of records
-  max.thin.recs <- max( lat.long.thin.count)
-  ## Save to log and Print this out for user to see
-  log.max.rec <- paste( "Maximum number of records after thinning:",
-                        max.thin.recs)
-  if( verbose ){ cat( log.max.rec,'\n') }
-  if( write.log.file ){ write( log.max.rec, file=log.file, append=TRUE) }
-  
-  ## Determine which data.frames
-  ## have max.no. records
-  max.dfs <- which( lat.long.thin.count == max.thin.recs)
-  max.dfs.length <- length(max.dfs)
-  log.max.df.cnt <- paste( "Number of data.frames with max records:", 
-                           max.dfs.length)
-  if( verbose ){ cat( log.max.df.cnt, '\n') }
-  if( write.log.file ){ write(log.max.df.cnt, file=log.file, append=TRUE) }
-  
-  ## Write files if `write.files==TRUE`
-  if( write.files ){
-    if( verbose ){ cat( "Writing new *.csv files\n" ) }
-    if( write.log.file ){ write("\n**New *.csv file creation:**", file=log.file, append=TRUE) }
-    
-    # Determine number of files to write - should be the min
-    # of the max number requested and the `max.dfs.lenght`
-    n.csv <- min( c(max.files, max.dfs.length) )
-    
-    ## Write the first `n.csv` max data.frames
-    # Check that `out.dir` exists. If not, create this directory.
-    if ( !file.exists( out.dir ) ) {
-      log.dir <- paste('Created new output directory: ', out.dir, sep="") 
-      dir.create( out.dir, recursive=TRUE )
-    } else {
-      log.dir <- paste('Writing new *.csv files to output directory: ',
-                       out.dir, sep="")
-    }
-    warning( log.dir )
-    if( write.log.file ){ write( log.dir, file=log.file, append=TRUE ) }
-    # Check that `out.dir` terminates in a '/'
-    if( !grepl( '/$', out.dir ) ){
-      out.dir <- paste( out.dir, '/', sep='' )
-    }
-    
-    ## Make csv file names for thinned datasets
-    csv.files <- paste( out.dir, out.base, "_thin", rep(1:n.csv), 
-                        ".csv", sep="")
-    
-    for ( df in 1:n.csv ){
-      # Get long and lat values for thinned locs
-      df.temp <- locs.thinned[[ max.dfs[df] ]]
-      # Add column of species name
-      df.temp <- cbind( rep(as.character(species), max.thin.recs),
-                        df.temp )
-      # Give columns names
-      colnames(df.temp) <- c(spec.col, long.col, lat.col)
-      # Change file name in case of possible overwrite 
-      # and send a warning to the user
-      while( file.exists( csv.files[df] ) ){
-        # Change file name
-        csv.files[df] <- sub( '.csv$', '_new.csv', csv.files[df] )
-        log.csv.overwrite <- paste(csv.files[df],
-                                   "' already exists. Renaming file 
-                                   to avoid overwriting.")
-        warning( log.csv.overwrite )
-        if( write.log.file ){ write(log.csv.overwrite, file=log.file, append=TRUE ) }
-      }
-      # Write new *.csv file with new name
-      write.csv( df.temp, file=csv.files[df], quote=FALSE,
-                 row.names=FALSE)
-      log.write.file <- paste( "Writing file:", csv.files[df] )
-      if( verbose ){ cat( log.write.file, '\n' ) }
-      if( write.log.file ){ write( log.write.file, file=log.file, append=TRUE ) }
-    }
-    
-  } else {
-    log.write.file <- "No files written for this run."
-    if( verbose ){ cat( log.write.file, '\n' ) }
-    if( write.log.file ){ write( log.write.file, file=log.file, append=TRUE) }
-  }
-  
-  ## Return `locs.thinned.list` if that setting is TRUE
-  if ( locs.thinned.list.return ){
-	class(locs.thinned) = 'spThin'
-    return( locs.thinned )
-  }
+	)
 }
+
+#' @export
+thin.SpatialPoints<-function(x, mindist, nrep, great.circle.distance=x@proj4string@projargs=='+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs') {
+	return(
+		spThin(
+			x,
+			rcpp_thin_algorithm(
+				x@coords[,1],
+				x@coords[,2],
+				mindist,
+				reps,
+				great.circle.distance
+			),
+			mindist,
+			match.call()
+		)
+	)
+}
+

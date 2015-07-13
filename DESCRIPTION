@@ -12,9 +12,7 @@ Description: spThin is a set of functions that can be used to spatially thin
 Imports:
 	Rcpp
 Depends:
-    spam,
-    grid,
-    fields,
+    sp,
     knitr,
 	ggplot2,
 	gridExtra
