@@ -1,3 +1,4 @@
+library(microbenchmark)
 data(Heteromys_anomalus_South_America)
 
 # test rcpp_thin_algorithm function
@@ -9,13 +10,17 @@ test_that('rcpp_thin_algorithm function doesn\'t work', {
 		# 100,
 		# TRUE
 	# )	
-	system.time(spThin:::rcpp_thin_algorithm(
-		runif(1e04, -5,5),
-		runif(1e04, -5,5),
-		2,
-		1,
-		FALSE
-	))
+	ret=microbenchmark(
+		spThin:::rcpp_thin_algorithm(
+			runif(1000, -5,5),
+			runif(1000, -5,5),
+			2,
+			1,
+			FALSE
+		),
+		times=10L
+	)
+	assign('ret',ret,envir=globalenv())
 	
 	stop()
 	
