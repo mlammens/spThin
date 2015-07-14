@@ -3,19 +3,23 @@ data(Heteromys_anomalus_South_America)
 
 # test rcpp_thin_algorithm function
 test_that('rcpp_thin_algorithm function doesn\'t work', {
-	# result=spThin:::rcpp_thin_algorithm(
-		# Heteromys_anomalus_South_America[[3]],
-		# Heteromys_anomalus_South_America[[2]],
-		# 200000,
-		# 100,
-		# TRUE
-	# )	
+	x=runif(10000, -5,5)
+	y=runif(10000, -5,5)
 	ret=microbenchmark(
-		spThin:::rcpp_thin_algorithm(
-			runif(1000, -5,5),
-			runif(1000, -5,5),
+		fast=spThin:::rcpp_thin_algorithm(
+			x,
+			y,
 			2,
 			1,
+			FALSE,
+			TRUE
+		),
+		slow=spThin:::rcpp_thin_algorithm(
+			x,
+			y,
+			2,
+			1,
+			FALSE,
 			FALSE
 		),
 		times=10L
