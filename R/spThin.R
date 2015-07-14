@@ -123,11 +123,11 @@ summary.SpThin <- function(x){
 #' Diagnostic plots for thinned datasets
 #' 
 #' This function produces plots to describe the thinned datasets:
-#' \begin{enumerate}
+#' \enumerate{
 #' 	\item plot of the number of repetitions versus the number of maximum records retained;
 #'	\item log-log version of the above plot;
 #'	\item histogram with density curvie of the maximum records retained.
-#' \end{enumerate}
+#' }
 #'
 #' @param x \code{SpThin} object.
 #' @param which "numeric" values to indicate which plots to produce.

@@ -11,14 +11,15 @@ Description: spThin is a set of functions that can be used to spatially thin
     species occurrence data. The resulting thinned data can be used in ecological
     modelling, such as ecological niche modelling.
 Imports:
-    Rcpp
+    Rcpp,
+    RcppArmadillo
 Depends:
     sp,
     knitr,
     ggplot2,
     gridExtra,
     plyr
-LinkingTo: Rcpp
+LinkingTo: Rcpp, RcppArmadillo
 LazyData: TRUE
 License: GPL-3
 VignetteBuilder: knitr

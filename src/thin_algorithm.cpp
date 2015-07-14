@@ -8,8 +8,8 @@ using namespace Rcpp;
 #include <limits>
 #include <random>
 #include <chrono>
-// #include <string>
-// #include <iostream>
+#include <string>
+#include <iostream>
 #include <cmath>
 #include <Rcpp.h>
 
@@ -64,9 +64,9 @@ class Random {
 			std::mt19937 tmp(seed); 
 			eng=tmp;
 		};
-		int DrawNumber(int lb, int ub) {
-			std::uniform_int_distribution<> uniform_dist(lb, ub);
-			return uniform_dist(eng);
+		int DrawNumber(std::vector<int> &weights) {
+			std::discrete_distribution<int> discrete_dist(weights.cbegin(), weights.cend());
+			return discrete_dist(eng);
 		}
 		
 	private:
@@ -81,35 +81,37 @@ Rcpp::List rcpp_thin_algorithm(std::vector<double> lon, std::vector<double> lat,
 	// declare objects
 	int currSite;
 	int nSites=lon.size();
-	int nRemainingSites=nSites;
+	int nRemainingSites;
 	int temp;
 	double currMax;
 	double Inf=std::numeric_limits<double>::infinity();
 	std::vector<int> currSiteCounts(nSites);
 	std::vector<int> idMaxCounts(nSites);
 	std::vector<int> idRemainingSites(nSites);
-	std::iota(idRemainingSites.begin(), idRemainingSites.end(), 0);
 	std::vector<std::vector<int> > sites;
 	sites.resize(reps);
+	Rcpp::NumericMatrix dist(nSites, nSites);
+	Rcpp::NumericMatrix currDist(nSites, nSites);
+	
 	int seed=std::chrono::high_resolution_clock::now().time_since_epoch().count();
 	Random rgen(seed);
 	
-	// create distance matrix
-	Rcpp::NumericMatrix dist(nSites, nSites);
+	/// create distance matrix
+	// fill upper triangle with distances and use this for computation
 	if (great_circle_distance) {
-		// using great circle distances
+		// use great circle distances
 		for (int i=0; i<(nSites-1); ++i) {
 			for (int j=(i+1); j<nSites; ++j) {
 				dist(i,j)=GcDistanceInMeters(lon[i], lat[i], lon[j], lat[j]);
-				dist(j,i)=dist(i,j);
+				dist(j,i)=Inf;
 			}
 		}
 	} else {
-		// using euclidean circle distances
+		// use euclidean circle distances
 		for (int i=0; i<(nSites-1); ++i) {
 			for (int j=(i+1); j<nSites; ++j) {
 				dist(i,j)=EucDistanceInMeters(lon[i], lat[i], lon[j], lat[j]);
-				dist(j,i)=dist(i,j);
+				dist(j,i)=Inf;
 			}
 		}
 	}
@@ -118,49 +120,42 @@ Rcpp::List rcpp_thin_algorithm(std::vector<double> lon, std::vector<double> lat,
 	
 	/// main processing
 	for (int r=0; r<reps; ++r) {
-		while (min(dist) < thin_par && nRemainingSites > 1) {
+		// reset parameters for new rep
+		nRemainingSites=nSites;
+		currDist=Rcpp::clone(dist);
+		std::iota(idRemainingSites.begin(), idRemainingSites.end(), 0);
+				
+		while (min(currDist) < thin_par & nRemainingSites > 1) {
 			// find counts of sites within nearest distances
 			std::fill(currSiteCounts.begin(), currSiteCounts.end(), 0);
 			for (int i=0; i<(nSites-1); ++i) {
 				for (int j=(i+1); j<nSites; ++j) {
-					if (dist(i,j) < thin_par) {
+					if (currDist(i,j) < thin_par) {
 						++currSiteCounts[i];
 					}
 				}
 			}
-			
-			// find which site has the greatest number of nearest sites
-			temp=-1;
-			currMax=*std::max_element(currSiteCounts.begin(), currSiteCounts.end());
-			for (int i=0; i<currSiteCounts.size(); ++i) {
-				if (currSiteCounts[i]==currMax) {
-					++temp;
-					idMaxCounts[temp]=i;
-				}
-			}
-			
-			if (temp==0) {
-				// if only one site with highest number of closest sites
-				currSite=idMaxCounts[0];
-			} else {
-				// if multiple sites with highest number of closest sites
-				currSite=idMaxCounts[rgen.DrawNumber(0,temp)];
-			}
 		
+			// randomly sample a site weighted by frequency of nearest sites
+			currSite=rgen.DrawNumber(currSiteCounts);
+						
 			// remove site 
 			--nRemainingSites;
 			for (int i=0; i<nSites; ++i) {
-				dist(currSite,i)=Inf;
-				dist(i,currSite)=Inf;
+				currDist(currSite,i)=Inf;
+				currDist(i,currSite)=Inf;
 			}
 			idRemainingSites[currSite]=-1;
 		}
 		
 		// store results
 		sites[r].reserve(nRemainingSites);
-		for (int i=0; i<nSites; ++i)
-			if (idRemainingSites[i]!=-1)
+		for (int i=0; i<nSites; ++i) {
+			if (idRemainingSites[i]>-1) {
 				sites[r].push_back(idRemainingSites[i]+1);
+			}
+		}
+		sites[r].shrink_to_fit();
 	}
 	
 	/// exports

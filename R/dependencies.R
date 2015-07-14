@@ -1,5 +1,6 @@
 #' @import knitr
 #' @import Rcpp
+#' @import RcppArmadillo
 #' @import ggplot2
 #' @import plyr
 #' @importFrom gridExtra grid.arrange 
