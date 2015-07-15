@@ -9,11 +9,11 @@
 thin(x, ...)
 
 \method{thin}{data.frame}(x, lon.col, lat.col, mindist, nrep,
-  great.circle.distance = TRUE, fast = TRUE)
+  great.circle.distance = TRUE)
 
 \method{thin}{SpatialPoints}(x, mindist, nrep,
   great.circle.distance = x@proj4string@projargs ==
-  "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs", fast = TRUE)
+  "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 }
 \arguments{
 \item{x}{\code{SpatialPoints}, \code{SpatialPointsDataFrame} or \code{data.frame} object.}
@@ -25,8 +25,6 @@ thin(x, ...)
 \item{mindist}{\code{numeric} minimum distance (m) between records.}
 
 \item{great.circle.distance}{\code{logical} if \code{TRUE} great circle distances will be used for distance calculations, else euclidean distances will be be used.}
-
-\item{fast}{\code{logical} if \code{TRUE} the point with the most number of close neighbours will be removed at each iteration. This results in a lower run-time with less variation between replicates. Otherwise the points will be randomly sampled for removal based on their number of close neighbours. This results in a longer run-time with more variation between replicates.}
 
 \item{reps}{\code{numeric} number of replicate thinned data sets to produce.}
 }

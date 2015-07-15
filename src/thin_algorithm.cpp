@@ -1,4 +1,7 @@
-#include <Rcpp.h>
+#define ARMA_NO_DEBUG
+#define ARMA_DONT_USE_CXX11
+
+#include <RcppArmadillo.h>
 // [[Rcpp::plugins(cpp11)]]
 
 using namespace Rcpp;
@@ -11,7 +14,7 @@ using namespace Rcpp;
 #include <string>
 #include <iostream>
 #include <cmath>
-#include <Rcpp.h>
+
 
 // The usual PI/180 constant
 static const double DEG_TO_RAD = 0.017453292519943295769236907684886;
@@ -83,7 +86,7 @@ class Random {
 
 
 // [[Rcpp::export]]
-Rcpp::List rcpp_thin_algorithm(std::vector<double> lon, std::vector<double> lat, double thin_par, int reps, bool great_circle_distance, bool fast) {
+Rcpp::List rcpp_thin_algorithm(std::vector<double> lon, std::vector<double> lat, double thin_par, int reps, bool great_circle_distance) {
 	/// init
 	// declare objects
 	int currSite;
@@ -91,15 +94,13 @@ Rcpp::List rcpp_thin_algorithm(std::vector<double> lon, std::vector<double> lat,
 	int nRemainingSites;
 	int currMaxCount;
 	int temp;
-	double Inf=std::numeric_limits<double>::infinity();
 	std::vector<int> currSiteCounts(nSites);
 	std::vector<int> idMaxCounts(nSites);
-	std::vector<int> idRemainingSites(nSites);
+	arma::Col<arma::uword> temp2(1);
+	arma::Col<arma::uword> idRemainingSites(nSites);
 	std::vector<std::vector<int> > sites;
 	sites.resize(reps);
-	Rcpp::NumericMatrix dist(nSites, nSites);
-	Rcpp::NumericMatrix currDist(nSites, nSites);
-	
+	arma::Mat<arma::uword> greaterThanDist(nSites, nSites);
 	int seed=std::chrono::high_resolution_clock::now().time_since_epoch().count();
 	Random rgen(seed);
 	
@@ -109,77 +110,50 @@ Rcpp::List rcpp_thin_algorithm(std::vector<double> lon, std::vector<double> lat,
 		// use great circle distances
 		for (int i=0; i<(nSites-1); ++i) {
 			for (int j=(i+1); j<nSites; ++j) {
-				dist(i,j)=GcDistanceInMeters(lon[i], lat[i], lon[j], lat[j]);
-				dist(j,i)=Inf;
+				greaterThanDist(i,j)=GcDistanceInMeters(lon[i], lat[i], lon[j], lat[j]) > thin_par;
+				greaterThanDist(j,i)=greaterThanDist(i,j);
 			}
 		}
 	} else {
 		// use euclidean circle distances
 		for (int i=0; i<(nSites-1); ++i) {
 			for (int j=(i+1); j<nSites; ++j) {
-				dist(i,j)=EucDistanceInMeters(lon[i], lat[i], lon[j], lat[j]);
-				dist(j,i)=Inf;
+				greaterThanDist(i,j)=EucDistanceInMeters(lon[i], lat[i], lon[j], lat[j]) > thin_par;
+				greaterThanDist(j,i)=greaterThanDist(i,j);
 			}
 		}
 	}
-	for (int i=0; i<nSites; ++i)
-		dist(i,i)=Inf;
+	for (int i=0; i<nSites; ++i) {
+		greaterThanDist(i,i)=false;
+	}
 	
 	/// main processing
 	for (int r=0; r<reps; ++r) {
 		// reset parameters for new rep
 		nRemainingSites=nSites;
-		currDist=Rcpp::clone(dist);
+		idRemainingSites.resize(nSites);
 		std::iota(idRemainingSites.begin(), idRemainingSites.end(), 0);
-				
-		while ((min(currDist) < thin_par) & (nRemainingSites > 1)) {
+		while ((arma::accu(greaterThanDist.submat(idRemainingSites, idRemainingSites))>0) & (nRemainingSites > 1)) {
 			// find counts of sites within nearest distances
-			std::fill(currSiteCounts.begin(), currSiteCounts.end(), 0);
-			for (int i=0; i<(nRemainingSites-1); ++i) {
-				for (int j=(i+1); j<nRemainingSites; ++j) {
-					if (currDist(idRemainingSites[i],idRemainingSites[j]) < thin_par) {
-						++currSiteCounts[i];
-					}
-				}
+			for (int i=0; i<nRemainingSites; ++i) {
+				temp2=idRemainingSites(i);
+				currSiteCounts[i]=arma::accu(
+					greaterThanDist.submat(
+						idRemainingSites,
+						temp2
+					)
+				);
 			}
-		
-			/// randomly sample a site weighted by frequency of nearest sites
-			if (fast) {
-				// pick the site with the highest number close sites
-				temp=-1;
-				currMaxCount=*std::max_element(currSiteCounts.cbegin(), currSiteCounts.cbegin()+nRemainingSites);
-				for (int i=0; i<nRemainingSites; ++i) {
-					if (currSiteCounts[i]==currMaxCount) {
-						++temp;
-						idMaxCounts[temp]=i;
-					}
-				}
-				if (temp==0) {
-					// if only one site with highest number of closest sites
-					currSite=idMaxCounts[0];
-				} else {
-					// if multiple sites with highest number of closest sites
-					currSite=idMaxCounts[rgen.DrawUniformNumber(temp)];
-				}
-			} else {
-				// sample site as a discrete distribution weighted by number of close sites
-				currSite=rgen.DrawDiscreteNumber(currSiteCounts.cbegin(), currSiteCounts.cbegin()+nRemainingSites);
-			}
-			
+								
 			// remove site 
+			idRemainingSites.shed_row(rgen.DrawDiscreteNumber(currSiteCounts.cbegin(), currSiteCounts.cbegin()+nRemainingSites));
 			--nRemainingSites;
-			idRemainingSites.erase(idRemainingSites.begin()+currSite);
 		}
 		
 		// store results
 		sites[r].reserve(nRemainingSites);
-		for (int i=0; i<nSites; ++i) {
-			if (idRemainingSites[i]>-1) {
-				sites[r].push_back(idRemainingSites[i]+1);
-			}
-		}
-		sites[r].shrink_to_fit();
-		idRemainingSites.shrink_to_fit();
+		for (auto i=idRemainingSites.cbegin(); i!=idRemainingSites.cend(); ++i)
+			sites[r].push_back((*i) + 1);
 	}
 	
 	/// exports

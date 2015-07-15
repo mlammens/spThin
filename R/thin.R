@@ -4,7 +4,7 @@ NULL
 #' @rdname thin
 #' @inheritParams thin
 #' @export
-thin.data.frame<-function(x, lon.col, lat.col, mindist, nrep, great.circle.distance=TRUE, fast=FALSE) {
+thin.data.frame<-function(x, lon.col, lat.col, mindist, nrep, great.circle.distance=TRUE) {
 	# check validity of inputs
 	if (!lon.col %in% names(x))
 		stop('lon.col not column in x')
@@ -32,7 +32,7 @@ thin.data.frame<-function(x, lon.col, lat.col, mindist, nrep, great.circle.dista
 				x@coords[,2],
 				mindist,
 				nrep,
-				great.circle.distance
+				great.circle.distance,
 			),
 			mindist=mindist,
 			nrep=as.integer(nrep),			
@@ -44,7 +44,7 @@ thin.data.frame<-function(x, lon.col, lat.col, mindist, nrep, great.circle.dista
 #' @rdname thin
 #' @inheritParams thin
 #' @export
-thin.SpatialPoints<-function(x, mindist, nrep, great.circle.distance=x@proj4string@projargs=='+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs', fast=FALSE) {
+thin.SpatialPoints<-function(x, mindist, nrep, great.circle.distance=x@proj4string@projargs=='+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs') {
 	currCall=match.call()
 	return(
 		SpThin(

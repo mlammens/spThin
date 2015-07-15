@@ -72,7 +72,6 @@ write.default<-base::write
 #' @param mindist \code{numeric} minimum distance (m) between records.
 #' @param reps \code{numeric} number of replicate thinned data sets to produce.
 #' @param great.circle.distance \code{logical} if \code{TRUE} great circle distances will be used for distance calculations, else euclidean distances will be be used.
-#' @param fast \code{logical} if \code{TRUE} the point with the most number of close neighbours will be removed at each iteration. This results in a lower run-time with less variation between replicates. Otherwise the points will be randomly sampled for removal based on their number of close neighbours. This results in a longer run-time with more variation between replicates.
 #' @export
 #' @return \code{SpThin} object. 
 #' @seealso \code{\link{SpThin}}
