@@ -1,104 +1,73 @@
 ---
-title: "spThin example"
-author: "Matthew E. Aiello-Lammens"
-date: "July 25, 2014"
+title: "spThin Tutorial"
+author: "Matthew E. Aiello-Lammens & Jeffrey O. Hanson"
+date: "2015-07-16"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::knitr}
-  %\VignetteIndexEntry{spThin example}
+  %\VignetteIndexEntry{spThin}
 ---
 
 # Introduction
 
-This vignette goes through the spatial thinning example presented in
-"spThin: An R package for spatial thinning of species occurrence records
-for use in ecological niche models". Here we demonstrate how `spThin` can
-be used to spatially thin species occurence records, we test how many
-repetitions of the thinning algorithm are necessary to achieve the optimal
-number of thinned records for a dataset previously thinned "by hand", and 
-we examine whether there is a notable increase in efficiency if an occurence
-dataset is thinned as multiple smaller groups of occurrences, 
-rather than a single large set of occurrences.
+The `spThin` package contains functions for spatially thinning and filtering occurrence records. Here we provide a tutorial on how `spThin` can be used to process datasets for environmental niche modelling.
 
-# Load the `spThin` R package
+## Load the `spThin` R package
 
-Here we load the R package from source code. This source code will soon be
-submitted to CRAN, so that this package can be loaded using standard 
-package management methods
+First we will install the R package from source and load it into the workspace.
 
 ```{r load_package}
 
-## Install package from source, then load package into workspace
-install.packages( type = "source", pkgs = "spThin_0.1.0.tar.gz", repos = NULL )
-library( spThin )
+# install package from source
+install.packages(type = "source", pkgs = "spThin_0.1.1.tar.gz", repos = NULL )
+
+# load package into workspace
+library(spThin)
 
 ```
 
-# Example dataset
+## Example dataset
 
-To demonstrate the use of `spThin` we used a set of 201 verified, georeferenced
-occurrence records for the Caribbean spiny pocket mouse *Heteromys anomalus*. 
-These occurrences are from Columbia, Venezuela, and
-three Caribbean islands: Trinidad, Tobago, and Margarita. This dataset
-is included as part of the `spThin` package.
-
-#### Load *H. anomalus* dataset
-
+To demonstrate the use of `spThin` we will use a dataset containing 201 verified, georeferenced occurrence records for the Caribbean spiny pocket mouse (*Heteromys anomalus*). These occurrences are from Columbia, Venezuela, and three Caribbean islands: Trinidad, Tobago, and Margarita. This dataset is included as part of the `spThin` package.
 
 ```{r}
-data( Heteromys_anomalus_South_America )
-head( Heteromys_anomalus_South_America )
+
+## load the dataset
+data(Heteromys_anomalus_South_America)
+
+## print first 6
+head(Heteromys_anomalus_South_America)
 ```
 
-Here we load and examine the dataset. The name assigned to this dataset
-is `Heteromys_anomalus_South_America`.
-Note that this dataset includes a column indicating which REGION the 
-occurrences was collected. Regions here refer to either the mainland or
-three islands in which an occurrence was collected. We can see that
-there are many more occurrences collected for the mainland than for
-the three islands. Note that Trinidad has been shortened to 'trin'
-an Margarita has been shortened to 'mar'.
+The dataset is stored in the variable `Heteromys_anomalus_South_America`. Each row represents a different record. The `LONG` and `LAT` columns contain the longitude and latitude of each record. The `REGION` column denotes where the record was collected, with values corresponding to the the mainland or the names of the three islands. There are many more occurrence records from mainland than for the islands.
 
 ```{r}
-table( Heteromys_anomalus_South_America$REGION )
+
+## number of records in each region
+table(Heteromys_anomalus_South_America$REGION)
+
 ```
+# Thin the full dataset
 
-# Run `spThin::thin` on the full dataset
-
-`thin` involves multiple settings. This allows for extensive 
-flexibility in how the user spatially thins a dataset.
-However, many have
-default values. See `?thin` for further information.
+The function used to thin datasets is `spThin`.  Here, we will generate 100 thinned datasets from the full dataset, each with a minimum distance of 10Km between them. Because the records' coordinates are in longitude and latitude, we will use great circle distances to calculate the distance between each record.
 
 ```{r} 
-thinned_dataset_full <-
-  thin( loc.data = Heteromys_anomalus_South_America, 
-        lat.col = "LAT", long.col = "LONG", 
-        spec.col = "SPEC", 
-        thin.par = 10, reps = 100, 
-        locs.thinned.list.return = TRUE, 
-        write.files = TRUE, 
-        max.files = 5, 
-        out.dir = "hanomalus_thinned_full/", out.base = "hanomalus_thinned", 
-        write.log.file = TRUE,
-        log.file = "hanomalus_thinned_full_log_file.txt" )
+full.thin <- spThin(
+	Heteromys_anomalus_South_America, 
+	lat.col = "LAT",
+	lon.col = "LONG", 
+	min.dist = 10000,
+	reps = 100,
+	great.circle.distance=TRUE
+)
 ```
 
-In the case above, we found that 10 repetitions were sufficient
-to return spatially thinned datasets with the optimal number of 
-occurrence records (124). Because this is a random process, 
-it is possible that a similarly repeated run would not return **any**
-datasets with the optimal number of occurrence records. 
-To visually assess whether we are using enough `reps` to 
-approach the optimal number we use the function `plotThin`,
-This function produces three plots: 1) the cumulative number of 
-records retained versus the number of repetitions, 2) the log
-cumulative number of records retained versus the log number of
-repetitions, and 3) a histogram of the maximum number of records
-retained for each thinned dataset.
+To visually assess whether we are using enough `reps` to approach the optimal number we use the `plot` method. This function produces four plots:
+1. the cumulative number of records retained versus the number of repetitions; 2. the log-log version of the previous plot;
+3. a histogram of the maximum number of records retained for each replicate,
 
 ```{r}
-plotThin( thinned_dataset_full )
+plot(full.thin)
 ```
 
 Looking at the plot of cumulative maximum records retained 
