@@ -20,5 +20,6 @@ This function returns the minimum distance used to thin records in a \code{SpThi
 }
 \seealso{
 \code{\link{SpThin}}.
+export
 }
 

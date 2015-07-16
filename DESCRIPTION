@@ -12,14 +12,15 @@ Description: spThin is a set of functions that can be used to spatially thin
     modelling, such as ecological niche modelling.
 Imports:
     Rcpp,
-    RcppArmadillo
+    RcppEigen
 Depends:
     sp,
     knitr,
     ggplot2,
     gridExtra,
-    plyr
-LinkingTo: Rcpp, RcppArmadillo
+    raster,
+    rgeos
+LinkingTo: Rcpp, RcppEigen
 LazyData: TRUE
 License: GPL-3
 VignetteBuilder: knitr
@@ -30,5 +31,9 @@ Collate:
     'RcppExports.R'
     'generics.R'
     'dependencies.R'
+    'SpPartial.R'
+    'SpFilter.R'
     'SpThin.R'
+    'filter.R'
+    'make.grid.R'
     'thin.R'

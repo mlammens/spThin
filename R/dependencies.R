@@ -1,9 +1,16 @@
 #' @import knitr
 #' @import Rcpp
-#' @import RcppArmadillo
+#' @import RcppEigen
 #' @import ggplot2
-#' @import plyr
 #' @importFrom gridExtra grid.arrange 
+#' @importFrom raster raster
+#' @importFrom raster extent
+#' @importFrom raster extract
+#' @importFrom sp CRS
+#' @importFrom sp SpatialPoints
+#' @importFrom sp SpatialPointsDataFrame
+#' @importFrom sp is.projected
+#' @importFrom rgeos gIntersects
 NULL
 
 #' @useDynLib spThin

@@ -1,4 +1,5 @@
 #include <Rcpp.h>
+#include <RcppEigen.h>
 // [[Rcpp::plugins(cpp11)]]
 
 using namespace Rcpp;
@@ -64,77 +65,20 @@ class Random {
 			std::mt19937 tmp(seed); 
 			eng=tmp;
 		};
-		int DrawDiscreteNumber(std::vector<int>::const_iterator begin, std::vector<int>::const_iterator end) {
-			d1.param(std::discrete_distribution<int>::param_type(begin, end));
+		std::size_t DrawDiscreteNumber(std::vector<std::size_t>::const_iterator begin, std::vector<std::size_t>::const_iterator end) {
+			d1.param(std::discrete_distribution<std::size_t>::param_type(begin, end));
 			return (d1(eng));
 		}
 		
-		int DrawUniformNumber(int ub) {
-			d2.param(std::uniform_int_distribution<int>::param_type(0, ub));
+		std::size_t DrawUniformNumber(std::size_t ub) {
+			d2.param(std::uniform_int_distribution<std::size_t>::param_type(0, ub));
 			return (d2(eng));
 		}
 		
 	private:
 		std::mt19937 eng;
-		std::discrete_distribution<int> d1;
-		std::uniform_int_distribution<int> d2;
-};
-
-class BoolMatrix {
-	public:
-		BoolMatrix();
-		BoolMatrix(std::size_t nrow, std::size_t ncol) {
-			_nrow=nrow;
-			_ncol=ncol;
-			_data.resize(nrow * ncol);
-		};
-	
-		bool any() {
-			for (auto i=_data.cbegin(); i!=_data.cend(); ++i) {
-				if (*i) {
-					return(true);
-				}
-			}
-			return (false);
-		}
-		
-		std::size_t sumcol(std::size_t x) {
-			std::size_t val=0;
-			for (auto i=_data.cbegin()+(x*_nrow); i<_data.cbegin()+((x+1)*_nrow); ++i)
-				val+=*x
-			return (val);
-		}
-		
-		void setcol(std::size_t x, bool v) {
-			for (auto i=_data.begin()+(x*_nrow); i<_data.begin()+((x+1)*_nrow); ++i)
-				*i=v;
-		}
-		
-		void setrow(std::size_t x, bool v) {
-			for (auto i=_data.begin()+x; i<_data.begin()+((_ncol-1)* _nrow)+1; i+=_nrow)
-				*i=v;
-		}
-		
-		bool BoolMatrix::operator()(const std::size_t i, const std::size_t j) {
-			return(_data[i*_ncol + j]);
-		}
-
-		void BoolMatrix::operator()(const std::size_t i, const std::size_t j, bool v) {
-			_data[i*_ncol + j]=v;
-		}
-
-		void BoolMatrix::operator[](const std::size_t i, bool v) {
-			_data[i]=v;
-		}
-
-		bool BoolMatrix::operator[](const std::size_t i) {
-			return(_data[i]);
-		}
-	
-	private:
-		std::size_t _nrow;
-		std::size_t _ncol;
-		std::vector<bool> _data;
+		std::discrete_distribution<std::size_t> d1;
+		std::uniform_int_distribution<std::size_t> d2;
 };
 
 
@@ -145,22 +89,15 @@ Rcpp::List rcpp_thin_algorithm(std::vector<double> lon, std::vector<double> lat,
 	int currSite;
 	int nSites=lon.size();
 	int nRemainingSites;
-	
-	int currMaxCount;
-	int temp;
 	std::vector<std::size_t> currSiteCounts(nSites);
 	std::vector<std::size_t> idMaxCounts(nSites);
-	std::vector<std::size_t> idRemainingSites(nSites)
-	BoolMatrix greaterThanDist(nSites,nSites);		
+	std::vector<std::size_t> idRemainingSites(nSites);
+	Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic> greaterThanDist(nSites,nSites);
 	std::vector<std::vector<int> > sites;
 	sites.resize(reps);
 	
 	int seed=std::chrono::high_resolution_clock::now().time_since_epoch().count();
 	Random rgen(seed);
-	
-	
-	BoolMatrix test(4, 3);
-	
 	
 	/// create distance matrix
 	// fill upper triangle with distances and use this for computation
@@ -168,7 +105,7 @@ Rcpp::List rcpp_thin_algorithm(std::vector<double> lon, std::vector<double> lat,
 		// use great circle distances
 		for (int i=0; i<(nSites-1); ++i) {
 			for (int j=(i+1); j<nSites; ++j) {
-				greaterThanDist(i,j)=GcDistanceInMeters(lon[i], lat[i], lon[j], lat[j]) > thin_par;
+				greaterThanDist(i,j)=GcDistanceInMeters(lon[i], lat[i], lon[j], lat[j]) < thin_par;
 				greaterThanDist(j,i)=greaterThanDist(i,j);
 			}
 		}
@@ -176,7 +113,7 @@ Rcpp::List rcpp_thin_algorithm(std::vector<double> lon, std::vector<double> lat,
 		// use euclidean circle distances
 		for (int i=0; i<(nSites-1); ++i) {
 			for (int j=(i+1); j<nSites; ++j) {
-				greaterThanDist(i,j)=EucDistanceInMeters(lon[i], lat[i], lon[j], lat[j]) > thin_par;
+				greaterThanDist(i,j)=EucDistanceInMeters(lon[i], lat[i], lon[j], lat[j]) < thin_par;
 				greaterThanDist(j,i)=greaterThanDist(i,j);
 			}
 		}
@@ -189,24 +126,23 @@ Rcpp::List rcpp_thin_algorithm(std::vector<double> lon, std::vector<double> lat,
 	for (int r=0; r<reps; ++r) {
 		// reset parameters for new rep
 		nRemainingSites=nSites;
-		idRemainingSites.resize(nSites);
 		std::iota(idRemainingSites.begin(), idRemainingSites.end(), 0);
-		while (greaterThanDist.any()) & (nRemainingSites > 1)) {
+		while (greaterThanDist.any() & (nRemainingSites > 1)) {				
 			// find counts of sites within nearest distances
 			for (int i=0; i<nRemainingSites; ++i)
-				currSiteCounts[i]=greaterThanDist.sumcol(idRemainingSites[i]);
-								
+				currSiteCounts[i]=greaterThanDist.col(idRemainingSites[i]).count();
+						
 			// remove site
-			greaterThanDist.setcol(idRemainingSites[i], false);
-			greaterThanDist.setrow(idRemainingSites[i], false);
 			currSite=rgen.DrawDiscreteNumber(currSiteCounts.cbegin(), currSiteCounts.cbegin()+nRemainingSites);
-			idRemainingSites.erase(idRemainingSites.begin()+currSite);
+			greaterThanDist.col(idRemainingSites[currSite]).setZero();
+			greaterThanDist.row(idRemainingSites[currSite]).setZero();
 			--nRemainingSites;
+			std::iter_swap(idRemainingSites.begin()+currSite, idRemainingSites.begin()+nRemainingSites);
 		}
 		
 		// store results
 		sites[r].reserve(nRemainingSites);
-		for (auto i=idRemainingSites.cbegin(); i!=idRemainingSites.cend(); ++i)
+		for (auto i=idRemainingSites.cbegin(); i!=idRemainingSites.cbegin()+nRemainingSites; ++i)
 			sites[r].push_back((*i) + 1);
 	}
 	
