@@ -4,7 +4,7 @@
 \alias{summary.SpPartial}
 \title{Summarize filtered or thinned  datasets}
 \usage{
-\method{summary}{SpPartial}(x)
+summary.SpPartial(x)
 }
 \arguments{
 \item{x}{\code{SpThin} or \code{SpFilter} object.}

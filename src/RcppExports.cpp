@@ -18,6 +18,35 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// rcpp_make_gurobi_object
+Rcpp::List rcpp_make_gurobi_object(std::vector<double> lon, std::vector<double> lat, double thin_par, bool great_circle_distance);
+RcppExport SEXP spThin_rcpp_make_gurobi_object(SEXP lonSEXP, SEXP latSEXP, SEXP thin_parSEXP, SEXP great_circle_distanceSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< std::vector<double> >::type lon(lonSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type lat(latSEXP);
+    Rcpp::traits::input_parameter< double >::type thin_par(thin_parSEXP);
+    Rcpp::traits::input_parameter< bool >::type great_circle_distance(great_circle_distanceSEXP);
+    __result = Rcpp::wrap(rcpp_make_gurobi_object(lon, lat, thin_par, great_circle_distance));
+    return __result;
+END_RCPP
+}
+// rcpp_make_lpsolve_file
+int rcpp_make_lpsolve_file(std::vector<double> lon, std::vector<double> lat, double thin_par, bool great_circle_distance, std::string filepath);
+RcppExport SEXP spThin_rcpp_make_lpsolve_file(SEXP lonSEXP, SEXP latSEXP, SEXP thin_parSEXP, SEXP great_circle_distanceSEXP, SEXP filepathSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< std::vector<double> >::type lon(lonSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type lat(latSEXP);
+    Rcpp::traits::input_parameter< double >::type thin_par(thin_parSEXP);
+    Rcpp::traits::input_parameter< bool >::type great_circle_distance(great_circle_distanceSEXP);
+    Rcpp::traits::input_parameter< std::string >::type filepath(filepathSEXP);
+    __result = Rcpp::wrap(rcpp_make_lpsolve_file(lon, lat, thin_par, great_circle_distance, filepath));
+    return __result;
+END_RCPP
+}
 // rcpp_thin_algorithm
 Rcpp::List rcpp_thin_algorithm(std::vector<double> lon, std::vector<double> lat, double thin_par, int reps, bool great_circle_distance);
 RcppExport SEXP spThin_rcpp_thin_algorithm(SEXP lonSEXP, SEXP latSEXP, SEXP thin_parSEXP, SEXP repsSEXP, SEXP great_circle_distanceSEXP) {

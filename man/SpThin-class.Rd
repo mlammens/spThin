@@ -17,6 +17,8 @@ This class is used to store replicates of spatially thinned datasets.
 
 \item{\code{mindist}}{\code{numeric} minimum distance (m) between records.}
 
+\item{\code{method}}{\code{character} name of method used to solve problem.}
+
 \item{\code{call}}{\code{call} used to generate object.}
 }}
 \seealso{

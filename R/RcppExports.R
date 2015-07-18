@@ -5,6 +5,14 @@ rcpp_filter_algorithm <- function(inpLIST, nrep) {
     .Call('spThin_rcpp_filter_algorithm', PACKAGE = 'spThin', inpLIST, nrep)
 }
 
+rcpp_make_gurobi_object <- function(lon, lat, thin_par, great_circle_distance) {
+    .Call('spThin_rcpp_make_gurobi_object', PACKAGE = 'spThin', lon, lat, thin_par, great_circle_distance)
+}
+
+rcpp_make_lpsolve_file <- function(lon, lat, thin_par, great_circle_distance, filepath) {
+    .Call('spThin_rcpp_make_lpsolve_file', PACKAGE = 'spThin', lon, lat, thin_par, great_circle_distance, filepath)
+}
+
 rcpp_thin_algorithm <- function(lon, lat, thin_par, reps, great_circle_distance) {
     .Call('spThin_rcpp_thin_algorithm', PACKAGE = 'spThin', lon, lat, thin_par, reps, great_circle_distance)
 }

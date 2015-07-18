@@ -83,8 +83,8 @@ write.default<-base::write
 
 #' Spatially thin species occurrence data
 #' 
-#' A heuristic algorithm is used to subset the dataset such that all occurrence 
-#' locations are a minimum distance apart. This process helps reduce the effect
+#' An optimisation algorithm is used to subset the dataset such that all occurrence 
+#' locations are a minimum distance apart.  This process helps reduce the effect
 #' of biases in observation records on the predictive performance of ecological niche models.
 #' 
 #' @param x \code{SpatialPoints}, \code{SpatialPointsDataFrame} or \code{data.frame} object.
@@ -92,7 +92,9 @@ write.default<-base::write
 #' @param lat.col \code{character} name of column or \code{numeric} index of column with longitude values.
 #' @param dist \code{numeric} minimum distance (m) between records.
 #' @param nrep \code{numeric} number of replicate thinned data sets to produce.
+#' @param method \code{character} name of method to solve problem: If 'lpsolve': the problem is solved using the program LpSolve; if  "heuristic" the problem is solved using a heuristic where points are sequentially removed.
 #' @param great.circle.distance \code{logical} if \code{TRUE} great circle distances will be used for distance calculations, else euclidean distances will be be used.
+#' @param ... additional arguments passed to \code{\link[lpSolveAPI]{solve}} if method=='lpsolve'
 #' @export
 #' @return \code{SpThin} object. 
 #' @seealso \code{\link{SpThin}}

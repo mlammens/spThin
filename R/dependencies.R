@@ -2,6 +2,8 @@
 #' @import Rcpp
 #' @import RcppEigen
 #' @import ggplot2
+#' @import lpSolveAPI
+#' @import Matrix
 #' @importFrom gridExtra grid.arrange 
 #' @importFrom raster raster
 #' @importFrom raster extent

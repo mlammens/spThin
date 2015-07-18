@@ -7,12 +7,12 @@
 \alias{spFilter.numeric}
 \title{Spatially filter species occurrence data}
 \usage{
-\method{spFilter}{numeric}(x, y, cellsize, nrep, proj4string = CRS())
+\method{spFilter}{numeric}(x, y, grid, nrep, proj4string = CRS())
 
-\method{spFilter}{data.frame}(x, x.col, y.col, cellsize, nrep,
+\method{spFilter}{data.frame}(x, x.col, y.col, grid, nrep,
   proj4string = CRS())
 
-\method{spFilter}{SpatialPoints}(x, cellsize, nrep)
+\method{spFilter}{SpatialPoints}(x, grid, nrep)
 
 spFilter(x, ...)
 }
@@ -21,6 +21,8 @@ spFilter(x, ...)
 
 \item{y}{\code{numeric} with y-coordinates.}
 
+\item{grid}{Either \code{numeric} size of grid cells, \code{RasterLayer}, or \code{SpatialPolygons}, or \code{SpatialPolygonsDataFrame} object.}
+
 \item{nrep}{\code{numeric} number of replicate thinned data sets to produce.}
 
 \item{proj4string}{\code{CRS} object with coordinate system for coordinates (not needed for \code{Spatial objects}).}
@@ -28,8 +30,6 @@ spFilter(x, ...)
 \item{lon.col}{\code{character} name of column or \code{numeric} index of column with latitude values.}
 
 \item{lat.col}{\code{character} name of column or \code{numeric} index of column with longitude values.}
-
-\item{dist}{\code{numeric} size of grid cells. If coordinates are in a projected CRS then units are in metres.}
 }
 \value{
 \code{SpFilter} object.

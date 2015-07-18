@@ -9,19 +9,24 @@
 \usage{
 spThin(x, ...)
 
-\method{spThin}{numeric}(x, y, mindist, nrep, great.circle.distance = FALSE)
+\method{spThin}{numeric}(x, y, mindist, nrep, method = "heuristic",
+  great.circle.distance = FALSE, ...)
 
 \method{spThin}{data.frame}(x, lon.col, lat.col, mindist, nrep,
-  great.circle.distance = TRUE)
+  method = "heuristic", great.circle.distance = TRUE)
 
-\method{spThin}{SpatialPoints}(x, mindist, nrep,
+\method{spThin}{SpatialPoints}(x, mindist, nrep, method = "heuristic",
   great.circle.distance = x@proj4string@projargs ==
   "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
 }
 \arguments{
 \item{x}{\code{SpatialPoints}, \code{SpatialPointsDataFrame} or \code{data.frame} object.}
 
+\item{...}{additional arguments passed to \code{\link[lpSolveAPI]{solve}} if method=='lpsolve'}
+
 \item{nrep}{\code{numeric} number of replicate thinned data sets to produce.}
+
+\item{method}{\code{character} name of method to solve problem: If 'lpsolve': the problem is solved using the program LpSolve; if  "heuristic" the problem is solved using a heuristic where points are sequentially removed.}
 
 \item{great.circle.distance}{\code{logical} if \code{TRUE} great circle distances will be used for distance calculations, else euclidean distances will be be used.}
 
@@ -35,8 +40,8 @@ spThin(x, ...)
 \code{SpThin} object.
 }
 \description{
-A heuristic algorithm is used to subset the dataset such that all occurrence
-locations are a minimum distance apart. This process helps reduce the effect
+An optimisation algorithm is used to subset the dataset such that all occurrence
+locations are a minimum distance apart.  This process helps reduce the effect
 of biases in observation records on the predictive performance of ecological niche models.
 }
 \seealso{

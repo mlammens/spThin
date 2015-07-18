@@ -7,9 +7,12 @@ Date: 2015-07-12
 Author: Matthew E. Aiello-Lammens, Robert A. Boria, Aleksandar Radosavljevic,
     Bruno Vilela, and Robert P. Anderson
 Maintainer: Matthew E. Aiello-Lammens <matt.lammens@gmail.com>
-Description: spThin is a set of functions that can be used to spatially thin
-    species occurrence data. The resulting thinned data can be used in ecological
-    modelling, such as ecological niche modelling.
+Description: spThin contains functions to spatially filter and thin species
+    occurrence data. These procedures can remove sampling bias, and in turn result
+    in better ecological niche models. The package contains functions to thin
+    datasets using exact-algorithm solvers (LpSolve and Gurobi) and a heuristic.
+    To thin data using Gurobi, the gurobi R package will need to be installed from
+    http://www.gurobi.com/.
 Imports:
     Rcpp,
     RcppEigen
@@ -19,13 +22,17 @@ Depends:
     ggplot2,
     gridExtra,
     raster,
-    rgeos
-LinkingTo: Rcpp, RcppEigen
+    rgeos,
+    lpSolveAPI,
+    Matrix
+LinkingTo: Rcpp,
+    RcppEigen
 LazyData: TRUE
 License: GPL-3
 VignetteBuilder: knitr
 Suggests:
     testthat
+Enhances: gurobi
 Collate:
     'Heteromys_anomalus_South_America.R'
     'RcppExports.R'
@@ -33,6 +40,7 @@ Collate:
     'dependencies.R'
     'SpPartial.R'
     'SpFilter.R'
+    'spThin-internal.R'
     'SpThin.R'
     'filter.R'
     'make.grid.R'
