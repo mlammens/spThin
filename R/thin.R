@@ -72,8 +72,6 @@ spThin.SpatialPoints<-function(x, mindist, method='heuristic', nrep=1, great.cir
 	match.arg(method, c('lpsolve', 'heuristic', 'gurobi'))		
 	if (!is.logical(great.circle.distance))
 		stop('great.circle.distance is not logical')
-	if (!'gurobi' %in% installed.packages()[,1])
-		stop('gurobi R package is not installed, see ?spThin for details')
 	# generate samples
 	if (method=='lpsolve') {
 		samples<-thin_lpsolve(

@@ -338,6 +338,7 @@ spThin<-function(x, ...) {UseMethod('spThin')}
 #'		10,
 #'		proj4string=crs
 #' )
+#'
 #' # make rarefied dataset using SpatialPointsDataFrame
 #' result3 <-spThin(
 #'		SpatialPointsDataFrame(

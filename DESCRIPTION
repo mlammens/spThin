@@ -20,6 +20,7 @@ Imports:
     Matrix,
     raster,
     rgeos,
+	rgdal,
     sp
 Depends:
     ggplot2,
