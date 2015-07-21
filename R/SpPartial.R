@@ -1,9 +1,9 @@
 #' @include dependencies.R generics.R RcppExports.R
 NULL
 
-#' SpPartial: An S4 class to represent spatially filtered or thinned datasets
+#' SpPartial: An S4 class to represent spatially rarefied or thinned datasets
 #'
-#' This class is used to store replicates of spatially filtered thinned datasets.
+#' This class is used to store replicates of spatially rarefied thinned datasets.
 #'
 #' @slot data \code{SpatialPoints} or \code{SpatialPointsDataFrame} object with all records.
 #' @slot samples \code{list} with indices for records in each replicate.
@@ -47,9 +47,9 @@ fulldata.SpPartial<-function(x, ...) {
 
 #' Show method
 #'
-#' This method sets the default show method for the \code{SpFilter} and \code{SpThin} objects.
+#' This method sets the default show method for the \code{SpRarefy} and \code{SpThin} objects.
 #'
-#' @param object \code{SpFilter} or \code{SpThin} object.
+#' @param object \code{SpRarefy} or \code{SpThin} object.
 #' @export
 setMethod("show",
 	signature(object="SpPartial"),

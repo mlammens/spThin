@@ -10,7 +10,7 @@ vignette: >
 
 # Introduction
 
-The `spThin` package contains functions to spatially thin and filter occurrence records. Here we provide a tutorial on this package can be used to process datasets for environmental niche modelling.
+The `spThin` package contains functions to spatially thin and rarefy occurrence records. Here we provide a tutorial on this package can be used to process datasets for environmental niche modelling.
 
 ## Install and load the `spThin` R package
 
@@ -135,8 +135,8 @@ plot(thin3)
 
 The first plot shows the distribution of records and those selected in the best solution. The cumulative maximum records retained versus number of repetitions shows the number of different records retained as increase the number of replicates. If the plot shows a flat line, this indicates that all replicates yielded the same thinned dataset and that a single repetition would have sufficed. If the plot shows an increasing curve, this means that the each of the replicate datasets have different records and we have little evidence to suggest that any of the replicates is optimal. Whereas, if the plot shows a curve with an asymptote, this suggests that replicates have converge on a solution (though we still cannot say with certainty that it is optimal). 
 
-# Filter data
-Spatial filtering is another process for reducing bias. This process works by overlaying a grid over the observation records and randomly selecting a single record in each grid cell. Generally, this method can be used on much larger datasets than spatial thinning.
+# Rarefy data
+Spatial rarefication is another process for reducing bias. This process works by overlaying a grid over the observation records and randomly selecting a single record in each grid cell. Generally, this method can be used on much larger datasets than spatial thinning.
 
 First, we will turn the `data.frame` to a `SpatialPointsDataFrame`.
 
@@ -159,36 +159,36 @@ Heteromys_anomalus_South_America_sp <- spTransform(
 )
 ```
 
-Now, we can spatially filter the dataset. Here, we will generate 100 replicates using 180km grid cells.
+Now, we can spatially rarefy the dataset. Here, we will generate 100 replicates using 180km grid cells.
 
 ```{r eval=FALSE}
-# filter data
-filter1 <- spFilter(
+# rarefy data
+rarefy1 <- spRarefy(
 	Heteromys_anomalus_South_America_sp, 
 	grid = 180000,
 	nrep = 100
 )
 
-# show summary for filtered data
-summary(filter1)
+# show summary for rarefied data
+summary(rarefy1)
 
-## plot 1st filtered replicate 
-plot(filter1, 1)
+## plot 1st rarefied replicate 
+plot(rarefy1, 1)
 ```
 
 # Manipulate processed data
-Thinned or filtered datasets using the `[[` method. The thinned or filtered datasets are stored as `SpatialPoints` or `SpatialPointsDataFrame` objects. Here, we will retrieve the first filtered replicate and store it in an object.
+Thinned or rarefied datasets using the `[[` method. The thinned or rarefied datasets are stored as `SpatialPoints` or `SpatialPointsDataFrame` objects. Here, we will retrieve the first rarefied replicate and store it in an object.
 
 ```{r eval=FALSE}
 # access first replicate
-firstrep <- filter1[[1]]
+firstrep <- rarefy1[[1]]
 
 # show structure
 str(firstrep)
 ```
 
 # Save processed data
-Finally, the thinned and filtered datasets can be saved using the `write` method. Here, we will saved the filtered datasets to a temporary directory.
+Finally, the thinned and rarefied datasets can be saved using the `write` method. Here, we will saved the rarefied datasets to a temporary directory.
 
 ```{r eval=FALSE}
 # print temporary dir
@@ -196,7 +196,7 @@ print(tmpdir())
 
 # write replicate datasets to file
 write(
-	filter1,
+	rarefy1,
 	coords=FALSE,
 	dir=tempdir()
 )

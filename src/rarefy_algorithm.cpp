@@ -17,7 +17,7 @@ using namespace Rcpp;
 
 
 // [[Rcpp::export]]
-Rcpp::List rcpp_filter_algorithm(Rcpp::List inpLIST, std::size_t nrep) {
+Rcpp::List rcpp_rarefy_algorithm(Rcpp::List inpLIST, std::size_t nrep) {
 	/// init
 	// declare objects
 	std::size_t nSites=inpLIST.size();

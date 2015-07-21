@@ -89,22 +89,22 @@
 #  )
 
 ## ----eval=FALSE----------------------------------------------------------
-#  # filter data
-#  filter1 <- spFilter(
+#  # rarefy data
+#  rarefy1 <- spRarefy(
 #  	Heteromys_anomalus_South_America_sp,
 #  	grid = 180000,
 #  	nrep = 100
 #  )
 #  
-#  # show summary for filtered data
-#  summary(filter1)
+#  # show summary for rarefied data
+#  summary(rarefy1)
 #  
-#  ## plot 1st filtered replicate
-#  plot(filter1, 1)
+#  ## plot 1st rarefied replicate
+#  plot(rarefy1, 1)
 
 ## ----eval=FALSE----------------------------------------------------------
 #  # access first replicate
-#  firstrep <- filter1[[1]]
+#  firstrep <- rarefy1[[1]]
 #  
 #  # show structure
 #  str(firstrep)
@@ -115,7 +115,7 @@
 #  
 #  # write replicate datasets to file
 #  write(
-#  	filter1,
+#  	rarefy1,
 #  	coords=FALSE,
 #  	dir=tempdir()
 #  )

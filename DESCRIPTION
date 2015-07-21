@@ -7,7 +7,7 @@ Date: 2015-07-12
 Author: Matthew E. Aiello-Lammens, Robert A. Boria, Aleksandar Radosavljevic,
     Bruno Vilela, and Robert P. Anderson
 Maintainer: Matthew E. Aiello-Lammens <matt.lammens@gmail.com>
-Description: spThin contains functions to spatially filter and thin species
+Description: spThin contains functions to spatially rarefy and thin species
     occurrence data. These procedures can remove sampling bias, and in turn result
     in better ecological niche models. The package contains functions to thin
     datasets using exact-algorithm solvers (LpSolve and Gurobi) and a heuristic.
@@ -40,9 +40,9 @@ Collate:
     'generics.R'
     'dependencies.R'
     'SpPartial.R'
-    'SpFilter.R'
+    'SpRarefy.R'
     'spThin-internal.R'
     'SpThin.R'
-    'filter.R'
     'make.grid.R'
+    'rarefy.R'
     'thin.R'

@@ -1,8 +1,8 @@
 data(Heteromys_anomalus_South_America)
 
-# test rcpp_filter_algorithm function
-test_that('SpFilter: rcpp_filter_algorithm function doesn\'t work', {
-	result<-spThin:::rcpp_filter_algorithm(
+# test rcpp_rarefy_algorithm function
+test_that('SpRarefy: rcpp_rarefy_algorithm function doesn\'t work', {
+	result<-spThin:::rcpp_rarefy_algorithm(
 		split(
 			seq_len(10),
 			sample(rep(seq_len(5),2))
@@ -11,9 +11,9 @@ test_that('SpFilter: rcpp_filter_algorithm function doesn\'t work', {
 	)
 })
 
-# test filter function
-test_that('SpFilter: filter function doesn\'t work', {
-	result<-spFilter(
+# test rarefy function
+test_that('SpRarefy: rarefy function doesn\'t work', {
+	result<-spRarefy(
 		Heteromys_anomalus_South_America[1:5,],
 		x.col = "LONG", 
         y.col = "LAT",
@@ -23,8 +23,8 @@ test_that('SpFilter: filter function doesn\'t work', {
 })
 
 # test methods
-test_that('SpFilter: samples method doesn\'t work', {
-	result<-spFilter(
+test_that('SpRarefy: samples method doesn\'t work', {
+	result<-spRarefy(
 		Heteromys_anomalus_South_America,
 		x.col = "LONG", 
         y.col = "LAT",
@@ -34,8 +34,8 @@ test_that('SpFilter: samples method doesn\'t work', {
 	x<-samples(result, 1)
 })
 
-test_that('SpFilter: nrep method doesn\'t work', {
-	result<-spFilter(
+test_that('SpRarefy: nrep method doesn\'t work', {
+	result<-spRarefy(
 		Heteromys_anomalus_South_America,
 		x.col = "LONG", 
         y.col = "LAT",
@@ -46,8 +46,8 @@ test_that('SpFilter: nrep method doesn\'t work', {
 })
 
 
-test_that('SpFilter: fulldata method doesn\'t work', {
-	result<-spFilter(
+test_that('SpRarefy: fulldata method doesn\'t work', {
+	result<-spRarefy(
 		Heteromys_anomalus_South_America,
 		x.col = "LONG", 
         y.col = "LAT",
@@ -57,8 +57,8 @@ test_that('SpFilter: fulldata method doesn\'t work', {
 	x=fulldata(result)
 })
 
-test_that('SpFilter: cellsize method doesn\'t work', {
-	result<-spFilter(
+test_that('SpRarefy: cellsize method doesn\'t work', {
+	result<-spRarefy(
 		Heteromys_anomalus_South_America,
 		x.col = "LONG", 
         y.col = "LAT",
@@ -68,22 +68,22 @@ test_that('SpFilter: cellsize method doesn\'t work', {
 	x=cellsize(result)
 })
 
-test_that('SpFilter: write.SpFilter method doesn\'t work', {
-	result<-spFilter(
+test_that('SpRarefy: write.SpRarefy method doesn\'t work', {
+	result<-spRarefy(
 		Heteromys_anomalus_South_America,
 		x.col = "LONG", 
         y.col = "LAT",
         0.1,
 		10
 	)
-	x=write.SpFilter(result, dir=tempdir())
+	x=write.SpRarefy(result, dir=tempdir())
 })
 
 
 
 # test summary method
 test_that('summary method doesn\'t work', {
-	result<-spFilter(
+	result<-spRarefy(
 		Heteromys_anomalus_South_America,
 		x.col = "LONG", 
         y.col = "LAT",
@@ -95,7 +95,7 @@ test_that('summary method doesn\'t work', {
 
 # test plot method
 test_that('plot method doesn\'t work', {
-	result<-suppressWarnings(spFilter(
+	result<-suppressWarnings(spRarefy(
 		Heteromys_anomalus_South_America,
 		x.col = "LONG", 
         y.col = "LAT",

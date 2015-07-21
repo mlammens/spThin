@@ -1,9 +1,9 @@
 
-#' Extract samples from \code{SpFiltered} and \code{SpThin} object
+#' Extract samples from \code{SpRarefy} and \code{SpThin} object
 #'
-#' This function extracts samples from a \code{SpFilter} or a \code{SpThin} object.
+#' This function extracts samples from a \code{SpRarefy} or a \code{SpThin} object.
 #'
-#' @param x \code{SpThin} or \code{SpFilter} object.
+#' @param x \code{SpThin} or \code{SpRarefy} object.
 #' @param r \code{numeric} n'th replicate to extract samples from.
 #' @param ... not used.
 #' @return \code{SpatialPoints} or  \code{SpatialPointsDataFrame} object
@@ -29,8 +29,8 @@
 #' samples(result1, 1)
 #' result1[[1]]
 #'
-#' # make filtered dataset 
-#' result2 <- spFilter(
+#' # make rarefied dataset 
+#' result2 <- spRarefy(
 #'		testDF,
 #'		"x",
 #'		"y",
@@ -45,9 +45,9 @@
 #' @export
 samples<-function(x, ...) {UseMethod("samples")}
 
-#' Number replicates in \code{SpFilter} and \code{SpThin} object
+#' Number replicates in \code{SpRarefy} and \code{SpThin} object
 #'
-#' This function extracts the number of replicates contained in a \code{SpFilter} or a \code{SpThin} object.
+#' This function extracts the number of replicates contained in a \code{SpRarefy} or a \code{SpThin} object.
 #'
 #' @param x \code{SpThin} object.
 #' @param ... not used.
@@ -73,8 +73,8 @@ samples<-function(x, ...) {UseMethod("samples")}
 #' # show number replicates in result1
 #' nrep(result1)
 #'
-#' # make filtered dataset 
-#' result2 <- spFilter(
+#' # make rarefied dataset 
+#' result2 <- spRarefy(
 #'		testDF,
 #'		"x",
 #'		"y",
@@ -88,11 +88,11 @@ samples<-function(x, ...) {UseMethod("samples")}
 #' @export
 nrep<-function(x, ...) {UseMethod("nrep")}
 
-#' Full dataset contained in a \code{SpThin} and \code{SpFilter} and  object
+#' Full dataset contained in a \code{SpThin} and \code{SpRarefy} and  object
 #'
-#' This function returns the initial dataset subject to spatial processing in a \code{SpFilter} or a \code{SpThin} object.
+#' This function returns the initial dataset subject to spatial processing in a \code{SpRarefy} or a \code{SpThin} object.
 #'
-#' @param x \code{SpFilter} or a \code{SpThin} object.
+#' @param x \code{SpRarefy} or a \code{SpThin} object.
 #' @param ... not used.
 #' @return \code{SpatialPoints} or \code{SpatialPointsDataFrame} object.
 #' @seealso \code{\link{SpThin}}.
@@ -116,8 +116,8 @@ nrep<-function(x, ...) {UseMethod("nrep")}
 #' # show first rows of full dataset in result1
 #' head(fulldata(result1))
 #'
-#' # make filtered dataset 
-#' result2 <- spFilter(
+#' # make rarefied dataset 
+#' result2 <- spRarefy(
 #'		testDF,
 #'		"x",
 #'		"y",
@@ -154,17 +154,17 @@ fulldata<-function(x, ...) {UseMethod("fulldata")}
 #' export
 mindist<-function(x, ...) {UseMethod("mindist")}
 
-#' Cell size distance used to filter dataset.
+#' Cell size distance used to rarefy dataset.
 #'
-#' This function returns the cell size used to filter records in a \code{SpFilter} object.
+#' This function returns the cell size used to rarefy records in a \code{SpRarefy} object.
 #'
-#' @param x \code{SpFilter} object.
+#' @param x \code{SpRarefy} object.
 #' @param ... not used.
-#' @return \code{numeric} cell size (m) used to filter records.
-#' @seealso \code{\link{SpFilter}}.
+#' @return \code{numeric} cell size (m) used to rarefy records.
+#' @seealso \code{\link{SpRarefy}}.
 #' @examples
-#' # make filtered dataset using simulated data
-#' result <- spFilter(
+#' # make rarefied dataset using simulated data
+#' result <- spRarefy(
 #'		runif(100, -5, -5),
 #'		runif(100, -5, -5),
 #'		grid=5,
@@ -277,9 +277,9 @@ cellsize<-function(x, ...) {UseMethod("cellsize")}
 #' @export
 spThin<-function(x, ...) {UseMethod('spThin')}
 
-#' Spatially filter species occurrence data
+#' Spatially rarefy species occurrence data
 #' 
-#' A grid is overlayed on a set of observation records. A random point inside each grid cell is returned. This procedure can be repeated multiple times to yield multiple filtered datasets.
+#' A grid is overlayed on a set of observation records. A random point inside each grid cell is returned. This procedure can be repeated multiple times to yield multiple rarefied datasets.
 #' This process helps reduce the effect of biases in observation records on the predictive performance of ecological niche models.
 #' 
 #' @param x \code{numeric} with x-coordinates, \code{data.frame}, \code{SpatialPoints}, \code{SpatialPointsDataFrame} or  object.
@@ -290,8 +290,8 @@ spThin<-function(x, ...) {UseMethod('spThin')}
 #' @param nrep \code{numeric} number of replicate thinned data sets to produce.
 #' @param proj4string \code{CRS} object with coordinate system for coordinates (not needed for \code{Spatial objects}).
 #' @param ... not used.
-#' @return \code{SpFilter} object.
-#' @seealso \code{\link{SpFilter}}
+#' @return \code{SpRarefy} object.
+#' @seealso \code{\link{SpRarefy}}
 #' @examples
 #' # load sp & raster packages
 #' library(sp)
@@ -320,8 +320,8 @@ spThin<-function(x, ...) {UseMethod('spThin')}
 #' Heteromys_anomalus_South_America$X <- coordinates(sp)[,1]
 #' Heteromys_anomalus_South_America$Y <- coordinates(sp)[,2]
 #' 
-#' # make filtered dataset using numeric vectors
-#' result1 <- spFilter(
+#' # make rarefied dataset using numeric vectors
+#' result1 <- spRarefy(
 #'		Heteromys_anomalus_South_America$X,
 #'		Heteromys_anomalus_South_America$Y,
 #'      200000,
@@ -329,8 +329,8 @@ spThin<-function(x, ...) {UseMethod('spThin')}
 #'		proj4string=crs
 #' )
 #'
-#' # make filtered dataset using data.frame
-#' result2 <- spFilter(
+#' # make rarefied dataset using data.frame
+#' result2 <- spRarefy(
 #'		Heteromys_anomalus_South_America,
 #'		x.col = "LONG", 
 #'      y.col = "LAT",
@@ -338,7 +338,7 @@ spThin<-function(x, ...) {UseMethod('spThin')}
 #'		10,
 #'		proj4string=crs
 #' )
-#' # make filtered dataset using SpatialPointsDataFrame
+#' # make rarefied dataset using SpatialPointsDataFrame
 #' result3 <-spThin(
 #'		SpatialPointsDataFrame(
 #'			coords=as.matrix(Heteromys_anomalus_South_America[,c("X", "Y")]),
@@ -349,5 +349,5 @@ spThin<-function(x, ...) {UseMethod('spThin')}
 #' )
 #' 
 #' @export
-spFilter<-function(x, ...) {UseMethod('spFilter')}
+spRarefy<-function(x, ...) {UseMethod('spRarefy')}
 

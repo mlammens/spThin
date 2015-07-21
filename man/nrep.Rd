@@ -3,7 +3,7 @@
 \name{nrep.SpPartial}
 \alias{nrep}
 \alias{nrep.SpPartial}
-\title{Number replicates in \code{SpFilter} and \code{SpThin} object}
+\title{Number replicates in \code{SpRarefy} and \code{SpThin} object}
 \usage{
 \method{nrep}{SpPartial}(x, ...)
 
@@ -18,7 +18,7 @@ nrep(x, ...)
 \code{integer} number of replicates.
 }
 \description{
-This function extracts the number of replicates contained in a \code{SpFilter} or a \code{SpThin} object.
+This function extracts the number of replicates contained in a \code{SpRarefy} or a \code{SpThin} object.
 }
 \examples{
 # make simulated dataset
@@ -40,8 +40,8 @@ result1 <- spThin(
 # show number replicates in result1
 nrep(result1)
 
-# make filtered dataset
-result2 <- spFilter(
+# make rarefied dataset
+result2 <- spRarefy(
 		testDF,
 		"x",
 		"y",

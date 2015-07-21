@@ -3,14 +3,14 @@
 \name{fulldata.SpPartial}
 \alias{fulldata}
 \alias{fulldata.SpPartial}
-\title{Full dataset contained in a \code{SpThin} and \code{SpFilter} and  object}
+\title{Full dataset contained in a \code{SpThin} and \code{SpRarefy} and  object}
 \usage{
 \method{fulldata}{SpPartial}(x, ...)
 
 fulldata(x, ...)
 }
 \arguments{
-\item{x}{\code{SpFilter} or a \code{SpThin} object.}
+\item{x}{\code{SpRarefy} or a \code{SpThin} object.}
 
 \item{...}{not used.}
 }
@@ -18,7 +18,7 @@ fulldata(x, ...)
 \code{SpatialPoints} or \code{SpatialPointsDataFrame} object.
 }
 \description{
-This function returns the initial dataset subject to spatial processing in a \code{SpFilter} or a \code{SpThin} object.
+This function returns the initial dataset subject to spatial processing in a \code{SpRarefy} or a \code{SpThin} object.
 }
 \examples{
 # make simulated dataset
@@ -40,8 +40,8 @@ result1 <- spThin(
 # show first rows of full dataset in result1
 head(fulldata(result1))
 
-# make filtered dataset
-result2 <- spFilter(
+# make rarefied dataset
+result2 <- spRarefy(
 		testDF,
 		"x",
 		"y",

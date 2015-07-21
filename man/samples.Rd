@@ -4,7 +4,7 @@
 \alias{[[.SpPartial}
 \alias{samples}
 \alias{samples.SpPartial}
-\title{Extract samples from \code{SpFiltered} and \code{SpThin} object}
+\title{Extract samples from \code{SpRarefy} and \code{SpThin} object}
 \usage{
 \method{samples}{SpPartial}(x, r = 1, ...)
 
@@ -13,7 +13,7 @@
 samples(x, ...)
 }
 \arguments{
-\item{x}{\code{SpThin} or \code{SpFilter} object.}
+\item{x}{\code{SpThin} or \code{SpRarefy} object.}
 
 \item{r}{\code{numeric} n'th replicate to extract samples from.}
 
@@ -23,7 +23,7 @@ samples(x, ...)
 \code{SpatialPoints} or  \code{SpatialPointsDataFrame} object
 }
 \description{
-This function extracts samples from a \code{SpFilter} or a \code{SpThin} object.
+This function extracts samples from a \code{SpRarefy} or a \code{SpThin} object.
 }
 \examples{
 # make simulated dataset
@@ -46,8 +46,8 @@ result1 <- spThin(
 samples(result1, 1)
 result1[[1]]
 
-# make filtered dataset
-result2 <- spFilter(
+# make rarefied dataset
+result2 <- spRarefy(
 		testDF,
 		"x",
 		"y",

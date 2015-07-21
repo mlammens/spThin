@@ -1,19 +1,19 @@
 #' @include dependencies.R generics.R RcppExports.R SpPartial.R
 NULL
 
-#' SpFilter: An S4 class to represent spatially filtered datasets
+#' SpRarefy: An S4 class to represent spatially rarefied datasets
 #'
-#' This class is used to store replicates of spatially filtered datasets.
+#' This class is used to store replicates of spatially rarefied datasets.
 #'
 #' @slot data \code{SpatialPoints} or \code{SpatialPointsDataFrame} object with all records.
 #' @slot samples \code{list} with indices for records in each replicate.
 #' @slot cellsize \code{numeric} height and width of cells (m) used to sample records.
 #' @slot call \code{call} used to generate object.
-#' @slot grid \code{RasterLayer} used to filter data.
+#' @slot grid \code{RasterLayer} used to rarefy data.
 #' @export
 #' @seealso \code{\link{call}}, \code{\link{data}}, \code{\link{samples}}, \code{\link{cellsize}}, \code{\link{nrep}}, \code{\link{plot}},\code{\link{summary}}, \code{\link{write}}.
-SpFilter <- setClass(
-	"SpFilter",
+SpRarefy <- setClass(
+	"SpRarefy",
 	representation(
 		cellsize="numeric",
 		grid="RasterLayer"
@@ -23,25 +23,25 @@ SpFilter <- setClass(
 
 #' @export
 #' @rdname cellsize
-cellsize.SpFilter <- function(x, ...) {
+cellsize.SpRarefy <- function(x, ...) {
 	return(x@cellsize)
 }
 
-#' Map for filtered datasets
+#' Map for rarefied datasets
 #' 
 #' This function produces a map showing the distribution of occurrence records and the selected records.
 #'
-#' @param x \code{SpFilter} object.
+#' @param x \code{SpRarefy} object.
 #' @param i "numeric" replicate dataset to plot.
 #' @param ... not used.
-#' @seealso \code{\link{spFilter}}.
-#' @method plot SpFilter
+#' @seealso \code{\link{spRarefy}}.
+#' @method plot SpRarefy
 #' @examples
 #' # load data
 #' data(Heteromys_anomalus_South_America)
 #'
 #' # make thinned dataset 
-#' result <-spFilter(
+#' result <-spRarefy(
 #'		Heteromys_anomalus_South_America,
 #'		x.col = "LONG", 
 #'      y.col = "LAT",
@@ -53,7 +53,7 @@ cellsize.SpFilter <- function(x, ...) {
 #' plot(result)
 #'
 #' @export
-plot.SpFilter<-function(x, i=1, ...) {
+plot.SpRarefy<-function(x, i=1, ...) {
 	tmp<-table(extract(x@grid, x@data))
 	tmp2<-setValues(x@grid, NA)
 	tmp2[as.numeric(names(tmp))]<-as.numeric(tmp)
@@ -88,19 +88,19 @@ plot.SpFilter<-function(x, i=1, ...) {
 }
 
 
-#' Summarize filtered datasets
+#' Summarize rarefied datasets
 #' 
-#' \code{summary} method for \code{SpFilter} objects.
+#' \code{summary} method for \code{SpRarefy} objects.
 #' 
-#' @param object \code{SpFilter} object.
+#' @param object \code{SpRarefy} object.
 #' @param ... not used.
-#' @seealso \code{\link{spFilter}}.
+#' @seealso \code{\link{spRarefy}}.
 #' @examples
 #' # load data
 #' data(Heteromys_anomalus_South_America)
 #'
 #' # make thinned dataset 
-#' result <-spFilter(
+#' result <-spRarefy(
 #'		Heteromys_anomalus_South_America,
 #'		x.col = "LONG", 
 #'      y.col = "LAT",
@@ -112,7 +112,7 @@ plot.SpFilter<-function(x, i=1, ...) {
 #' summary(result)
 #'
 #' @export
-summary.SpFilter <- function(object, ...) {
+summary.SpRarefy <- function(object, ...) {
 	# init
 	cat('SpThin object.\n\n')
 	cat('Call:')
@@ -123,22 +123,22 @@ summary.SpFilter <- function(object, ...) {
 	cat('Best thinned dataset: ',which.max(sapply(object@samples,length)),' (', max(sapply(object@samples,length)),' records)', '\n',sep="")
 }
 
-#' Write filtered dataset replicates to file.
+#' Write rarefied dataset replicates to file.
 #'
-#' This function writes the spatially thinned replicates in a \code{SpFilter} object to files on a computer.
+#' This function writes the spatially thinned replicates in a \code{SpRarefy} object to files on a computer.
 #'
-#' @param x \code{SpFilter} object.
+#' @param x \code{SpRarefy} object.
 #' @param coords \code{logical} if \code{TRUE} only coordinates of thinned data will be be saved, otherwise all columns of thinned data will be saved.
 #' @param dir \code{character} directory to save output files in.
 #' @param base \code{character} base name to save output files in.
 #' @param ... not used.
-#' @seealso \code{\link{SpFilter}}.
+#' @seealso \code{\link{SpRarefy}}.
 #' @examples
 #' # load data
 #' data(Heteromys_anomalus_South_America)
 #'
-#' # make filtered dataset 
-#' result <-spFilter(
+#' # make rarefied dataset 
+#' result <-spRarefy(
 #'		Heteromys_anomalus_South_America,
 #'		x.col = "LONG", 
 #'      y.col = "LAT",
@@ -147,16 +147,16 @@ summary.SpFilter <- function(object, ...) {
 #'	)
 #'
 #' # save data to temporary directory
-#' write.SpFilter(result, dir=tempdir())
+#' write.SpRarefy(result, dir=tempdir())
 #'
 #' # show files in temporary directory
 #' dir(tempdir())
 #
 #' # remove files
-#' unlink(dir(tempdir(), '^filter_.*.csv$'))
+#' unlink(dir(tempdir(), '^rarefy_.*.csv$'))
 #'
 #' @export
-write.SpFilter<-function(x, coords=FALSE, dir=getwd(), base='thin_') {
+write.SpRarefy<-function(x, coords=FALSE, dir=getwd(), base='thin_') {
 	write.spthin(x, coords=FALSE, dir=getwd(), base='thin_')
 }
 

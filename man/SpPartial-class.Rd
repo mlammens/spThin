@@ -4,9 +4,9 @@
 \name{SpPartial-class}
 \alias{SpPartial}
 \alias{SpPartial-class}
-\title{SpPartial: An S4 class to represent spatially filtered or thinned datasets}
+\title{SpPartial: An S4 class to represent spatially rarefied or thinned datasets}
 \description{
-This class is used to store replicates of spatially filtered thinned datasets.
+This class is used to store replicates of spatially rarefied thinned datasets.
 }
 \section{Slots}{
 

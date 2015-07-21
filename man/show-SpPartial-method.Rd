@@ -8,9 +8,9 @@
 \S4method{show}{SpPartial}(object)
 }
 \arguments{
-\item{object}{\code{SpFilter} or \code{SpThin} object.}
+\item{object}{\code{SpRarefy} or \code{SpThin} object.}
 }
 \description{
-This method sets the default show method for the \code{SpFilter} and \code{SpThin} objects.
+This method sets the default show method for the \code{SpRarefy} and \code{SpThin} objects.
 }
 

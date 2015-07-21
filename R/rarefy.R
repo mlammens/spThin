@@ -1,10 +1,10 @@
-#' @include dependencies.R generics.R RcppExports.R SpFilter.R
+#' @include dependencies.R generics.R RcppExports.R SpRarefy.R
 NULL
 
-#' @rdname spFilter
-#' @inheritParams spFilter
+#' @rdname spRarefy
+#' @inheritParams spRarefy
 #' @export
-spFilter.numeric<-function(x, y, grid, nrep, proj4string=CRS(), ...) {
+spRarefy.numeric<-function(x, y, grid, nrep, proj4string=CRS(), ...) {
 	# check validity of inputs
 	if (!is.numeric(x))
 		stop('x is not a numeric vector')
@@ -13,8 +13,8 @@ spFilter.numeric<-function(x, y, grid, nrep, proj4string=CRS(), ...) {
 	if (!identical(length(x),length(y)))
 		stop('length(x) is not length(y)')
 	currCall<-match.call()
-	# generate samples and return spFilter object	
-	x=spFilter(
+	# generate samples and return spRarefy object	
+	x=spRarefy(
 		SpatialPoints(
 			coords=matrix(c(x,y), ncol=2),
 			proj4string=proj4string
@@ -27,18 +27,18 @@ spFilter.numeric<-function(x, y, grid, nrep, proj4string=CRS(), ...) {
 }
 
 
-#' @rdname spFilter
-#' @inheritParams spFilter
+#' @rdname spRarefy
+#' @inheritParams spRarefy
 #' @export
-spFilter.data.frame<-function(x, x.col, y.col, grid, nrep, proj4string=CRS(), ...) {
+spRarefy.data.frame<-function(x, x.col, y.col, grid, nrep, proj4string=CRS(), ...) {
 	# check validity of inputs
 	if (!x.col %in% names(x))
 		stop('x.col not column in x')
 	if (!y.col %in% names(x))
 		stop('y.col not column in x')
 	currCall<-match.call()
-	# generate samples and return spFilter object
-	x=spFilter(
+	# generate samples and return spRarefy object
+	x=spRarefy(
 		SpatialPointsDataFrame(
 			coords=as.matrix(x[,c(x.col, y.col)]),
 			data=x,
@@ -51,10 +51,10 @@ spFilter.data.frame<-function(x, x.col, y.col, grid, nrep, proj4string=CRS(), ..
 	return(x)
 }
 
-#' @rdname spFilter
-#' @inheritParams spFilter
+#' @rdname spRarefy
+#' @inheritParams spRarefy
 #' @export
-spFilter.SpatialPoints<-function(x, grid, nrep, ...) {
+spRarefy.SpatialPoints<-function(x, grid, nrep, ...) {
 	if (!is.numeric(grid) & !inherits(grid, 'RasterLayer') & !inherits(grid, 'SpatialPolygons'))
 		stop('grid is not a numeric vector, RasterLayer, or SpatialPolygons object')
 	if (!is.numeric(nrep))
@@ -79,11 +79,11 @@ spFilter.SpatialPoints<-function(x, grid, nrep, ...) {
 		ids<-extract(grid, x)
 		cellsize<-res(grid)
 	}
-	# generate samples and return SpFilter object
+	# generate samples and return SpRarefy object
 	return(
-		SpFilter(
+		SpRarefy(
 			data=x,
-			samples=rcpp_filter_algorithm(
+			samples=rcpp_rarefy_algorithm(
 				split(
 					seq_len(nrow(x@coords)),
 					ids
