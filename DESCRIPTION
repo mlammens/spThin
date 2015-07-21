@@ -22,8 +22,8 @@ Imports:
     rgeos,
     sp
 Depends:
-    ggplot2
-    methods,
+    ggplot2,
+    methods
 LinkingTo:
 	Rcpp,
     RcppEigen
