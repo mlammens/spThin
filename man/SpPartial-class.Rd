@@ -15,8 +15,6 @@ This class is used to store replicates of spatially filtered thinned datasets.
 
 \item{\code{samples}}{\code{list} with indices for records in each replicate.}
 
-\item{\code{nrep}}{\code{integer} number of replicates.}
-
 \item{\code{call}}{\code{call} used to generate object.}
 }}
 \seealso{

@@ -6,14 +6,17 @@
 #' have been examined to check for accurate species identification.
 #' 
 #' \itemize{
-#'   \item SPEC. species name assigned to occurrence record  
-#'   \item LAT. decimal degree latitude value
-#'   \item LONG. decimal degree longitude value 
-#'   \item REGION. region, or island, of occurrence
+#'   \item \code{SPEC}: species name assigned to occurrence record  
+#'   \item \code{LAT}: decimal degree latitude value
+#'   \item \code{LONG}: decimal degree longitude value 
+#'   \item \code{REGION} region, or island, of occurrence
 #' }
 #' 
 #' @docType data
 #' @keywords datasets
 #' @format A data frame with 201 rows and 4 variables
 #' @name Heteromys_anomalus_South_America
+#' @examples
+#' data(Heteromys_anomalus_South_America)
+#' head(Heteromys_anomalus_South_America)
 NULL

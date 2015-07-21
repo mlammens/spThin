@@ -5,12 +5,14 @@
 \alias{cellsize.SpFilter}
 \title{Cell size distance used to filter dataset.}
 \usage{
-\method{cellsize}{SpFilter}(x)
+\method{cellsize}{SpFilter}(x, ...)
 
 cellsize(x, ...)
 }
 \arguments{
 \item{x}{\code{SpFilter} object.}
+
+\item{...}{not used.}
 }
 \value{
 \code{numeric} cell size (m) used to filter records.
@@ -18,8 +20,19 @@ cellsize(x, ...)
 \description{
 This function returns the cell size used to filter records in a \code{SpFilter} object.
 }
+\examples{
+# make filtered dataset using simulated data
+result <- spFilter(
+		runif(100, -5, -5),
+		runif(100, -5, -5),
+		grid=5,
+		1,
+)
+
+# show cell size
+cellsize(result)
+}
 \seealso{
 \code{\link{SpFilter}}.
-export
 }
 

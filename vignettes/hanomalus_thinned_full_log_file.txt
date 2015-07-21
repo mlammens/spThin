@@ -1,6 +1,0 @@
-********************************************** 
- Beginning Spatial Thinning.
- Script Started at: Sun Jul 12 19:11:48 2015
-
-Thinning Parameter Used (in km): 10
-Number of replicates of thinning script: 100

@@ -12,11 +12,15 @@ have been examined to check for accurate species identification.
 }
 \details{
 \itemize{
-  \item SPEC. species name assigned to occurrence record
-  \item LAT. decimal degree latitude value
-  \item LONG. decimal degree longitude value
-  \item REGION. region, or island, of occurrence
+  \item \code{SPEC}: species name assigned to occurrence record
+  \item \code{LAT}: decimal degree latitude value
+  \item \code{LONG}: decimal degree longitude value
+  \item \code{REGION} region, or island, of occurrence
 }
+}
+\examples{
+data(Heteromys_anomalus_South_America)
+head(Heteromys_anomalus_South_America)
 }
 \keyword{datasets}
 

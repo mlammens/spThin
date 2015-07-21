@@ -7,12 +7,12 @@
 \alias{spFilter.numeric}
 \title{Spatially filter species occurrence data}
 \usage{
-\method{spFilter}{numeric}(x, y, grid, nrep, proj4string = CRS())
+\method{spFilter}{numeric}(x, y, grid, nrep, proj4string = CRS(), ...)
 
 \method{spFilter}{data.frame}(x, x.col, y.col, grid, nrep,
-  proj4string = CRS())
+  proj4string = CRS(), ...)
 
-\method{spFilter}{SpatialPoints}(x, grid, nrep)
+\method{spFilter}{SpatialPoints}(x, grid, nrep, ...)
 
 spFilter(x, ...)
 }
@@ -27,9 +27,11 @@ spFilter(x, ...)
 
 \item{proj4string}{\code{CRS} object with coordinate system for coordinates (not needed for \code{Spatial objects}).}
 
-\item{lon.col}{\code{character} name of column or \code{numeric} index of column with latitude values.}
+\item{...}{not used.}
 
-\item{lat.col}{\code{character} name of column or \code{numeric} index of column with longitude values.}
+\item{x.col}{\code{character} name of column or \code{numeric} index of column with latitude values.}
+
+\item{y.col}{\code{character} name of column or \code{numeric} index of column with longitude values.}
 }
 \value{
 \code{SpFilter} object.
@@ -37,6 +39,62 @@ spFilter(x, ...)
 \description{
 A grid is overlayed on a set of observation records. A random point inside each grid cell is returned. This procedure can be repeated multiple times to yield multiple filtered datasets.
 This process helps reduce the effect of biases in observation records on the predictive performance of ecological niche models.
+}
+\examples{
+# load sp & raster packages
+library(sp)
+library(raster)
+
+# load data
+data(Heteromys_anomalus_South_America)
+
+# set projected coordinate system
+crs <- CRS(
+	 	'+proj=lcc +lat_1=9 +lat_2=3 +lat_0=6
+	 	+lon_0=-66 +x_0=1000000 +y_0=1000000
+		+ellps=intl +towgs84=-288,175,-376,0,0,0,0 +units=m +no_defs'
+)
+
+# project lon/lat data to X/Y
+sp <- spTransform(
+		SpatialPoints(
+			coords=as.matrix(Heteromys_anomalus_South_America[,c("LONG", "LAT")]),
+			proj4string=CRS('+proj=longlat +ellps=WGS84 +datum=WGS84 +no_def')
+		),
+		crs
+	)
+
+# create X/Y columns with values
+Heteromys_anomalus_South_America$X <- coordinates(sp)[,1]
+Heteromys_anomalus_South_America$Y <- coordinates(sp)[,2]
+
+# make filtered dataset using numeric vectors
+result1 <- spFilter(
+		Heteromys_anomalus_South_America$X,
+		Heteromys_anomalus_South_America$Y,
+     200000,
+		10,
+		proj4string=crs
+)
+
+# make filtered dataset using data.frame
+result2 <- spFilter(
+		Heteromys_anomalus_South_America,
+		x.col = "LONG",
+     y.col = "LAT",
+     200000,
+		10,
+		proj4string=crs
+)
+# make filtered dataset using SpatialPointsDataFrame
+result3 <-spThin(
+		SpatialPointsDataFrame(
+			coords=as.matrix(Heteromys_anomalus_South_America[,c("X", "Y")]),
+			data=Heteromys_anomalus_South_America,
+			proj4string=crs
+		),
+		10
+)
 }
 \seealso{
 \code{\link{SpFilter}}

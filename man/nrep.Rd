@@ -3,23 +3,56 @@
 \name{nrep.SpPartial}
 \alias{nrep}
 \alias{nrep.SpPartial}
-\title{Number replicates in SpThin object}
+\title{Number replicates in \code{SpFilter} and \code{SpThin} object}
 \usage{
-\method{nrep}{SpPartial}(x)
+\method{nrep}{SpPartial}(x, ...)
 
 nrep(x, ...)
 }
 \arguments{
 \item{x}{\code{SpThin} object.}
+
+\item{...}{not used.}
 }
 \value{
 \code{integer} number of replicates.
 }
 \description{
-This function extracts the number of replicates contained in a \code{SpThin} object.
+This function extracts the number of replicates contained in a \code{SpFilter} or a \code{SpThin} object.
+}
+\examples{
+# make simulated dataset
+testDF <- data.frame(
+		x=runif(100, -5, -5),
+		y=runif(100, -5, -5)
+)
+
+# make thinned dataset
+result1 <- spThin(
+		testDF,
+		"x",
+		"y",
+		mindist=5,
+		method='heuristic',
+		nrep=10
+)
+
+# show number replicates in result1
+nrep(result1)
+
+# make filtered dataset
+result2 <- spFilter(
+		testDF,
+		"x",
+		"y",
+		grid=5,
+		nrep=10
+)
+
+# show number replicates in result2
+nrep(result2)
 }
 \seealso{
 \code{\link{SpThin}}.
-export
 }
 

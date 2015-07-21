@@ -11,6 +11,8 @@ mindist(x, ...)
 }
 \arguments{
 \item{x}{\code{SpThin} object.}
+
+\item{...}{not used.}
 }
 \value{
 \code{numeric} distance (m) used to thin records.
@@ -20,6 +22,18 @@ This function returns the minimum distance used to thin records in a \code{SpThi
 }
 \seealso{
 \code{\link{SpThin}}.
+# make thinned dataset using simulated data
+result <- spThin(
+		runif(100, -5, -5),
+		runif(100, -5, -5),
+		mindist=5,
+		method='heuristic',
+		1,
+)
+
+# show distance used to thin data
+mindist(result)
+
 export
 }
 

@@ -14,25 +14,26 @@ Description: spThin contains functions to spatially filter and thin species
     To thin data using Gurobi, the gurobi R package will need to be installed from
     http://www.gurobi.com/.
 Imports:
-    Rcpp,
-    RcppEigen
-Depends:
     sp,
-    knitr,
-    ggplot2,
     gridExtra,
     raster,
     rgeos,
     lpSolveAPI,
-    Matrix
+    Matrix,
+    hexbin
+Depends:
+    methods,
+    ggplot2
 LinkingTo: Rcpp,
     RcppEigen
 LazyData: TRUE
 License: GPL-3
 VignetteBuilder: knitr
 Suggests:
-    testthat
+    testthat,
+    knitr
 Enhances: gurobi
+SystemRequirements: C++11
 Collate:
     'Heteromys_anomalus_South_America.R'
     'RcppExports.R'

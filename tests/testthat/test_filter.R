@@ -45,7 +45,8 @@ test_that('SpFilter: nrep method doesn\'t work', {
 	x=nrep(result)
 })
 
-test_that('SpFilter: call method doesn\'t work', {
+
+test_that('SpFilter: fulldata method doesn\'t work', {
 	result<-spFilter(
 		Heteromys_anomalus_South_America,
 		x.col = "LONG", 
@@ -53,22 +54,10 @@ test_that('SpFilter: call method doesn\'t work', {
         0.1,
 		10
 	)
-	x<-call(result)
-
+	x=fulldata(result)
 })
 
-test_that('SpFilter: data method doesn\'t work', {
-	result<-spFilter(
-		Heteromys_anomalus_South_America,
-		x.col = "LONG", 
-        y.col = "LAT",
-        0.1,
-		10
-	)
-	x=data(result)
-})
-
-test_that('SpFilter: dist method doesn\'t work', {
+test_that('SpFilter: cellsize method doesn\'t work', {
 	result<-spFilter(
 		Heteromys_anomalus_South_America,
 		x.col = "LONG", 
@@ -79,7 +68,7 @@ test_that('SpFilter: dist method doesn\'t work', {
 	x=cellsize(result)
 })
 
-test_that('SpFilter: write method doesn\'t work', {
+test_that('SpFilter: write.SpFilter method doesn\'t work', {
 	result<-spFilter(
 		Heteromys_anomalus_South_America,
 		x.col = "LONG", 
@@ -87,7 +76,7 @@ test_that('SpFilter: write method doesn\'t work', {
         0.1,
 		10
 	)
-	x=write(result, dir=tempdir())
+	x=write.SpFilter(result, dir=tempdir())
 })
 
 
@@ -106,15 +95,14 @@ test_that('summary method doesn\'t work', {
 
 # test plot method
 test_that('plot method doesn\'t work', {
-	result<-spFilter(
+	result<-suppressWarnings(spFilter(
 		Heteromys_anomalus_South_America,
 		x.col = "LONG", 
         y.col = "LAT",
         0.1,
 		10
-	)
+	))
 	plot(result)
-	dev.off()
 })
 
 

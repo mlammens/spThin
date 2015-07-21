@@ -9,32 +9,38 @@
 \usage{
 spThin(x, ...)
 
-\method{spThin}{numeric}(x, y, mindist, nrep, method = "heuristic",
+\method{spThin}{numeric}(x, y, mindist, method = "heuristic", nrep = 1,
   great.circle.distance = FALSE, ...)
 
-\method{spThin}{data.frame}(x, lon.col, lat.col, mindist, nrep,
-  method = "heuristic", great.circle.distance = TRUE)
+\method{spThin}{data.frame}(x, x.col, y.col, mindist, method = "heuristic",
+  nrep = 1, great.circle.distance = TRUE, ...)
 
-\method{spThin}{SpatialPoints}(x, mindist, nrep, method = "heuristic",
+\method{spThin}{SpatialPoints}(x, mindist, method = "heuristic", nrep = 1,
   great.circle.distance = x@proj4string@projargs ==
-  "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
+  "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs", ...)
 }
 \arguments{
-\item{x}{\code{SpatialPoints}, \code{SpatialPointsDataFrame} or \code{data.frame} object.}
+\item{x}{\code{SpatialPoints}, \code{SpatialPointsDataFrame}, \code{data.frame} or \code{numeric} object with x-coordinates.}
 
-\item{...}{additional arguments passed to \code{\link[lpSolveAPI]{solve}} if method=='lpsolve'}
+\item{...}{additional arguments passed to \code{\link[lpSolveAPI]{lp.control}} if method=='lpsolve' or \code{\link[gurobi]{gurobi}} if method=='gurobi'.}
 
-\item{nrep}{\code{numeric} number of replicate thinned data sets to produce.}
+\item{y}{\code{numeric} object with y-coordinates if argument x is \code{numeric}.}
 
-\item{method}{\code{character} name of method to solve problem: If 'lpsolve': the problem is solved using the program LpSolve; if  "heuristic" the problem is solved using a heuristic where points are sequentially removed.}
+\item{mindist}{\code{numeric} minimum distance (m) between records.}
+
+\item{method}{\code{character} name of method to solve problem: \itemize{
+    \item{'heuristic': data is thinned by sequentially removing points until the smallest distance between any point is greater than \code{mindist}.}
+    \item{'lpsolve': the problem is expressed as an integer programming problem and solved using LpSolve.}
+    \item{'gurobi': as above, but solved using Gurobi.}
+}}
+
+\item{nrep}{\code{numeric} number of replicate thinned data sets to produce when using the \code{heuristic} method.}
 
 \item{great.circle.distance}{\code{logical} if \code{TRUE} great circle distances will be used for distance calculations, else euclidean distances will be be used.}
 
-\item{lon.col}{\code{character} name of column or \code{numeric} index of column with latitude values.}
+\item{x.col}{\code{character} name of column or \code{numeric} index of column with latitude values.}
 
-\item{lat.col}{\code{character} name of column or \code{numeric} index of column with longitude values.}
-
-\item{dist}{\code{numeric} minimum distance (m) between records.}
+\item{y.col}{\code{character} name of column or \code{numeric} index of column with longitude values.}
 }
 \value{
 \code{SpThin} object.
@@ -43,6 +49,85 @@ spThin(x, ...)
 An optimisation algorithm is used to subset the dataset such that all occurrence
 locations are a minimum distance apart.  This process helps reduce the effect
 of biases in observation records on the predictive performance of ecological niche models.
+}
+\details{
+Thinning data is an integer programming problem. The objective is to maximise the number of retained points, whilst ensuring that all retained points
+			are at least a certain distance apart. LpSolve and Gurobi are guaranteed to identify the optimal solution.
+			Gurobi can be used to thin bigger datasets faster than LpSolve.
+			However, Gurobi is a commercial product (www.gurobi.com), and following its installation the gurobi R package will need to be installed.
+			LpSolve, on the other hand, is freely available (under LGPL 2) and does not need the installation of additional software to use.
+			For especially large datasets, both Gurobi and LpSolve may need an infeasible amount of time or computational resource to solve the problem.
+			The heuristic method--while it has no guarantee of identifying the optimal solution--may be useful for large datasets
+			that Gurobi and LpSolve are unable to solve. Additionally, the heuristic method may be useful for identifying multiple
+			near-optimal solutions for bootstrapping routines.
+}
+\examples{
+# load sp package
+library(sp)
+
+# load data
+data(Heteromys_anomalus_South_America)
+
+# set coordinate system
+crs <- CRS('+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs')
+
+# thin data using heuristics with data input as numeric vectors
+result1 <- spThin(
+		Heteromys_anomalus_South_America$LONG,
+		Heteromys_anomalus_South_America$LAT,
+     200000,
+		method='heuristic',
+		10
+)
+
+# thin data using heuristics with data input as data.frame
+result2 <- spThin(
+		Heteromys_anomalus_South_America,
+		x.col = "LONG",
+     y.col = "LAT",
+     200000,
+		method='heuristic',
+		10
+)
+
+# thin data using heuristics with data input as SpatialPointsDataFrame
+result3 <- spThin(
+		SpatialPointsDataFrame(
+			coords=as.matrix(Heteromys_anomalus_South_America[,c("LONG", "LAT")]),
+			data=Heteromys_anomalus_South_America,
+			proj4string=crs
+		),
+		200000,
+		method='heuristic',
+		10
+)
+
+# as above, but thin data using lpsolve (with 3 second time limit)
+result4 <- spThin(
+		SpatialPointsDataFrame(
+			coords=as.matrix(Heteromys_anomalus_South_America[,c("LONG", "LAT")]),
+			data=Heteromys_anomalus_South_America,
+			proj4string=crs
+		),
+		200000,
+		method='lpsolve',
+		10,
+		timeout=3
+)
+
+\dontrun{
+# as above, but thin data using gurobi
+result5 <- spThin(
+		SpatialPointsDataFrame(
+			coords=as.matrix(Heteromys_anomalus_South_America[,c("LONG", "LAT")]),
+			data=Heteromys_anomalus_South_America,
+			proj4string=crs
+		),
+		200000,
+		method='gurobi',
+		10
+)
+}
 }
 \seealso{
 \code{\link{SpThin}}

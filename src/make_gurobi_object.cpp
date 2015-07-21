@@ -61,10 +61,16 @@ Rcpp::List rcpp_make_gurobi_object(std::vector<double> lon, std::vector<double> 
 			
 	//// main processing
 	/// point combination constraints
+	std::size_t counter=1;
 	for (std::size_t i=0; i<greaterThanDist.outerSize(); ++i) {
 		for (Eigen::SparseMatrix<bool>::InnerIterator it(greaterThanDist, i); it; ++it) {
-			model_A_i.push_back(it.row()+1);
+			model_A_i.push_back(counter);
 			model_A_j.push_back(it.col()+1);
+			
+			model_A_i.push_back(counter);
+			model_A_j.push_back(it.row()+1);
+			
+			++counter;
 		}
 	}
 

@@ -7,8 +7,25 @@
 #' @param crs \code{CRS} object representing coordinate system. Defaults to NA.
 #' @return \code{RasterLayer}.
 #' @seealso \code{\link[raster]{raster}}, \code{\link[sp]{CRS}}, \code{\link[raster]{Extent}}.
-#' export
+#' @examples
+#' # load sp & raster packages
+#' library(sp)
+#' library(raster)
+#' 
+#' # create points dataset
+#' pts <- SpatialPoints(coords=matrix(rnorm(100), ncol=2))
+#'
+#' # make RasterLayer with sqaure cells
+#' r1 <- make.grid(extent(pts), 5, CRS())
+#'
+#' # make RasterLayer with rectangular cells
+#' r2 <- make.grid(extent(pts), c(1,5), CRS())
+#'
+#' @export
 make.grid<-function(x, cellsize, crs) {
+	stopifnot(inherits(x, "Extent"))
+	stopifnot(inherits(cellsize, "numeric"))
+	stopifnot(inherits(crs, "CRS"))
 	if (length(cellsize)==1)
 		cellsize=rep(cellsize, 2)
 	if (length(cellsize)!=2)

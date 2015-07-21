@@ -19,8 +19,21 @@ make.grid(x, cellsize, crs)
 \description{
 This function generates a \code{RasterLayer} using an \code{extent} object and a cell size.
 }
+\examples{
+# load sp & raster packages
+library(sp)
+library(raster)
+
+# create points dataset
+pts <- SpatialPoints(coords=matrix(rnorm(100), ncol=2))
+
+# make RasterLayer with sqaure cells
+r1 <- make.grid(extent(pts), 5, CRS())
+
+# make RasterLayer with rectangular cells
+r2 <- make.grid(extent(pts), c(1,5), CRS())
+}
 \seealso{
 \code{\link[raster]{raster}}, \code{\link[sp]{CRS}}, \code{\link[raster]{Extent}}.
-export
 }
 

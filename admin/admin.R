@@ -11,22 +11,29 @@ library(devtools)
 library(roxygen2)
 document()
 
-# make vignettes
-# library(devtools)
-# setwd(file.path(Sys.getenv('HOME'), 'github', 'spThin'))
-# build_vignettes()
-
 # find obvious errors
 setwd(file.path(Sys.getenv('HOME'), 'github', 'spThin'))
 library(devtools)
 library(roxygen2)
 load_all() 
 
+# make vignettes
+library(devtools)
+library(knitr)
+setwd(file.path(Sys.getenv('HOME'), 'github', 'spThin'))
+build_vignettes()
+
 # formal package tests
 setwd(file.path(Sys.getenv('HOME'), 'github', 'spThin'))
 library(devtools)
 library(roxygen2)
 test()
+
+# cran checks
+setwd(file.path(Sys.getenv('HOME'), 'github', 'spThin'))
+library(devtools)
+library(roxygen2)
+check()
 
 # # local install
 # library(devtools)

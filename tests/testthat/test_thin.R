@@ -41,18 +41,17 @@ test_that('SpThin: thin_lpsolve function doesn\'t work', {
 
 
 test_that('SpThin: thin_gurobi function doesn\'t work', {
-	if (require(gurobi)) {
+	if (spThin:::is.installed("gurobi")) {
 		result<-spThin:::thin_gurobi(
 			Heteromys_anomalus_South_America[[3]],
 			Heteromys_anomalus_South_America[[2]],
 			200000,
-			1,
 			TRUE
 		)
 		dists<-fields::rdist.earth(
 			Heteromys_anomalus_South_America[result[[1]],3:2],
 			miles=FALSE
-		)		
+		)
 		expect_true(
 			all(
 				dists[lower.tri(dists)] > 200
@@ -67,8 +66,8 @@ test_that('SpThin: thin_gurobi function doesn\'t work', {
 test_that('SpThin: thin function doesn\'t work', {
 	result<-spThin(
 		Heteromys_anomalus_South_America,
-		lon.col = "LONG", 
-        lat.col = "LAT",
+		x.col = "LONG", 
+        y.col = "LAT",
 		method='heuristic',		
         200000,
 		10
@@ -89,8 +88,8 @@ test_that('SpThin: thin function doesn\'t work', {
 test_that('SpThin: samples method doesn\'t work', {
 	result<-spThin(
 		Heteromys_anomalus_South_America,
-		lon.col = "LONG", 
-        lat.col = "LAT",
+		x.col = "LONG", 
+        y.col = "LAT",
 		method='heuristic',		
         200000,
 		10
@@ -101,8 +100,8 @@ test_that('SpThin: samples method doesn\'t work', {
 test_that('SpThin: nrep method doesn\'t work', {
 	result=spThin(
 		Heteromys_anomalus_South_America,
-		lon.col = "LONG", 
-        lat.col = "LAT",
+		x.col = "LONG", 
+        y.col = "LAT",
 		method='heuristic',
         200000,
 		10
@@ -110,36 +109,23 @@ test_that('SpThin: nrep method doesn\'t work', {
 	x=nrep(result)
 })
 
-test_that('SpThin: call method doesn\'t work', {
+test_that('SpThin: fulldata method doesn\'t work', {
 	result<-spThin(
 		Heteromys_anomalus_South_America,
-		lon.col = "LONG", 
-        lat.col = "LAT",
+		x.col = "LONG", 
+        y.col = "LAT",
 		method='heuristic',		
         200000,
 		10
 	)
-	x<-call(result)
-
-})
-
-test_that('SpThin: data method doesn\'t work', {
-	result<-spThin(
-		Heteromys_anomalus_South_America,
-		lon.col = "LONG", 
-        lat.col = "LAT",
-		method='heuristic',		
-        200000,
-		10
-	)
-	x=data(result)
+	x=fulldata(result)
 })
 
 test_that('SpThin: mindist method doesn\'t work', {
 	result<-spThin(
 		Heteromys_anomalus_South_America,
-		lon.col = "LONG", 
-        lat.col = "LAT",
+		x.col = "LONG", 
+        y.col = "LAT",
 		method='heuristic',		
         200000,
 		10
@@ -147,26 +133,25 @@ test_that('SpThin: mindist method doesn\'t work', {
 	x=mindist(result)
 })
 
-test_that('SpThin: write method doesn\'t work', {
+test_that('SpThin: write.SpThin method doesn\'t work', {
 	result<-spThin(
 		Heteromys_anomalus_South_America,
-		lon.col = "LONG", 
-        lat.col = "LAT",
+		x.col = "LONG", 
+        y.col = "LAT",
 		method='heuristic',		
         200000,
 		10
 	)
-	x=write(result, dir=tempdir())
+	x=write.SpThin(result, dir=tempdir())
 })
-
 
 
 # test summary method
 test_that('SpThin: summary method doesn\'t work', {
 	result<-spThin(
 		Heteromys_anomalus_South_America,
-		lon.col = "LONG", 
-        lat.col = "LAT",
+		x.col = "LONG", 
+        y.col = "LAT",
 		method='heuristic',		
         200000,
 		10
@@ -178,8 +163,8 @@ test_that('SpThin: summary method doesn\'t work', {
 test_that('SpThin: plot method doesn\'t work', {
 	result<-spThin(
 		Heteromys_anomalus_South_America,
-		lon.col = "LONG", 
-        lat.col = "LAT",
+		x.col = "LONG", 
+        y.col = "LAT",
 		method='heuristic',		
         200000,
 		10

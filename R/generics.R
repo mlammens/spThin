@@ -1,57 +1,156 @@
 
-#' Extract samples from SpThin object
+#' Extract samples from \code{SpFiltered} and \code{SpThin} object
 #'
-#' This function extracts samples from a \code{SpThin} object.
+#' This function extracts samples from a \code{SpFilter} or a \code{SpThin} object.
 #'
-#' @param x \code{SpThin} object.
+#' @param x \code{SpThin} or \code{SpFilter} object.
 #' @param r \code{numeric} n'th replicate to extract samples from.
+#' @param ... not used.
 #' @return \code{SpatialPoints} or  \code{SpatialPointsDataFrame} object
 #' @seealso \code{\link{SpThin}}.
-#' export
+#' @examples
+#' # make simulated dataset
+#' testDF <- data.frame(
+#'		x=runif(100, -5, -5),
+#'		y=runif(100, -5, -5)
+#' )
+#'
+#' # make thinned dataset
+#' result1 <- spThin(
+#'		testDF,
+#'		"x",
+#'		"y",
+#'		mindist=5,
+#'		method='heuristic',
+#'		nrep=10
+#' )
+#'
+#' # extract first replicate dataset in result1
+#' samples(result1, 1)
+#' result1[[1]]
+#'
+#' # make filtered dataset 
+#' result2 <- spFilter(
+#'		testDF,
+#'		"x",
+#'		"y",
+#'		grid=5,
+#'		nrep=10
+#' )
+#'
+#' # extract first replicate dataset in result2
+#' samples(result2, 1)
+#' result2[[1]]
+#'
+#' @export
 samples<-function(x, ...) {UseMethod("samples")}
 
-#' Number replicates in SpThin object
+#' Number replicates in \code{SpFilter} and \code{SpThin} object
 #'
-#' This function extracts the number of replicates contained in a \code{SpThin} object.
+#' This function extracts the number of replicates contained in a \code{SpFilter} or a \code{SpThin} object.
 #'
 #' @param x \code{SpThin} object.
+#' @param ... not used.
 #' @return \code{integer} number of replicates.
 #' @seealso \code{\link{SpThin}}.
-#' export
+#' @examples
+#' # make simulated dataset
+#' testDF <- data.frame(
+#'		x=runif(100, -5, -5),
+#'		y=runif(100, -5, -5)
+#' )
+#'
+#' # make thinned dataset
+#' result1 <- spThin(
+#'		testDF,
+#'		"x",
+#'		"y",
+#'		mindist=5,
+#'		method='heuristic',
+#'		nrep=10
+#' )
+#'
+#' # show number replicates in result1
+#' nrep(result1)
+#'
+#' # make filtered dataset 
+#' result2 <- spFilter(
+#'		testDF,
+#'		"x",
+#'		"y",
+#'		grid=5,
+#'		nrep=10
+#' )
+#'
+#' # show number replicates in result2
+#' nrep(result2)
+#'
+#' @export
 nrep<-function(x, ...) {UseMethod("nrep")}
 
-#' Function call used to generate SpThin object
+#' Full dataset contained in a \code{SpThin} and \code{SpFilter} and  object
 #'
-#' This function returns the function call used to generate a \code{SpThin} object.
+#' This function returns the initial dataset subject to spatial processing in a \code{SpFilter} or a \code{SpThin} object.
 #'
-#' @param x \code{SpThin} object.
-#' @return \code{call} object.
+#' @param x \code{SpFilter} or a \code{SpThin} object.
+#' @param ... not used.
+#' @return \code{SpatialPoints} or \code{SpatialPointsDataFrame} object.
 #' @seealso \code{\link{SpThin}}.
-#' export
-call<-function(x, ...) {UseMethod("call")}
-
-#' export
-call.default<-base::call
-
-#' Complete dataset contained in a SpThin object
+#' @examples
+#' # make simulated dataset
+#' testDF <- data.frame(
+#'		x=runif(100, -5, -5),
+#'		y=runif(100, -5, -5)
+#' )
 #'
-#' This function returns the complete dataset subject to spatial thinning in a \code{SpThin} object.
+#' # make thinned dataset
+#' result1 <- spThin(
+#'		testDF,
+#'		"x",
+#'		"y",
+#'		mindist=5,
+#'		method='heuristic',
+#'		1
+#' )
 #'
-#' @param x \code{SpThin} object.
-#' @return \code{call} object.
-#' @seealso \code{\link{SpThin}}.
-data<-function(x, ...) {UseMethod("data")}
-
-#' export
-data.default<-utils::data
+#' # show first rows of full dataset in result1
+#' head(fulldata(result1))
+#'
+#' # make filtered dataset 
+#' result2 <- spFilter(
+#'		testDF,
+#'		"x",
+#'		"y",
+#'		grid=5,
+#'		1
+#' )
+#'
+#' # show first rows of full dataset in result2
+#' head(fulldata(result2))
+#'
+#' @export
+fulldata<-function(x, ...) {UseMethod("fulldata")}
 
 #' Minimum distance used to thin dataset.
 #'
 #' This function returns the minimum distance used to thin records in a \code{SpThin} object.
 #'
 #' @param x \code{SpThin} object.
+#' @param ... not used.
 #' @return \code{numeric} distance (m) used to thin records.
 #' @seealso \code{\link{SpThin}}.
+#' # make thinned dataset using simulated data
+#' result <- spThin(
+#'		runif(100, -5, -5),
+#'		runif(100, -5, -5),
+#'		mindist=5,
+#'		method='heuristic',
+#'		1,
+#' )
+#'
+#' # show distance used to thin data
+#' mindist(result)
+#'
 #' export
 mindist<-function(x, ...) {UseMethod("mindist")}
 
@@ -60,26 +159,23 @@ mindist<-function(x, ...) {UseMethod("mindist")}
 #' This function returns the cell size used to filter records in a \code{SpFilter} object.
 #'
 #' @param x \code{SpFilter} object.
+#' @param ... not used.
 #' @return \code{numeric} cell size (m) used to filter records.
 #' @seealso \code{\link{SpFilter}}.
-#' export
+#' @examples
+#' # make filtered dataset using simulated data
+#' result <- spFilter(
+#'		runif(100, -5, -5),
+#'		runif(100, -5, -5),
+#'		grid=5,
+#'		1,
+#' )
+#'
+#' # show cell size
+#' cellsize(result)
+#'
+#' @export
 cellsize<-function(x, ...) {UseMethod("cellsize")}
-
-
-#' Write thinned dataset replicates to file.
-#'
-#' This function writes the spatially thinned replicates in a \code{SpThin} object to files on a computer.
-#'
-#' @param x \code{SpThin} object.
-#' @param coords \code{logical} if \code{TRUE} only coordinates of thinned data will be be saved, otherwise all columns of thinned data will be saved.
-#' @param dir \code{character} directory to save output files in.
-#' @param base \code{character} base name to save output files in.
-#' @seealso \code{\link{SpThin}}.
-write<-function(x, ...) {UseMethod("write")}
-
-#' export
-write.default<-base::write
-
 
 #' Spatially thin species occurrence data
 #' 
@@ -87,17 +183,98 @@ write.default<-base::write
 #' locations are a minimum distance apart.  This process helps reduce the effect
 #' of biases in observation records on the predictive performance of ecological niche models.
 #' 
-#' @param x \code{SpatialPoints}, \code{SpatialPointsDataFrame} or \code{data.frame} object.
-#' @param lon.col \code{character} name of column or \code{numeric} index of column with latitude values.
-#' @param lat.col \code{character} name of column or \code{numeric} index of column with longitude values.
-#' @param dist \code{numeric} minimum distance (m) between records.
-#' @param nrep \code{numeric} number of replicate thinned data sets to produce.
-#' @param method \code{character} name of method to solve problem: If 'lpsolve': the problem is solved using the program LpSolve; if  "heuristic" the problem is solved using a heuristic where points are sequentially removed.
+#' @param x \code{SpatialPoints}, \code{SpatialPointsDataFrame}, \code{data.frame} or \code{numeric} object with x-coordinates.
+#' @param x.col \code{character} name of column or \code{numeric} index of column with latitude values.
+#' @param y.col \code{character} name of column or \code{numeric} index of column with longitude values.
+#' @param y \code{numeric} object with y-coordinates if argument x is \code{numeric}.
+#' @param mindist \code{numeric} minimum distance (m) between records.
+#' @param method \code{character} name of method to solve problem: \itemize{
+#'	\item{'heuristic': data is thinned by sequentially removing points until the smallest distance between any point is greater than \code{mindist}.}
+#'	\item{'lpsolve': the problem is expressed as an integer programming problem and solved using LpSolve.}
+#'	\item{'gurobi': as above, but solved using Gurobi.}
+#' }
+#' @param nrep \code{numeric} number of replicate thinned data sets to produce when using the \code{heuristic} method. 
 #' @param great.circle.distance \code{logical} if \code{TRUE} great circle distances will be used for distance calculations, else euclidean distances will be be used.
-#' @param ... additional arguments passed to \code{\link[lpSolveAPI]{solve}} if method=='lpsolve'
-#' @export
+#' @param ... additional arguments passed to \code{\link[lpSolveAPI]{lp.control}} if method=='lpsolve' or \code{\link[gurobi]{gurobi}} if method=='gurobi'.
 #' @return \code{SpThin} object. 
+#' @details Thinning data is an integer programming problem. The objective is to maximise the number of retained points, whilst ensuring that all retained points
+#'			are at least a certain distance apart. LpSolve and Gurobi are guaranteed to identify the optimal solution.
+#'			Gurobi can be used to thin bigger datasets faster than LpSolve.
+#'			However, Gurobi is a commercial product (www.gurobi.com), and following its installation the gurobi R package will need to be installed.
+#'			LpSolve, on the other hand, is freely available (under LGPL 2) and does not need the installation of additional software to use.
+#'			For especially large datasets, both Gurobi and LpSolve may need an infeasible amount of time or computational resource to solve the problem.
+#'			The heuristic method--while it has no guarantee of identifying the optimal solution--may be useful for large datasets
+#'			that Gurobi and LpSolve are unable to solve. Additionally, the heuristic method may be useful for identifying multiple
+#'			near-optimal solutions for bootstrapping routines.
 #' @seealso \code{\link{SpThin}}
+#' @examples
+#' # load sp package
+#' library(sp)
+#'
+#' # load data
+#' data(Heteromys_anomalus_South_America)
+#' 
+#' # set coordinate system
+#' crs <- CRS('+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs')
+#' 
+#' # thin data using heuristics with data input as numeric vectors
+#' result1 <- spThin(
+#'		Heteromys_anomalus_South_America$LONG,
+#'		Heteromys_anomalus_South_America$LAT,
+#'      200000,
+#'		method='heuristic',
+#'		10
+#' )
+#'
+#' # thin data using heuristics with data input as data.frame
+#' result2 <- spThin(
+#'		Heteromys_anomalus_South_America,
+#'		x.col = "LONG", 
+#'      y.col = "LAT",
+#'      200000,
+#'		method='heuristic',
+#'		10
+#' )
+#' 
+#' # thin data using heuristics with data input as SpatialPointsDataFrame
+#' result3 <- spThin(
+#'		SpatialPointsDataFrame(
+#'			coords=as.matrix(Heteromys_anomalus_South_America[,c("LONG", "LAT")]),
+#'			data=Heteromys_anomalus_South_America,
+#'			proj4string=crs
+#'		),
+#'		200000,
+#'		method='heuristic',
+#'		10
+#' )
+#' 
+#' # as above, but thin data using lpsolve (with 3 second time limit)
+#' result4 <- spThin(
+#'		SpatialPointsDataFrame(
+#'			coords=as.matrix(Heteromys_anomalus_South_America[,c("LONG", "LAT")]),
+#'			data=Heteromys_anomalus_South_America,
+#'			proj4string=crs
+#'		),
+#'		200000,
+#'		method='lpsolve',
+#'		10,
+#'		timeout=3
+#' )
+#' 
+#' \dontrun{
+#' # as above, but thin data using gurobi
+#' result5 <- spThin(
+#'		SpatialPointsDataFrame(
+#'			coords=as.matrix(Heteromys_anomalus_South_America[,c("LONG", "LAT")]),
+#'			data=Heteromys_anomalus_South_America,
+#'			proj4string=crs
+#'		),
+#'		200000,
+#'		method='gurobi',
+#'		10
+#' )
+#' }
+#' @export
 spThin<-function(x, ...) {UseMethod('spThin')}
 
 #' Spatially filter species occurrence data
@@ -107,13 +284,70 @@ spThin<-function(x, ...) {UseMethod('spThin')}
 #' 
 #' @param x \code{numeric} with x-coordinates, \code{data.frame}, \code{SpatialPoints}, \code{SpatialPointsDataFrame} or  object.
 #' @param y \code{numeric} with y-coordinates.
-#' @param lon.col \code{character} name of column or \code{numeric} index of column with latitude values.
-#' @param lat.col \code{character} name of column or \code{numeric} index of column with longitude values.
+#' @param x.col \code{character} name of column or \code{numeric} index of column with latitude values.
+#' @param y.col \code{character} name of column or \code{numeric} index of column with longitude values.
 #' @param grid Either \code{numeric} size of grid cells, \code{RasterLayer}, or \code{SpatialPolygons}, or \code{SpatialPolygonsDataFrame} object.
 #' @param nrep \code{numeric} number of replicate thinned data sets to produce.
 #' @param proj4string \code{CRS} object with coordinate system for coordinates (not needed for \code{Spatial objects}).
-#' @export
-#' @return \code{SpFilter} object. 
+#' @param ... not used.
+#' @return \code{SpFilter} object.
 #' @seealso \code{\link{SpFilter}}
+#' @examples
+#' # load sp & raster packages
+#' library(sp)
+#' library(raster)
+#' 
+#' # load data
+#' data(Heteromys_anomalus_South_America)
+#'
+#' # set projected coordinate system
+#' crs <- CRS(
+#'	 	'+proj=lcc +lat_1=9 +lat_2=3 +lat_0=6
+#'	 	+lon_0=-66 +x_0=1000000 +y_0=1000000 
+#'		+ellps=intl +towgs84=-288,175,-376,0,0,0,0 +units=m +no_defs'
+#' )
+#' 
+#' # project lon/lat data to X/Y
+#' sp <- spTransform(
+#'		SpatialPoints(
+#'			coords=as.matrix(Heteromys_anomalus_South_America[,c("LONG", "LAT")]),
+#'			proj4string=CRS('+proj=longlat +ellps=WGS84 +datum=WGS84 +no_def')
+#'		),
+#'		crs
+#'	)
+#' 
+#' # create X/Y columns with values	
+#' Heteromys_anomalus_South_America$X <- coordinates(sp)[,1]
+#' Heteromys_anomalus_South_America$Y <- coordinates(sp)[,2]
+#' 
+#' # make filtered dataset using numeric vectors
+#' result1 <- spFilter(
+#'		Heteromys_anomalus_South_America$X,
+#'		Heteromys_anomalus_South_America$Y,
+#'      200000,
+#'		10,
+#'		proj4string=crs
+#' )
+#'
+#' # make filtered dataset using data.frame
+#' result2 <- spFilter(
+#'		Heteromys_anomalus_South_America,
+#'		x.col = "LONG", 
+#'      y.col = "LAT",
+#'      200000,
+#'		10,
+#'		proj4string=crs
+#' )
+#' # make filtered dataset using SpatialPointsDataFrame
+#' result3 <-spThin(
+#'		SpatialPointsDataFrame(
+#'			coords=as.matrix(Heteromys_anomalus_South_America[,c("X", "Y")]),
+#'			data=Heteromys_anomalus_South_America,
+#'			proj4string=crs
+#'		),
+#'		10
+#' )
+#' 
+#' @export
 spFilter<-function(x, ...) {UseMethod('spFilter')}
 

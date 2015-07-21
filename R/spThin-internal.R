@@ -1,6 +1,9 @@
 #' @include RcppExports.R dependencies.R
 NULL
 
+
+utils::globalVariables(c("..density.."))
+
 grbiWrapper<-function(x) {
 	return(
 		list(
@@ -14,10 +17,9 @@ grbiWrapper<-function(x) {
 	)
 }
 
-thin_lpsolve<-function(x, y, mindist, nrep, great.circle.distance, ...) {
+thin_lpsolve<-function(x, y, mindist, great.circle.distance, ...) {
 	# init
 	currFilePath=tempfile(fileext = ".lp")
-	cat('\n', currFilePath, '\n')
 	# generate input file for lpsolve
 	rcpp_make_lpsolve_file(x, y, mindist, great.circle.distance, currFilePath)
 	# run lpsolve
@@ -25,10 +27,9 @@ thin_lpsolve<-function(x, y, mindist, nrep, great.circle.distance, ...) {
 	lp.control(lpmodel, presolve=c("rows","rowdominate"), ...)
 	solve(lpmodel)
 	# return samples
-	nrep=min(nrep, get.solutioncount(lpmodel))
 	return(
 		lapply(
-			seq_len(nrep),
+			seq_len(get.solutioncount(lpmodel)),
 			function(i) {
 				select.solution(lpmodel, i)
 				return(which(as.logical(get.variables(lpmodel)[seq_along(x)])))
@@ -37,22 +38,58 @@ thin_lpsolve<-function(x, y, mindist, nrep, great.circle.distance, ...) {
 	)
 }
 
-thin_gurobi<-function(x, y, mindist, nrep, great.circle.distance, ...) {
+thin_gurobi<-function(x, y, mindist, great.circle.distance, ...) {
 	return(
-		which(
-			as.logical(
-				gurobi(
-					grbiWrapper(
-						rcpp_make_gurobi_object(
-							x,
-							y,
-							mindist,
-							great.circle.distance
-						)
-					),
-					params=list(Presolve=2, ...)
-				)$x
+		list(
+			which(
+				as.logical(
+					gurobi::gurobi(
+						grbiWrapper(
+							rcpp_make_gurobi_object(
+								x,
+								y,
+								mindist,
+								great.circle.distance
+							)
+						),
+						params=list(Presolve=2, ...)
+					)$x
+				)
 			)
 		)
 	)
+}
+
+
+is.installed<-function(x) {
+	if (x %in% installed.packages()[,1])
+		return(FALSE)
+	if (!file.exists(
+			file.path(
+				find.package(x, quiet=T),
+				"libs",
+				.Platform$r_arch)
+			)
+		) {
+		warning(paste0("package ",x," is not installed for 'arch = ",.Platform$r_arch,"'"))
+		return(FALSE)
+	}
+	return(TRUE)
+}
+
+write.spthin<-function(x, coords, dir, base) {
+	if (!coords & inherits(x@data, 'SpatialPointsDataFrame')) {
+		z=x@data
+	} else {
+		z=x@coords
+	}
+	sapply(seq_along(x@samples), function(i) {
+		write.table(
+			z[x@samples[[i]],],
+			file.path(dir, paste0(base, formatC(i, width=4, flag=0), '.csv')),
+			row.names=FALSE,
+			sep=','
+		)
+	})
+	return(invisible(TRUE))
 }

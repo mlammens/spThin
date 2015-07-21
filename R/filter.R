@@ -4,7 +4,7 @@ NULL
 #' @rdname spFilter
 #' @inheritParams spFilter
 #' @export
-spFilter.numeric<-function(x, y, grid, nrep, proj4string=CRS()) {
+spFilter.numeric<-function(x, y, grid, nrep, proj4string=CRS(), ...) {
 	# check validity of inputs
 	if (!is.numeric(x))
 		stop('x is not a numeric vector')
@@ -30,7 +30,7 @@ spFilter.numeric<-function(x, y, grid, nrep, proj4string=CRS()) {
 #' @rdname spFilter
 #' @inheritParams spFilter
 #' @export
-spFilter.data.frame<-function(x, x.col, y.col, grid, nrep, proj4string=CRS()) {
+spFilter.data.frame<-function(x, x.col, y.col, grid, nrep, proj4string=CRS(), ...) {
 	# check validity of inputs
 	if (!x.col %in% names(x))
 		stop('x.col not column in x')
@@ -54,7 +54,7 @@ spFilter.data.frame<-function(x, x.col, y.col, grid, nrep, proj4string=CRS()) {
 #' @rdname spFilter
 #' @inheritParams spFilter
 #' @export
-spFilter.SpatialPoints<-function(x, grid, nrep) {
+spFilter.SpatialPoints<-function(x, grid, nrep, ...) {
 	if (!is.numeric(grid) & !inherits(grid, 'RasterLayer') & !inherits(grid, 'SpatialPolygons'))
 		stop('grid is not a numeric vector, RasterLayer, or SpatialPolygons object')
 	if (!is.numeric(nrep))
