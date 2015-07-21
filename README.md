@@ -3,6 +3,14 @@ spThin
 
 #### spThin contains functions to spatially rarefy and thin species    occurrence data. These procedures can remove sampling bias, and in turn result in better ecological niche models. The package contains functions to thin datasets using exact-algorithm solvers ([lp_solve](http://lpsolve.sourceforge.net/) and [Gurobi](http://www.gurobi.com/)) and a stingy heuristic. This package also contains functions to rarefy datasets using grids.
 
+Linux and Mac OSX users will first need to install several dependencies. To install them, type the following code in the bash or the terminal:
+
+```
+sudo apt-get update
+sudo apt-get install libgdal-dev
+sudo apt-get install libproj-dev
+```
+
 To install the spThin R package, execute the following commands in R:
 
 ```
