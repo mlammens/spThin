@@ -49,11 +49,13 @@ int rcpp_make_lpsolve_file(std::vector<double> lon, std::vector<double> lat, dou
 			}
 		}
 	}
-	
+
 	// pre-process strings
 	for (std::size_t i=0; i<nSites; ++i)
 		pointNames[i]="P"+to_string(i);
-		
+	
+	Rcpp::checkUserInterrupt();	
+	
 	//// main processing
 	/// single points
 	// create objective function and variable types
@@ -63,6 +65,7 @@ int rcpp_make_lpsolve_file(std::vector<double> lon, std::vector<double> lat, dou
 		lpmodel+=" +"+pointNames[i];
 		vartypes+=" "+pointNames[i]+",";
 	}
+	
 	
 	/// point combinations
 	constraints+=";\n\n/* constraints */\n";
@@ -81,6 +84,8 @@ int rcpp_make_lpsolve_file(std::vector<double> lon, std::vector<double> lat, dou
 	
 	// compile model string	
 	lpmodel+=constraints+vartypes+"\n";
+	
+	Rcpp::checkUserInterrupt();	
 	
 	/// exports
 	// save lpmodel to file

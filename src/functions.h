@@ -12,6 +12,8 @@
 #include <iostream>
 #include <cmath>
 
+#define NCHECKUSERINPUT 1000
+
 // #define DEG_TO_RAD 0.017453292519943295769236907684886
 // #define EARTH_RADIUS_IN_METERS 6372797.5608566
 

@@ -2,7 +2,7 @@ Package: spThin
 Type: Package
 Title: Functions for Spatial Thinning of Species Occurrence Records for Use in
     Ecological Models
-Version: 0.1.1
+Version: 1.0.0
 Date: 2015-07-12
 Author: Matthew E. Aiello-Lammens, Robert A. Boria, Aleksandar Radosavljevic,
     Bruno Vilela, and Robert P. Anderson
@@ -14,25 +14,27 @@ Description: spThin contains functions to spatially rarefy and thin species
     To thin data using Gurobi, the gurobi R package will need to be installed from
     http://www.gurobi.com/.
 Imports:
-    sp,
     gridExtra,
-    raster,
-    rgeos,
+    hexbin,
     lpSolveAPI,
     Matrix,
-    hexbin
+    raster,
+    rgeos,
+    sp
 Depends:
-    methods,
     ggplot2
-LinkingTo: Rcpp,
+    methods,
+LinkingTo:
+	Rcpp,
     RcppEigen
-LazyData: TRUE
+LazyData: true
 License: GPL-3
 VignetteBuilder: knitr
 Suggests:
-    testthat,
-    knitr
-Enhances: gurobi
+    knitr,
+    testthat
+Enhances:
+	gurobi
 SystemRequirements: C++11
 Collate:
     'Heteromys_anomalus_South_America.R'

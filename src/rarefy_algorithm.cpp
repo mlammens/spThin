@@ -36,6 +36,10 @@ Rcpp::List rcpp_rarefy_algorithm(Rcpp::List inpLIST, std::size_t nrep) {
 	for (std::size_t r=0; r<nrep; ++r) {
 		for (std::size_t i=0; i<nSites; ++i) {
 			expLIST[r][i]=sites[i][rgen.DrawUniformNumber(sites[i].size()-1)];
+			
+			if (i % NCHECKUSERINPUT == 0)
+				Rcpp::checkUserInterrupt();
+
 		}
 	}
 	

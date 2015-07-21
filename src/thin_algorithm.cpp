@@ -55,6 +55,7 @@ Rcpp::List rcpp_thin_algorithm(std::vector<double> lon, std::vector<double> lat,
 	for (int i=0; i<nSites; ++i) {
 		greaterThanDist(i,i)=false;
 	}
+	Rcpp::checkUserInterrupt();	
 	
 	/// main processing
 	for (int r=0; r<reps; ++r) {
@@ -72,12 +73,17 @@ Rcpp::List rcpp_thin_algorithm(std::vector<double> lon, std::vector<double> lat,
 			greaterThanDist.row(idRemainingSites[currSite]).setZero();
 			--nRemainingSites;
 			std::iter_swap(idRemainingSites.begin()+currSite, idRemainingSites.begin()+nRemainingSites);
+			
+			// check for user interrupt
+			if (nRemainingSites % NCHECKUSERINPUT == 0)
+				Rcpp::checkUserInterrupt();
+			
 		}
 		
 		// store results
 		sites[r].reserve(nRemainingSites);
 		for (auto i=idRemainingSites.cbegin(); i!=idRemainingSites.cbegin()+nRemainingSites; ++i)
-			sites[r].push_back((*i) + 1);
+			sites[r].push_back((*i) + 1);		
 	}
 	
 	/// exports

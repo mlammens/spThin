@@ -4,6 +4,10 @@ NULL
 
 utils::globalVariables(c("..density.."))
 
+.onUnload <- function (libpath) {
+  library.dynam.unload("spThin", libpath)
+}
+
 grbiWrapper<-function(x) {
 	return(
 		list(

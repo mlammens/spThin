@@ -47,7 +47,8 @@ Rcpp::List rcpp_make_gurobi_object(std::vector<double> lon, std::vector<double> 
 			}
 		}
 	}
-	
+	Rcpp::checkUserInterrupt();	
+
 	//// preliminary processing
 	// define export objects
 	nSiteCombinations=greaterThanDist.nonZeros();
@@ -73,6 +74,7 @@ Rcpp::List rcpp_make_gurobi_object(std::vector<double> lon, std::vector<double> 
 			++counter;
 		}
 	}
+	Rcpp::checkUserInterrupt();	
 
 	/// exports
 	return(
