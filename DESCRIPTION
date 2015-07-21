@@ -35,14 +35,14 @@ Suggests:
 Enhances: gurobi
 SystemRequirements: C++11
 Collate:
-    'Heteromys_anomalus_South_America.R'
-    'RcppExports.R'
-    'generics.R'
-    'dependencies.R'
-    'SpPartial.R'
-    'SpRarefy.R'
-    'spThin-internal.R'
-    'SpThin.R'
-    'make.grid.R'
-    'rarefy.R'
+    'Heteromys_anomalus_South_America.R',
+    'RcppExports.R',
+    'generics.R',
+    'dependencies.R',
+    'SpPartial.R',
+    'SpRarefy.R',
+    'spThin-internal.R',
+    'SpThin.R',
+    'make.grid.R',
+    'rarefy.R',
     'thin.R'
