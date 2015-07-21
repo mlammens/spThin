@@ -23,7 +23,9 @@
 #' @importFrom sp SpatialPoints
 #' @importFrom sp SpatialPointsDataFrame
 #' @importFrom sp is.projected
+#' @importFrom sp spTransform
 #' @importFrom rgeos gIntersects
+#' @importFrom rgdal readOGR
 NULL
 
 #' @useDynLib spThin

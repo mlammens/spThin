@@ -20,13 +20,12 @@ Imports:
     Matrix,
     raster,
     rgeos,
-	rgdal,
+    rgdal,
     sp
 Depends:
     ggplot2,
     methods
-LinkingTo:
-	Rcpp,
+LinkingTo: Rcpp,
     RcppEigen
 LazyData: true
 License: GPL-3
@@ -34,8 +33,7 @@ VignetteBuilder: knitr
 Suggests:
     knitr,
     testthat
-Enhances:
-	gurobi
+Enhances: gurobi
 SystemRequirements: C++11
 Collate:
     'Heteromys_anomalus_South_America.R'
