@@ -30,22 +30,26 @@ make.grid<-function(x, cellsize, crs) {
 		cellsize=rep(cellsize, 2)
 	if (length(cellsize)!=2)
 		stop('length(cellsize) should be either 1 or 2')
-	xvals=seq(xmin(x), xmax(x)+cellsize[1], cellsize[1])
-	yvals=seq(ymin(x), ymax(x)+cellsize[2], cellsize[2])
+		
+	x.n<-ceiling((xmax(x)+cellsize[1]-xmin(x)) / cellsize[1])
+	y.n<-ceiling((ymax(x)+cellsize[2]-ymin(x)) / cellsize[2])
+	x.max<-xmin(x) + (cellsize[1] * (x.n))
+	y.max<-ymin(x) + (cellsize[2] * (y.n))
+	
 	return(
 		setValues(
 			raster(
 				extent(
-						min(xvals),
-						max(xvals),
-						min(yvals),
-						max(yvals)
+						xmin(x),
+						x.max,
+						ymin(x),
+						y.max
 				),
-				nrows=length(yvals),
-				ncols=length(xvals),
+				ncols=x.n,
+				nrows=y.n,
 				crs=crs
 			),
-			seq_len(length(xvals) * length(yvals))
+			seq_len(x.n * y.n)
 		)
 	)
 }

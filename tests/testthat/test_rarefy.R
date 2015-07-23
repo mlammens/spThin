@@ -11,6 +11,19 @@ test_that('SpRarefy: rcpp_rarefy_algorithm function doesn\'t work', {
 	)
 })
 
+# test that rarefy function makes the right sized grid
+test_that('SpRarefy: rarefy function makes wrong size grid', {
+	result<-spRarefy(
+		Heteromys_anomalus_South_America[1:5,],
+		x.col = "LONG", 
+        y.col = "LAT",
+        0.1,
+		10
+	)
+	expect_equal(res(result@grid), c(0.1,0.1))
+})
+
+
 # test rarefy function
 test_that('SpRarefy: rarefy function doesn\'t work', {
 	result<-spRarefy(
