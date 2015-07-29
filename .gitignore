@@ -4,3 +4,4 @@
 *.o
 *.csv
 *.log
+.Rproj.user
