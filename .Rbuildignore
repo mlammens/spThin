@@ -1,2 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+admin
+admin.R
+README.md
+NEWS.md
