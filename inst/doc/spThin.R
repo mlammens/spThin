@@ -74,11 +74,18 @@
 #  plot(thin3)
 
 ## ----eval=FALSE----------------------------------------------------------
+#  # load sp package
+#  library(sp)
+#  
+#  # create SpatialPointsDataFrame
 #  Heteromys_anomalus_South_America_sp <- SpatialPointsDataFrame(
 #  	coords=as.matrix(Heteromys_anomalus_South_America[,c("LONG", "LAT")]),
 #  	data=Heteromys_anomalus_South_America,
 #  	proj4string=CRS('+proj=longlat +ellps=WGS84 +datum=WGS84 +no_def')
 #  )
+#  
+#  # show structure for SpatialPointsDataFrame
+#  str(Heteromys_anomalus_South_America_sp)
 
 ## ----eval=FALSE----------------------------------------------------------
 #  Heteromys_anomalus_South_America_sp <- spTransform(
@@ -142,17 +149,17 @@
 
 ## ----eval=FALSE----------------------------------------------------------
 #  # print temporary dir
-#  print(tmpdir())
+#  print(tempdir())
 #  
 #  # write thinned datasets to file
-#  write(
+#  write.SpThin(
 #  	thin2,
 #  	coords=FALSE,
 #  	dir=tempdir()
 #  )
 #  
 #  # write rarefied datasets to file
-#  write(
+#  write.SpRarefy(
 #  	rarefy1,
 #  	coords=FALSE,
 #  	dir=tempdir()

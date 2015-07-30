@@ -328,11 +328,18 @@ summary(thin3)
 
 <p>First, we will turn the <code>data.frame</code> to a <code>SpatialPointsDataFrame</code>.</p>
 
-<pre><code class="r">Heteromys_anomalus_South_America_sp &lt;- SpatialPointsDataFrame(
+<pre><code class="r"># load sp package
+library(sp)
+
+# create SpatialPointsDataFrame
+Heteromys_anomalus_South_America_sp &lt;- SpatialPointsDataFrame(
     coords=as.matrix(Heteromys_anomalus_South_America[,c(&quot;LONG&quot;, &quot;LAT&quot;)]),
     data=Heteromys_anomalus_South_America,
     proj4string=CRS(&#39;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_def&#39;)
 )
+
+# show structure for SpatialPointsDataFrame
+str(Heteromys_anomalus_South_America_sp)
 </code></pre>
 
 <p>Next, we will reproject it to the PSAD56 / ICN Regional (EPSG:2317) coordinate system. This will allow us to specify the size of the grid cells in metres.</p>
@@ -409,17 +416,17 @@ legend(
 <p>Finally, the thinned and rarefied datasets can be saved using the <code>write</code> method. Here, we will saved the datasets to a temporary directory.</p>
 
 <pre><code class="r"># print temporary dir
-print(tmpdir())
+print(tempdir())
 
 # write thinned datasets to file
-write(
+write.SpThin(
     thin2,
     coords=FALSE,
     dir=tempdir()
 )
 
 # write rarefied datasets to file
-write(
+write.SpRarefy(
     rarefy1,
     coords=FALSE,
     dir=tempdir()
