@@ -18,7 +18,7 @@ nrep(x, ...)
 \code{integer} number of replicates.
 }
 \description{
-This function extracts the number of replicates contained in a \code{SpRarefy} or a \code{SpThin} object.
+This function returns the number of replicates contained in a \code{SpRarefy} or a \code{SpThin} object.
 }
 \examples{
 # make simulated dataset

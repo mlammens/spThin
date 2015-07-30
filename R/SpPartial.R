@@ -9,7 +9,7 @@ NULL
 #' @slot samples \code{list} with indices for records in each replicate.
 #' @slot call \code{call} used to generate object.
 #' @export
-#' @seealso \code{\link{call}}, \code{\link{data}}, \code{\link{samples}}, \code{\link{nrep}}, \code{\link{plot}},\code{\link{summary}}, \code{\link{write}}.
+#' @seealso \code{\link{call}}, \code{\link{data}}, \code{\link{nrep}}, \code{\link{plot}},\code{\link{summary}}, \code{\link{write}}.
 SpPartial <- setClass(
 	"SpPartial",
 	representation(
@@ -20,13 +20,7 @@ SpPartial <- setClass(
 )
 
 #' @export
-#' @rdname samples
-samples.SpPartial<-function(x, r=1, ...) {
-	return(x[[r]])
-}
-
-#' @export
-#' @rdname samples
+#' @rdname extract
 `[[.SpPartial`<-function(x, r=1, ...) {
 	if(r<0 | r>length(x@samples))
 		stop('r between 1 and the number of replicates')

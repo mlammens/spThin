@@ -11,7 +11,7 @@ NULL
 #' @slot method \code{character} name of method used to solve problem.
 #' @slot call \code{call} used to generate object.
 #' @export
-#' @seealso \code{\link{call}}, \code{\link{data}}, \code{\link{samples}}, \code{\link{mindist}}, \code{\link{nrep}}, \code{\link{plot}},\code{\link{summary}}, \code{\link{write}}.
+#' @seealso \code{\link{call}}, \code{\link{data}}, \code{\link{mindist}}, \code{\link{nrep}}, \code{\link{plot}},\code{\link{summary}}, \code{\link{write}}.
 SpThin <- setClass(
 	"SpThin",
 	representation(

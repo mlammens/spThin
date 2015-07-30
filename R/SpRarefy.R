@@ -11,7 +11,7 @@ NULL
 #' @slot call \code{call} used to generate object.
 #' @slot grid \code{RasterLayer} used to rarefy data.
 #' @export
-#' @seealso \code{\link{call}}, \code{\link{data}}, \code{\link{samples}}, \code{\link{cellsize}}, \code{\link{nrep}}, \code{\link{plot}},\code{\link{summary}}, \code{\link{write}}.
+#' @seealso \code{\link{call}}, \code{\link{data}}, \code{\link{cellsize}}, \code{\link{nrep}}, \code{\link{plot}},\code{\link{summary}}, \code{\link{write}}.
 SpRarefy <- setClass(
 	"SpRarefy",
 	representation(

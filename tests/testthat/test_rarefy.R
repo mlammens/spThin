@@ -36,7 +36,7 @@ test_that('SpRarefy: rarefy function doesn\'t work', {
 })
 
 # test methods
-test_that('SpRarefy: samples method doesn\'t work', {
+test_that('SpRarefy: [[ method doesn\'t work', {
 	result<-spRarefy(
 		Heteromys_anomalus_South_America,
 		x.col = "LONG", 
@@ -44,7 +44,7 @@ test_that('SpRarefy: samples method doesn\'t work', {
         0.1,
 		10
 	)
-	x<-samples(result, 1)
+	x<-result[[1]]
 })
 
 test_that('SpRarefy: nrep method doesn\'t work', {
