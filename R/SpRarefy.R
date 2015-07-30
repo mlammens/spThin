@@ -65,6 +65,7 @@ plot.SpRarefy<-function(x, i=1, ...) {
 			tmp2,
 			aes_string(x="x", y="y")
 		) +
+		coord_equal() +		
 		geom_raster(
 			aes(fill=layer),
 		) +
@@ -81,7 +82,6 @@ plot.SpRarefy<-function(x, i=1, ...) {
 			axis.text=element_blank(),
 			axis.line=element_blank()
 		) +
-		coord_equal() +
 		scale_fill_continuous(name="Frequency", guide = guide_legend()) +
 		ggtitle('Occurrence records')
 	)

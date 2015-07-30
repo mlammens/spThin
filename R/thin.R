@@ -41,8 +41,8 @@ spThin.data.frame<-function(x, x.col, y.col, mindist, method='heuristic', nrep=1
 		stop('x.col not column in x')
 	if (!y.col %in% names(x))
 		stop('y.col not column in x')
-	if (great.circle.distance & all(x[[x.col]]<=180) & all(x[[x.col]]>=-180) & all(x[[y.col]]>=-90)& all(x[[y.col]]<=90))
-		warning("Data may be in lon/lat coordinate system.\nIf so, please use great.circle.distance=TRUE.")
+	if (!great.circle.distance & all(x[[x.col]]<=180) & all(x[[x.col]]>=-180) & all(x[[y.col]]>=-90)& all(x[[y.col]]<=90))
+		warning("data may be in lon/lat coordinate system.\nIf so, please use great.circle.distance=TRUE.")
 	# generate samples
 	x<-spThin(
 		SpatialPointsDataFrame(
