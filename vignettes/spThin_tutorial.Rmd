@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEngine{knitr::knitr}
   %\VignetteIndexEntry{spThin}
 ---
-<center> <h1>spThin Tutorial</h1> </center>
+<center> <h1>spThin</h1> </center>
 
 
 ## Introduction
