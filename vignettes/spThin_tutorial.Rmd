@@ -1,5 +1,5 @@
 ---
-title: "spThin Tutorial"
+title: "spThin"
 author: "Matthew E. Aiello-Lammens & Jeffrey O. Hanson"
 date: "2015-07-16"
 output: rmarkdown::html_vignette
