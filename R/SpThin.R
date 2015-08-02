@@ -11,7 +11,7 @@ NULL
 #' @slot method \code{character} name of method used to solve problem.
 #' @slot call \code{call} used to generate object.
 #' @export
-#' @seealso \code{\link{call}}, \code{\link{data}}, \code{\link{samples}}, \code{\link{mindist}}, \code{\link{nrep}}, \code{\link{plot}},\code{\link{summary}}, \code{\link{write}}.
+#' @seealso \code{\link{call}}, \code{\link{data}}, \code{\link{mindist}}, \code{\link{nrep}}, \code{\link{plot}},\code{\link{summary}}, \code{\link{write}}.
 SpThin <- setClass(
 	"SpThin",
 	representation(
@@ -73,13 +73,13 @@ plot.SpThin<-function(x, which=1:4, ...) {
 						as.data.frame(x@data@coords),
 						aes_string(x="coords.x1", y="coords.x2")
 					) +
+					theme_classic() +					
 					suppressWarnings(stat_binhex(bins=5)) +
 					geom_point(
 						data=as.data.frame(x@data@coords[x@samples[[which.max(sapply(x@samples, length))]],,drop=FALSE]),
 						aes_string(x='coords.x1', y='coords.x2'),
 						col="#ffffb3"
 					) +
-					theme_classic() +
 					coord_equal() +			
 					scale_fill_continuous(name="Frequency" ) +
 					theme(

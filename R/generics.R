@@ -26,7 +26,6 @@
 #' )
 #'
 #' # extract first replicate dataset in result1
-#' samples(result1, 1)
 #' result1[[1]]
 #'
 #' # make rarefied dataset 
@@ -39,15 +38,14 @@
 #' )
 #'
 #' # extract first replicate dataset in result2
-#' samples(result2, 1)
 #' result2[[1]]
 #'
-#' @export
-samples<-function(x, ...) {UseMethod("samples")}
+#' @name extract
+NULL
 
 #' Number replicates in \code{SpRarefy} and \code{SpThin} object
 #'
-#' This function extracts the number of replicates contained in a \code{SpRarefy} or a \code{SpThin} object.
+#' This function returns the number of replicates contained in a \code{SpRarefy} or a \code{SpThin} object.
 #'
 #' @param x \code{SpThin} object.
 #' @param ... not used.
@@ -184,12 +182,12 @@ cellsize<-function(x, ...) {UseMethod("cellsize")}
 #' of biases in observation records on the predictive performance of ecological niche models.
 #' 
 #' @param x \code{SpatialPoints}, \code{SpatialPointsDataFrame}, \code{data.frame} or \code{numeric} object with x-coordinates.
-#' @param x.col \code{character} name of column or \code{numeric} index of column with latitude values.
-#' @param y.col \code{character} name of column or \code{numeric} index of column with longitude values.
+#' @param x.col \code{character} name of column or \code{numeric} index of column with x-coordinates.
+#' @param y.col \code{character} name of column or \code{numeric} index of column with y-coordinates.
 #' @param y \code{numeric} object with y-coordinates if argument x is \code{numeric}.
 #' @param mindist \code{numeric} minimum distance (m) between records.
 #' @param method \code{character} name of method to solve problem: \itemize{
-#'	\item{'heuristic': data is thinned by sequentially removing points until the smallest distance between any point is greater than \code{mindist}.}
+#'	\item{'heuristic': data is thinned using a stingy heuristic algorithm; this involves sequentially removing points until the smallest distance between any point is greater than \code{mindist}.}
 #'	\item{'lpsolve': the problem is expressed as an integer programming problem and solved using LpSolve.}
 #'	\item{'gurobi': as above, but solved using Gurobi.}
 #' }
@@ -225,6 +223,9 @@ cellsize<-function(x, ...) {UseMethod("cellsize")}
 #'		method='heuristic',
 #'		10
 #' )
+#'
+#' # extract first replicate from result1
+#' x <- result1[[1]]
 #'
 #' # thin data using heuristics with data input as data.frame
 #' result2 <- spThin(
@@ -284,9 +285,9 @@ spThin<-function(x, ...) {UseMethod('spThin')}
 #' 
 #' @param x \code{numeric} with x-coordinates, \code{data.frame}, \code{SpatialPoints}, \code{SpatialPointsDataFrame} or  object.
 #' @param y \code{numeric} with y-coordinates.
-#' @param x.col \code{character} name of column or \code{numeric} index of column with latitude values.
-#' @param y.col \code{character} name of column or \code{numeric} index of column with longitude values.
-#' @param grid Either \code{numeric} size of grid cells, \code{RasterLayer}, or \code{SpatialPolygons}, or \code{SpatialPolygonsDataFrame} object.
+#' @param x.col \code{character} name of column or \code{numeric} index of column with x-coordinates.
+#' @param y.col \code{character} name of column or \code{numeric} index of column with y-coordinates.
+#' @param grid either \code{numeric} size of grid cells, \code{RasterLayer}, or \code{SpatialPolygons}, or \code{SpatialPolygonsDataFrame} object.
 #' @param nrep \code{numeric} number of replicate thinned data sets to produce.
 #' @param proj4string \code{CRS} object with coordinate system for coordinates (not needed for \code{Spatial objects}).
 #' @param ... not used.
@@ -349,6 +350,8 @@ spThin<-function(x, ...) {UseMethod('spThin')}
 #'		10
 #' )
 #' 
+#' # extract first replicate from result3
+#' x <- result3[[1]]
 #' @export
 spRarefy<-function(x, ...) {UseMethod('spRarefy')}
 

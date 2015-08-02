@@ -35,12 +35,14 @@ spThin.numeric<-function(x, y, mindist, method='heuristic', nrep=1, great.circle
 #' @rdname spThin
 #' @inheritParams spThin
 #' @export
-spThin.data.frame<-function(x, x.col, y.col, mindist, method='heuristic', nrep=1, great.circle.distance=TRUE, ...) {
+spThin.data.frame<-function(x, x.col, y.col, mindist, method='heuristic', nrep=1, great.circle.distance=FALSE, ...) {
 	# check validity of inputs
 	if (!x.col %in% names(x))
 		stop('x.col not column in x')
 	if (!y.col %in% names(x))
 		stop('y.col not column in x')
+	if (!great.circle.distance & all(x[[x.col]]<=180) & all(x[[x.col]]>=-180) & all(x[[y.col]]>=-90)& all(x[[y.col]]<=90))
+		warning("data may be in lon/lat coordinate system.\nIf so, please use great.circle.distance=TRUE.")
 	# generate samples
 	x<-spThin(
 		SpatialPointsDataFrame(

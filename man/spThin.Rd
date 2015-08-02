@@ -13,7 +13,7 @@ spThin(x, ...)
   great.circle.distance = FALSE, ...)
 
 \method{spThin}{data.frame}(x, x.col, y.col, mindist, method = "heuristic",
-  nrep = 1, great.circle.distance = TRUE, ...)
+  nrep = 1, great.circle.distance = FALSE, ...)
 
 \method{spThin}{SpatialPoints}(x, mindist, method = "heuristic", nrep = 1,
   great.circle.distance = x@proj4string@projargs ==
@@ -29,7 +29,7 @@ spThin(x, ...)
 \item{mindist}{\code{numeric} minimum distance (m) between records.}
 
 \item{method}{\code{character} name of method to solve problem: \itemize{
-    \item{'heuristic': data is thinned by sequentially removing points until the smallest distance between any point is greater than \code{mindist}.}
+    \item{'heuristic': data is thinned using a stingy heuristic algorithm; this involves sequentially removing points until the smallest distance between any point is greater than \code{mindist}.}
     \item{'lpsolve': the problem is expressed as an integer programming problem and solved using LpSolve.}
     \item{'gurobi': as above, but solved using Gurobi.}
 }}
@@ -38,9 +38,9 @@ spThin(x, ...)
 
 \item{great.circle.distance}{\code{logical} if \code{TRUE} great circle distances will be used for distance calculations, else euclidean distances will be be used.}
 
-\item{x.col}{\code{character} name of column or \code{numeric} index of column with latitude values.}
+\item{x.col}{\code{character} name of column or \code{numeric} index of column with x-coordinates.}
 
-\item{y.col}{\code{character} name of column or \code{numeric} index of column with longitude values.}
+\item{y.col}{\code{character} name of column or \code{numeric} index of column with y-coordinates.}
 }
 \value{
 \code{SpThin} object.
@@ -79,6 +79,9 @@ result1 <- spThin(
 		method='heuristic',
 		10
 )
+
+# extract first replicate from result1
+x <- result1[[1]]
 
 # thin data using heuristics with data input as data.frame
 result2 <- spThin(

@@ -24,8 +24,8 @@
 #  # thin records using lp_solve
 #  thin1 <- spThin(
 #  	Heteromys_anomalus_South_America,
-#  	lon.col = "LONG",
-#  	lat.col = "LAT",
+#  	x.col = "LONG",
+#  	y.col = "LAT",
 #  	mindist = 100000,
 #  	method="lpsolve",
 #  	great.circle.distance=TRUE,
@@ -42,8 +42,8 @@
 #  # thin records using gurobi
 #  thin2 <- spThin(
 #  	Heteromys_anomalus_South_America,
-#  	lon.col = "LONG",
-#  	lat.col = "LAT",
+#  	x.col = "LONG",
+#  	y.col = "LAT",
 #  	mindist = 100000,
 #  	method="gurobi",
 #  	great.circle.distance=TRUE
@@ -59,8 +59,8 @@
 #  # thin records using heuristic
 #  thin3 <- spThin(
 #  	Heteromys_anomalus_South_America,
-#  	lon.col = "LONG",
-#  	lat.col = "LAT",
+#  	x.col = "LONG",
+#  	y.col = "LAT",
 #  	mindist = 100000,
 #  	method="heuristic",
 #  	nrep=100,
@@ -74,11 +74,18 @@
 #  plot(thin3)
 
 ## ----eval=FALSE----------------------------------------------------------
+#  # load sp package
+#  library(sp)
+#  
+#  # create SpatialPointsDataFrame
 #  Heteromys_anomalus_South_America_sp <- SpatialPointsDataFrame(
 #  	coords=as.matrix(Heteromys_anomalus_South_America[,c("LONG", "LAT")]),
 #  	data=Heteromys_anomalus_South_America,
 #  	proj4string=CRS('+proj=longlat +ellps=WGS84 +datum=WGS84 +no_def')
 #  )
+#  
+#  # show structure for SpatialPointsDataFrame
+#  str(Heteromys_anomalus_South_America_sp)
 
 ## ----eval=FALSE----------------------------------------------------------
 #  Heteromys_anomalus_South_America_sp <- spTransform(
@@ -103,20 +110,59 @@
 #  plot(rarefy1, 1)
 
 ## ----eval=FALSE----------------------------------------------------------
-#  # access first replicate
-#  firstrep <- rarefy1[[1]]
+#  #### rarefied results
+#  # retrieve first rarefied dataset
+#  r1 <- rarefy1[[1]]
 #  
-#  # show structure
-#  str(firstrep)
+#  ## show structure for SpatialPointsDataFrame
+#  # the @coords slot has the coordinates of the points in a matrix
+#  # the @data slot has all the columns in a data.frame
+#  str(r1)
+#  
+#  ## extract information
+#  r1.coords <- r1@coords # extract coordinates for solution
+#  r1.data <- r1@data # extract data for solution
+#  
+#  #### thinned results
+#  # extract first thinned solution
+#  t1 <- thin1[[1]]
+#  
+#  ## extract properties of thinned data
+#  t1.coords <- r1@coords # extract coordinates
+#  t1.data <- r1@data # extract data.frame for solution
+#  
+#  #### make plot comparing both filtered datasets
+#  plot(
+#  	rbind(r1.coords, t1.coords),
+#  	col=c(
+#  		rep('red', nrow(r1.coords)),
+#  		rep('black', nrow(r1.coords))
+#  	),
+#  	pch=16
+#  )
+#  legend(
+#  	'topleft',
+#  	legend=c('Rarefied records', 'Thinned records'),
+#  	col=c('red', 'black')
+#  )
+#  
 
 ## ----eval=FALSE----------------------------------------------------------
 #  # print temporary dir
-#  print(tmpdir())
+#  print(tempdir())
 #  
-#  # write replicate datasets to file
-#  write(
+#  # write thinned datasets to file
+#  write.SpThin(
+#  	thin2,
+#  	coords=FALSE,
+#  	dir=tempdir()
+#  )
+#  
+#  # write rarefied datasets to file
+#  write.SpRarefy(
 #  	rarefy1,
 #  	coords=FALSE,
 #  	dir=tempdir()
 #  )
+#  
 
