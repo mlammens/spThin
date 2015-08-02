@@ -23,15 +23,15 @@ spRarefy(x, ...)
 
 \item{y}{\code{numeric} with y-coordinates.}
 
-\item{grid}{Either \code{numeric} size of grid cells, \code{RasterLayer}, or \code{SpatialPolygons}, or \code{SpatialPolygonsDataFrame} object.}
+\item{grid}{either \code{numeric} size of grid cells, \code{RasterLayer}, or \code{SpatialPolygons}, or \code{SpatialPolygonsDataFrame} object.}
 
 \item{nrep}{\code{numeric} number of replicate thinned data sets to produce.}
 
 \item{proj4string}{\code{CRS} object with coordinate system for coordinates (not needed for \code{Spatial objects}).}
 
-\item{x.col}{\code{character} name of column or \code{numeric} index of column with latitude values.}
+\item{x.col}{\code{character} name of column or \code{numeric} index of column with x-coordinates.}
 
-\item{y.col}{\code{character} name of column or \code{numeric} index of column with longitude values.}
+\item{y.col}{\code{character} name of column or \code{numeric} index of column with y-coordinates.}
 }
 \value{
 \code{SpRarefy} object.
@@ -96,6 +96,9 @@ result3 <-spThin(
 		),
 		10
 )
+
+# extract first replicate from result3
+x <- result3[[1]]
 }
 \seealso{
 \code{\link{SpRarefy}}

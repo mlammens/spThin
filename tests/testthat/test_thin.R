@@ -85,7 +85,7 @@ test_that('SpThin: thin function doesn\'t work', {
 })
 
 # test methods
-test_that('SpThin: samples method doesn\'t work', {
+test_that('SpThin: [[ method doesn\'t work', {
 	result<-spThin(
 		Heteromys_anomalus_South_America,
 		x.col = "LONG", 
@@ -94,7 +94,7 @@ test_that('SpThin: samples method doesn\'t work', {
         200000,
 		10
 	)
-	x<-samples(result, 1)
+	x<-result[[1]]
 })
 
 test_that('SpThin: nrep method doesn\'t work', {

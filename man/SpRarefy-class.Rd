@@ -22,6 +22,6 @@ This class is used to store replicates of spatially rarefied datasets.
 \item{\code{grid}}{\code{RasterLayer} used to rarefy data.}
 }}
 \seealso{
-\code{\link{call}}, \code{\link{data}}, \code{\link{samples}}, \code{\link{cellsize}}, \code{\link{nrep}}, \code{\link{plot}},\code{\link{summary}}, \code{\link{write}}.
+\code{\link{call}}, \code{\link{data}}, \code{\link{cellsize}}, \code{\link{nrep}}, \code{\link{plot}},\code{\link{summary}}, \code{\link{write}}.
 }
 

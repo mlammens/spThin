@@ -7,12 +7,14 @@ vignette: >
   %\VignetteEngine{knitr::knitr}
   %\VignetteIndexEntry{spThin}
 ---
+<center> <h1>spThin Tutorial</h1> </center>
 
-# Introduction
+
+## Introduction
 
 The `spThin` package contains functions to spatially thin and rarefy occurrence records. Here we provide a tutorial on this package can be used to process datasets for environmental niche modelling.
 
-## Install and load the `spThin` R package
+### Install and load the `spThin` R package
 
 First we will install the R package from source and load it into the workspace.
 
@@ -28,7 +30,7 @@ devtools:::install_github('mlammens/spThin')
 library(spThin)
 ```
 
-## Example dataset
+### Example dataset
 
 To demonstrate the use of `spThin` we will use a dataset containing 201 verified, georeferenced occurrence records for the Caribbean spiny pocket mouse (*Heteromys anomalus*). These records are from Columbia, Venezuela, and three Caribbean islands: Trinidad, Tobago, and Margarita. This dataset is included as part of the `spThin` package.
 
@@ -46,12 +48,12 @@ The dataset is stored in the `data.frame` `Heteromys_anomalus_South_America`. Ea
 table(Heteromys_anomalus_South_America$REGION)
 ```
 
-# Thin data
+## Thin data
 
-Thinning data is an optimisation problem. The objective is to identify the maximum number of points that are at least a minimum distance apart. The `spThin` function can be used to thin data. This function can use several optimisation routines to acheive this. It can use exact algorithms, using the LpSolve and Gurobi programs, and it can also use a stingy heuristic algorithm. 
+Thinning data is an optimisation problem. The objective is to identify the maximum number of points that are at least a minimum distance apart. The `spThin` function can be used to thin data. This function can use several optimisation routines to acheive this. It can use exact algorithms, using the LpSolve and Gurobi programs, and it can also use a heuristic algorithm. 
 
 
-## lp_solve
+### lp_solve
 
 First, we will use [lp_solve](http://lpsolve.sourceforge.net/) to optimally thin the (*Heteromys anomalus*) dataset. Here, we will thin the records such that each record is at least 10Km apart. We also will use great circle distances to compute the distance between records because the coordinates' are in longitudes and latitudes (aka WGS1984). 
 
@@ -61,8 +63,8 @@ To optimally thin the entire dataset, lp_solve can take up 10-20 minutes. Here, 
 # thin records using lp_solve
 thin1 <- spThin(
 	Heteromys_anomalus_South_America, 
-	lon.col = "LONG", 
-	lat.col = "LAT",
+	x.col = "LONG", 
+	y.col = "LAT",
 	mindist = 100000,
 	method="lpsolve",
 	great.circle.distance=TRUE,
@@ -79,9 +81,9 @@ To visualise which records were retained, we can plot `thin1`. The hexagons show
 plot(thin1)
 ```
 
-## Gurobi
+### Gurobi
 
-The LpSolve program is a freely available software (LGPL 2), however it cannot thin large datasets in a feasible amount of time. To optimally thin large datasets quickly, the `spThin` function can also use the Gurobi software package. [Gurobi](http://www.gurobi.com) is a commercial software package. Academics can obtain a [special license](http://www.gurobi.com/academia/academia-center) for no cost. Following the installation of Gurobi, the `gurobi` R package must also be [installed](http://www.gurobi.com/documentation/6.0/quickstart_windows/r_installing_the_r_package).
+The lp_solve program is a freely available software (LGPL 2), however it cannot thin large datasets in a feasible amount of time. To optimally thin large datasets quickly, the `spThin` function can also use the [Gurobi](http://www.gurobi.com) commercial software package. Academics can obtain a [special license](http://www.gurobi.com/academia/academia-center) for no cost. Following the installation of Gurobi, the `gurobi` R package must also be [installed](http://www.gurobi.com/documentation/6.0/quickstart_windows/r_installing_the_r_package).
 
 Here, we will attempt to optimally thin the dataset using Gurobi. If Gurobi is not fully installed on your system this will return an error.
 
@@ -89,8 +91,8 @@ Here, we will attempt to optimally thin the dataset using Gurobi. If Gurobi is n
 # thin records using gurobi
 thin2 <- spThin(
 	Heteromys_anomalus_South_America, 
-	lon.col = "LONG", 
-	lat.col = "LAT",
+	x.col = "LONG", 
+	y.col = "LAT",
 	mindist = 100000,
 	method="gurobi",
 	great.circle.distance=TRUE
@@ -103,20 +105,20 @@ summary(thin2)
 plot(thin2)
 ```
 
-## Stingy heuristic algorithm
+### Heuristic algorithm
 
-The `spThin` function can also use a stingy heuristic algorithm to thin data. Unlike LpSolve and Gurobi, this routine does not guaranteeably identify the optimal thinned dataset. This means that the algorithm can thin a dataset, but we cannot not know if it is the optimal solution. On the other hand, an advantage of the `heuristic` routine is that it can produce multiple near-optimal thinned datasets. These may be useful for subdividing data for bootstrap replicates.
+The `spThin` function can also use a "stingy heuristic" algorithm to thin data. Unlike LpSolve and Gurobi, this routine does not guaranteeably identify the optimal thinned dataset. This means that the algorithm can thin a dataset, but we cannot not know if it is the optimal solution. On the other hand, an advantage of this heuristic routine is that it can produce multiple near-optimal thinned datasets. These may be useful for subdividing data for bootstrap replicates.
 
-This algorithm starts with all the records and sequentially removes them. At each step, the number of neighbours within a specified distance is computed for each record. One of the remaining records is then sampled for removal, weighted by the number of neighbours. This process is repeated until all the remaining records are at least a minimum distance apart
+This algorithm starts with all the records and sequentially removes them. At each step, the number of neighbours within a specified distance is computed for each record. One of the remaining records is then sampled for removal, weighted by the number of neighbours. This process is repeated until all the remaining records are at least a minimum distance apart.
 
- To maximise our chances of identifying the optimal thinned dataset, we can run this algorithm multiple times. Here we will generate `100` replicates.
+To maximise our chances of identifying the optimal thinned dataset, we can run this algorithm multiple times. Here we will generate `100` replicates.
 
 ```{r eval=FALSE}
 # thin records using heuristic
 thin3 <- spThin(
 	Heteromys_anomalus_South_America, 
-	lon.col = "LONG", 
-	lat.col = "LAT",
+	x.col = "LONG", 
+	y.col = "LAT",
 	mindist = 100000,
 	method="heuristic",
 	nrep=100,
@@ -135,17 +137,24 @@ plot(thin3)
 
 The first plot shows the distribution of records and those selected in the best solution. The cumulative maximum records retained versus number of repetitions shows the number of different records retained as increase the number of replicates. If the plot shows a flat line, this indicates that all replicates yielded the same thinned dataset and that a single repetition would have sufficed. If the plot shows an increasing curve, this means that the each of the replicate datasets have different records and we have little evidence to suggest that any of the replicates is optimal. Whereas, if the plot shows a curve with an asymptote, this suggests that replicates have converge on a solution (though we still cannot say with certainty that it is optimal). 
 
-# Rarefy data
+## Rarefy data
 Spatial rarefication is another process for reducing bias. This process works by overlaying a grid over the observation records and randomly selecting a single record in each grid cell. Generally, this method can be used on much larger datasets than spatial thinning.
 
 First, we will turn the `data.frame` to a `SpatialPointsDataFrame`.
 
 ```{r eval=FALSE}
+# load sp package
+library(sp)
+
+# create SpatialPointsDataFrame
 Heteromys_anomalus_South_America_sp <- SpatialPointsDataFrame(
 	coords=as.matrix(Heteromys_anomalus_South_America[,c("LONG", "LAT")]),
 	data=Heteromys_anomalus_South_America,
 	proj4string=CRS('+proj=longlat +ellps=WGS84 +datum=WGS84 +no_def')
 )
+
+# show structure for SpatialPointsDataFrame
+str(Heteromys_anomalus_South_America_sp)
 ```
 
 Next, we will reproject it to the PSAD56 / ICN Regional (EPSG:2317) coordinate system. This will allow us to specify the size of the grid cells in metres.
@@ -176,29 +185,70 @@ summary(rarefy1)
 plot(rarefy1, 1)
 ```
 
-# Manipulate processed data
-Thinned or rarefied datasets using the `[[` method. The thinned or rarefied datasets are stored as `SpatialPoints` or `SpatialPointsDataFrame` objects. Here, we will retrieve the first rarefied replicate and store it in an object.
+## Manipulate processed data
+
+### Extract data from objects
+Thinned or rarefied datasets can be extracted from `SpThin` and `SpRarefy` objects using the `[[` method. The resulting datasets are stored as `SpatialPoints` or `SpatialPointsDataFrame` objects. Here, we will retrieve the first rarefied solution and store it in an object. Next, we will retrieve the first thinned solution using the heuristic and store it in another object. Then, we will plot the two solutions to see how they differ.
 
 ```{r eval=FALSE}
-# access first replicate
-firstrep <- rarefy1[[1]]
+#### rarefied results
+# retrieve first rarefied dataset
+r1 <- rarefy1[[1]]
 
-# show structure
-str(firstrep)
+## show structure for SpatialPointsDataFrame
+# the @coords slot has the coordinates of the points in a matrix
+# the @data slot has all the columns in a data.frame
+str(r1)
+
+## extract information
+r1.coords <- r1@coords # extract coordinates for solution
+r1.data <- r1@data # extract data for solution
+
+#### thinned results
+# extract first thinned solution
+t1 <- thin1[[1]]
+
+## extract properties of thinned data
+t1.coords <- r1@coords # extract coordinates
+t1.data <- r1@data # extract data.frame for solution
+
+#### make plot comparing both filtered datasets
+plot(
+	rbind(r1.coords, t1.coords),
+	col=c(
+		rep('red', nrow(r1.coords)),
+		rep('black', nrow(r1.coords))
+	),
+	pch=16
+)
+legend(
+	'topleft',
+	legend=c('Rarefied records', 'Thinned records'),
+	col=c('red', 'black')
+)
+
 ```
 
-# Save processed data
-Finally, the thinned and rarefied datasets can be saved using the `write` method. Here, we will saved the rarefied datasets to a temporary directory.
+### Save processed data
+Finally, the thinned and rarefied datasets can be saved using the `write` method. Here, we will saved the datasets to a temporary directory.
 
 ```{r eval=FALSE}
 # print temporary dir
-print(tmpdir())
+print(tempdir())
 
-# write replicate datasets to file
-write(
+# write thinned datasets to file
+write.SpThin(
+	thin2,
+	coords=FALSE,
+	dir=tempdir()
+)
+
+# write rarefied datasets to file
+write.SpRarefy(
 	rarefy1,
 	coords=FALSE,
 	dir=tempdir()
 )
+
 ```
 

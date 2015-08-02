@@ -11,7 +11,7 @@ NULL
 #' @slot call \code{call} used to generate object.
 #' @slot grid \code{RasterLayer} used to rarefy data.
 #' @export
-#' @seealso \code{\link{call}}, \code{\link{data}}, \code{\link{samples}}, \code{\link{cellsize}}, \code{\link{nrep}}, \code{\link{plot}},\code{\link{summary}}, \code{\link{write}}.
+#' @seealso \code{\link{call}}, \code{\link{data}}, \code{\link{cellsize}}, \code{\link{nrep}}, \code{\link{plot}},\code{\link{summary}}, \code{\link{write}}.
 SpRarefy <- setClass(
 	"SpRarefy",
 	representation(
@@ -65,6 +65,7 @@ plot.SpRarefy<-function(x, i=1, ...) {
 			tmp2,
 			aes_string(x="x", y="y")
 		) +
+		coord_equal() +		
 		geom_raster(
 			aes(fill=layer),
 		) +
@@ -81,7 +82,6 @@ plot.SpRarefy<-function(x, i=1, ...) {
 			axis.text=element_blank(),
 			axis.line=element_blank()
 		) +
-		coord_equal() +
 		scale_fill_continuous(name="Frequency", guide = guide_legend()) +
 		ggtitle('Occurrence records')
 	)
