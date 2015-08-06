@@ -55,7 +55,7 @@ Thinning data is an optimisation problem. The objective is to identify the maxim
 
 ### lp_solve
 
-First, we will use [lp_solve](http://lpsolve.sourceforge.net/) to optimally thin the (*Heteromys anomalus*) dataset. Here, we will thin the records such that each record is at least 10Km apart. We also will use great circle distances to compute the distance between records because the coordinates' are in longitudes and latitudes (aka WGS1984). 
+First, we will use [lp_solve](http://lpsolve.sourceforge.net/) to optimally thin the (*Heteromys anomalus*) dataset. Here, we will thin the records such that each record is at least 10km apart. We also will use great circle distances to compute the distance between records because the coordinates' are in longitudes and latitudes (aka WGS1984). 
 
 lp_solve can take up 10-20 minutes to optimally thin the entire dataset. For teaching purposes, we will use lp_sove to thin the dataset, but only allow it 10 seconds to find the best solution that it can. Therefore the solution that lp_solve identifies in this example  is extremely unlikely to be the optimal solution. The solution may contain extra records and records that are too close together. 
 
@@ -65,7 +65,7 @@ thin1 <- spThin(
 	Heteromys_anomalus_South_America, 
 	x.col = "LONG", 
 	y.col = "LAT",
-	mindist = 100000,
+	mindist = 10000,
 	method="lpsolve",
 	great.circle.distance=TRUE,
 	timeout=10
@@ -93,7 +93,7 @@ thin2 <- spThin(
 	Heteromys_anomalus_South_America, 
 	x.col = "LONG", 
 	y.col = "LAT",
-	mindist = 100000,
+	mindist = 10000,
 	method="gurobi",
 	great.circle.distance=TRUE
 )
@@ -107,7 +107,7 @@ plot(thin2)
 
 ### Heuristic algorithm
 
-The `spThin` function can also use a "stingy heuristic" algorithm to thin data. Unlike LpSolve and Gurobi, this routine does not guaranteeably identify the optimal thinned dataset. This means that the algorithm can thin a dataset, but we cannot not know if it is the optimal solution. On the other hand, an advantage of this heuristic routine is that it can produce multiple near-optimal thinned datasets. These may be useful for subdividing data for bootstrap replicates.
+The `spThin` function can also use a "stingy heuristic" algorithm to thin data. Unlike LpSolve and Gurobi, this routine does not guaranteeably identify the optimal thinned dataset. This means that the algorithm can thin a dataset, but we cannot not know if it is the optimal solution. On the other hand, an advantage of this heuristic routine is that it can produce multiple near-optimal thinned datasets, which in turn may be useful for generating bootstrap replicates for statistical analysis.
 
 This algorithm starts with all the records and sequentially removes them. At each step, the number of neighbours within a specified distance is computed for each record. One of the remaining records is then sampled for removal, weighted by the number of neighbours. This process is repeated until all the remaining records are at least a minimum distance apart.
 
@@ -119,7 +119,7 @@ thin3 <- spThin(
 	Heteromys_anomalus_South_America, 
 	x.col = "LONG", 
 	y.col = "LAT",
-	mindist = 100000,
+	mindist = 10000,
 	method="heuristic",
 	nrep=100,
 	great.circle.distance=TRUE
@@ -168,13 +168,13 @@ Heteromys_anomalus_South_America_sp <- spTransform(
 )
 ```
 
-Now, we can spatially rarefy the dataset. Here, we will generate 100 replicates using 180km grid cells.
+Now, we can spatially rarefy the dataset. Here, we will generate 100 replicates using 10km grid cells.
 
 ```{r eval=FALSE}
 # rarefy data
 rarefy1 <- spRarefy(
 	Heteromys_anomalus_South_America_sp, 
-	grid = 180000,
+	grid = 10000,
 	nrep = 100
 )
 
