@@ -57,7 +57,7 @@ Thinning data is an optimisation problem. The objective is to identify the maxim
 
 First, we will use [lp_solve](http://lpsolve.sourceforge.net/) to optimally thin the (*Heteromys anomalus*) dataset. Here, we will thin the records such that each record is at least 10Km apart. We also will use great circle distances to compute the distance between records because the coordinates' are in longitudes and latitudes (aka WGS1984). 
 
-To optimally thin the entire dataset, lp_solve can take up 10-20 minutes. Here, we will thin the dataset but allow lp_solve 10 seconds to find the best solution that it can. This solution is unlikely to be optimal.
+lp_solve can take up 10-20 minutes to optimally thin the entire dataset. For teaching purposes, we will use lp_sove to thin the dataset, but only allow it 10 seconds to find the best solution that it can. Therefore the solution that lp_solve identifies in this example  is extremely unlikely to be the optimal solution. The solution may contain extra records and records that are too close together. 
 
 ```{r eval=FALSE} 
 # thin records using lp_solve
