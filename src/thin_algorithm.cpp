@@ -17,16 +17,17 @@ using namespace Rcpp;
 #include "Random.h"
 
 // [[Rcpp::export]]
-Rcpp::List rcpp_thin_algorithm(std::vector<double> lon, std::vector<double> lat, double thin_par, int reps, bool great_circle_distance) {
+Rcpp::List rcpp_thin_algorithm(std::vector<double> x, std::vector<double> y, double thin_par, int reps, bool great_circle_distance) {
 	/// init
 	// declare objects
 	int currSite;
-	int nSites=lon.size();
+	int nSites=x.size();
 	int nRemainingSites;
 	std::vector<std::size_t> currSiteCounts(nSites);
 	std::vector<std::size_t> idMaxCounts(nSites);
 	std::vector<std::size_t> idRemainingSites(nSites);
 	Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic> greaterThanDist(nSites,nSites);
+	Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic> greaterThanDist_backup(nSites,nSites);
 	std::vector<std::vector<int> > sites;
 	sites.resize(reps);
 	
@@ -39,21 +40,21 @@ Rcpp::List rcpp_thin_algorithm(std::vector<double> lon, std::vector<double> lat,
 		// use great circle distances
 		for (int i=0; i<(nSites-1); ++i) {
 			for (int j=(i+1); j<nSites; ++j) {
-				greaterThanDist(i,j)=GcDistanceInMeters(lon[i], lat[i], lon[j], lat[j]) < thin_par;
-				greaterThanDist(j,i)=greaterThanDist(i,j);
+				greaterThanDist_backup(i,j)=GcDistanceInMeters(x[i], y[i], x[j], y[j]) < thin_par;
+				greaterThanDist_backup(j,i)=greaterThanDist_backup(i,j);
 			}
 		}
 	} else {
 		// use euclidean circle distances
 		for (int i=0; i<(nSites-1); ++i) {
 			for (int j=(i+1); j<nSites; ++j) {
-				greaterThanDist(i,j)=EucDistanceInMeters(lon[i], lat[i], lon[j], lat[j]) < thin_par;
-				greaterThanDist(j,i)=greaterThanDist(i,j);
+				greaterThanDist_backup(i,j)=EucDistanceInMeters(x[i], y[i], x[j], y[j]) < thin_par;
+				greaterThanDist_backup(j,i)=greaterThanDist_backup(i,j);
 			}
 		}
 	}
 	for (int i=0; i<nSites; ++i) {
-		greaterThanDist(i,i)=false;
+		greaterThanDist_backup(i,i)=false;
 	}
 	Rcpp::checkUserInterrupt();	
 	
@@ -62,7 +63,8 @@ Rcpp::List rcpp_thin_algorithm(std::vector<double> lon, std::vector<double> lat,
 		// reset parameters for new rep
 		nRemainingSites=nSites;
 		std::iota(idRemainingSites.begin(), idRemainingSites.end(), 0);
-		while (greaterThanDist.any() & (nRemainingSites > 1)) {				
+		greaterThanDist=greaterThanDist_backup;
+		while (greaterThanDist.any() & (nRemainingSites > 1)) {
 			// find counts of sites within nearest distances
 			for (int i=0; i<nRemainingSites; ++i)
 				currSiteCounts[i]=greaterThanDist.col(idRemainingSites[i]).count();

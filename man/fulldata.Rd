@@ -32,7 +32,7 @@ result1 <- spThin(
 		testDF,
 		"x",
 		"y",
-		mindist=5,
+		dist=5,
 		method='heuristic',
 		1
 )

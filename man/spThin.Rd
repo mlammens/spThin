@@ -9,13 +9,13 @@
 \usage{
 spThin(x, ...)
 
-\method{spThin}{numeric}(x, y, mindist, method = "heuristic", nrep = 1,
+\method{spThin}{numeric}(x, y, dist, method = "heuristic", nrep = 1,
   great.circle.distance = FALSE, ...)
 
-\method{spThin}{data.frame}(x, x.col, y.col, mindist, method = "heuristic",
+\method{spThin}{data.frame}(x, x.col, y.col, dist, method = "heuristic",
   nrep = 1, great.circle.distance = FALSE, ...)
 
-\method{spThin}{SpatialPoints}(x, mindist, method = "heuristic", nrep = 1,
+\method{spThin}{SpatialPoints}(x, dist, method = "heuristic", nrep = 1,
   great.circle.distance = x@proj4string@projargs ==
   "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs", ...)
 }
@@ -26,7 +26,7 @@ spThin(x, ...)
 
 \item{y}{\code{numeric} object with y-coordinates if argument x is \code{numeric}.}
 
-\item{mindist}{\code{numeric} minimum distance (m) between records.}
+\item{dist}{\code{numeric} minimum distance (m) between records.}
 
 \item{method}{\code{character} name of method to solve problem: \itemize{
     \item{'heuristic': data is thinned using a stingy heuristic algorithm; this involves sequentially removing points until the smallest distance between any point is greater than \code{mindist}.}

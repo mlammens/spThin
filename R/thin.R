@@ -4,7 +4,7 @@ NULL
 #' @rdname spThin
 #' @inheritParams spThin
 #' @export
-spThin.numeric<-function(x, y, mindist, method='heuristic', nrep=1, great.circle.distance=FALSE, ...) {
+spThin.numeric<-function(x, y, dist, method='heuristic', nrep=1, great.circle.distance=FALSE, ...) {
 	# check validity of inputs
 	if (!is.numeric(x))
 		stop('x is not a numeric vector')
@@ -21,7 +21,7 @@ spThin.numeric<-function(x, y, mindist, method='heuristic', nrep=1, great.circle
 				CRS()
 			)[[great.circle.distance+1]]
 		),
-		mindist,
+		dist,
 		method,
 		nrep,
 		great.circle.distance,
@@ -35,7 +35,7 @@ spThin.numeric<-function(x, y, mindist, method='heuristic', nrep=1, great.circle
 #' @rdname spThin
 #' @inheritParams spThin
 #' @export
-spThin.data.frame<-function(x, x.col, y.col, mindist, method='heuristic', nrep=1, great.circle.distance=FALSE, ...) {
+spThin.data.frame<-function(x, x.col, y.col, dist, method='heuristic', nrep=1, great.circle.distance=FALSE, ...) {
 	# check validity of inputs
 	if (!x.col %in% names(x))
 		stop('x.col not column in x')
@@ -53,7 +53,7 @@ spThin.data.frame<-function(x, x.col, y.col, mindist, method='heuristic', nrep=1
 				CRS()
 			)[[great.circle.distance+1]]
 		),
-		mindist,
+		dist,
 		method,
 		nrep,
 		great.circle.distance,
@@ -66,9 +66,9 @@ spThin.data.frame<-function(x, x.col, y.col, mindist, method='heuristic', nrep=1
 #' @rdname spThin
 #' @inheritParams spThin
 #' @export
-spThin.SpatialPoints<-function(x, mindist, method='heuristic', nrep=1, great.circle.distance=x@proj4string@projargs=='+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs', ...) {
-	if (!is.numeric(mindist))
-		stop('mindist is not numeric')
+spThin.SpatialPoints<-function(x, dist, method='heuristic', nrep=1, great.circle.distance=x@proj4string@projargs=='+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs', ...) {
+	if (!is.numeric(dist))
+		stop('dist is not numeric')
 	if (!is.numeric(nrep))
 		stop('nrep is not numeric')
 	match.arg(method, c('lpsolve', 'heuristic', 'gurobi'))		
@@ -76,37 +76,40 @@ spThin.SpatialPoints<-function(x, mindist, method='heuristic', nrep=1, great.cir
 		stop('great.circle.distance is not logical')
 	# generate samples
 	if (method=='lpsolve') {
-		samples<-thin_lpsolve(
+		solution<-thin_lpsolve(
 			x@coords[,1],
 			x@coords[,2],
-			mindist,
+			dist,
 			nrep,
 			great.circle.distance,
 			...
 		)
 	} else if (method=='gurobi') {
-		samples<-thin_gurobi(
+		solution<-thin_gurobi(
 			x@coords[,1],
 			x@coords[,2],
-			mindist,
+			dist,
 			great.circle.distance,
 			...
 		)
 	} else {
-		samples<-rcpp_thin_algorithm(
+		solution<-rcpp_thin_algorithm(
 			x@coords[,1],
 			x@coords[,2],
-			mindist,
+			dist,
 			nrep,
 			great.circle.distance
 		)
 	}
+		
 	# return result
 	return(
 		SpThin(
 			data=x,
-			samples=samples,
-			mindist=mindist,
+			samples=solution,
+			mindist=rcpp_get_mindists(x@coords[,1], x@coords[,2], great.circle.distance, solution),
+			distname=ifelse(great.circle.distance, 'great circle distance', 'Euclidean distance'),
+			thindist=dist,
 			method=method,
 			call=match.call()
 		)

@@ -48,7 +48,7 @@ fulldata.SpPartial<-function(x, ...) {
 setMethod("show",
 	signature(object="SpPartial"),
 	function(object) {
-		cat(str(object))
+		summary(object)
 	}
 )
 

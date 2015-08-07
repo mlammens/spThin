@@ -65,7 +65,7 @@ thin1 <- spThin(
 	Heteromys_anomalus_South_America, 
 	x.col = "LONG", 
 	y.col = "LAT",
-	mindist = 10000,
+	dist = 10000,
 	method="lpsolve",
 	great.circle.distance=TRUE,
 	timeout=10
@@ -93,7 +93,7 @@ thin2 <- spThin(
 	Heteromys_anomalus_South_America, 
 	x.col = "LONG", 
 	y.col = "LAT",
-	mindist = 10000,
+	dist = 10000,
 	method="gurobi",
 	great.circle.distance=TRUE
 )
@@ -119,7 +119,7 @@ thin3 <- spThin(
 	Heteromys_anomalus_South_America, 
 	x.col = "LONG", 
 	y.col = "LAT",
-	mindist = 10000,
+	dist = 10000,
 	method="heuristic",
 	nrep=100,
 	great.circle.distance=TRUE

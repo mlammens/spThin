@@ -63,14 +63,28 @@ test_that('SpThin: thin_gurobi function doesn\'t work', {
 })
 
 # test thin function
-test_that('SpThin: thin function doesn\'t work', {
+test_that('SpThin: thin(method="lpsolve") function doesn\'t work', {
+	result<-spThin(
+		Heteromys_anomalus_South_America,
+		x.col = "LONG", 
+        y.col = "LAT",
+		method='lpsolve',		
+        10000,
+		10,
+		great.circle.distance=TRUE,
+		timeout=10
+	)
+})
+
+test_that('SpThin: thin(method="heuristic") function doesn\'t work', {
 	result<-spThin(
 		Heteromys_anomalus_South_America,
 		x.col = "LONG", 
         y.col = "LAT",
 		method='heuristic',		
-        200000,
-		10
+        10000,
+		10,
+		great.circle.distance=TRUE
 	)
 	dists<-fields::rdist.earth(
 		Heteromys_anomalus_South_America[result@samples[[1]],c("LONG", "LAT")], 
@@ -78,10 +92,34 @@ test_that('SpThin: thin function doesn\'t work', {
 	)
 	expect_true(
 		all(
-			dists[lower.tri(dists)] > 200
+			dists[lower.tri(dists)] > 10
 		)
 	)
 	
+})
+
+test_that('SpThin: thin(method="gurobi") function doesn\'t work', {
+	if (spThin:::is.installed('gurobi')) {
+		result<-spThin(
+			Heteromys_anomalus_South_America,
+			x.col = "LONG", 
+			y.col = "LAT",
+			method='gurobi',		
+			10000,
+			10,
+			great.circle.distance=TRUE
+		)
+		dists<-fields::rdist.earth(
+			Heteromys_anomalus_South_America[result@samples[[1]],c("LONG", "LAT")], 
+			miles=FALSE
+		)
+		expect_true(
+			all(dists[lower.tri(dists)] > 10) & 
+			length(result@samples[[1]])==124
+		)
+	} else {
+		warning('gurobi R package is not installed.')
+	}
 })
 
 # test methods
@@ -103,8 +141,9 @@ test_that('SpThin: nrep method doesn\'t work', {
 		x.col = "LONG", 
         y.col = "LAT",
 		method='heuristic',
-        200000,
-		10
+        10000,
+		10,
+		great.circle.distance=TRUE
 	)
 	x=nrep(result)
 })
@@ -115,8 +154,9 @@ test_that('SpThin: fulldata method doesn\'t work', {
 		x.col = "LONG", 
         y.col = "LAT",
 		method='heuristic',		
-        200000,
-		10
+        10000,
+		10,
+		great.circle.distance=TRUE
 	)
 	x=fulldata(result)
 })
@@ -127,8 +167,9 @@ test_that('SpThin: mindist method doesn\'t work', {
 		x.col = "LONG", 
         y.col = "LAT",
 		method='heuristic',		
-        200000,
-		10
+        10000,
+		10,
+		great.circle.distance=TRUE
 	)
 	x=mindist(result)
 })
@@ -139,8 +180,9 @@ test_that('SpThin: write.SpThin method doesn\'t work', {
 		x.col = "LONG", 
         y.col = "LAT",
 		method='heuristic',		
-        200000,
-		10
+        10000,
+		10,
+		great.circle.distance=TRUE
 	)
 	x=write.SpThin(result, dir=tempdir())
 })
@@ -153,8 +195,9 @@ test_that('SpThin: summary method doesn\'t work', {
 		x.col = "LONG", 
         y.col = "LAT",
 		method='heuristic',		
-        200000,
-		10
+        10000,
+		10,
+		great.circle.distance=TRUE
 	)
 	summary(result)
 })
@@ -166,8 +209,9 @@ test_that('SpThin: plot method doesn\'t work', {
 		x.col = "LONG", 
         y.col = "LAT",
 		method='heuristic',		
-        200000,
-		10
+        10000,
+		10,
+		great.circle.distance=TRUE
 	)
 	plot(result)
 	dev.off()

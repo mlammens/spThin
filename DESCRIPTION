@@ -10,7 +10,7 @@ Maintainer: Matthew E. Aiello-Lammens <matt.lammens@gmail.com>
 Description: spThin contains functions to spatially rarefy and thin species
     occurrence data. These procedures can ameliorate sampling bias, and in turn
     result in better ecological niche models. The package contains functions to thin
-    datasets using exact-algorithm solvers (LpSolve and Gurobi) and a heuristic.
+    datasets using exact-algorithm solvers (lp_solve and Gurobi) and a heuristic.
     To thin data using Gurobi, the gurobi R package will need to be installed from
     http://www.gurobi.com/.
 Imports:
@@ -21,7 +21,8 @@ Imports:
     raster,
     rgeos,
     rgdal,
-    sp
+    sp,
+    slam
 Depends:
     ggplot2,
     methods
