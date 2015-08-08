@@ -78,9 +78,8 @@ test_that('SpThin: thin(method="lpsolve") function doesn\'t work', {
 
 test_that('SpThin: thin(method="heuristic") function doesn\'t work', {
 	result<-spThin(
-		Heteromys_anomalus_South_America,
-		x.col = "LONG", 
-        y.col = "LAT",
+		Heteromys_anomalus_South_America[["LONG"]],
+        Heteromys_anomalus_South_America[["LAT"]],
 		method='heuristic',		
         10000,
 		10,
@@ -200,10 +199,58 @@ test_that('SpThin: summary method doesn\'t work', {
 		great.circle.distance=TRUE
 	)
 	summary(result)
+	result
 })
+
+# test thindist method
+test_that('SpThin: thindist method doesn\'t work', {
+	result<-spThin(
+		Heteromys_anomalus_South_America,
+		x.col = "LONG", 
+        y.col = "LAT",
+		method='heuristic',		
+        10000,
+		10,
+		great.circle.distance=TRUE
+	)
+	thindist(result)
+})
+
+# test distname method
+test_that('SpThin: distname method doesn\'t work', {
+	result<-spThin(
+		Heteromys_anomalus_South_America,
+		x.col = "LONG", 
+        y.col = "LAT",
+		method='heuristic',		
+        10000,
+		10,
+		great.circle.distance=TRUE
+	)
+	distname(result)
+})
+
+# test summary method
+test_that('SpThin: summary method doesn\'t work', {
+	result<-spThin(
+		Heteromys_anomalus_South_America,
+		x.col = "LONG", 
+        y.col = "LAT",
+		method='heuristic',		
+        10000,
+		10,
+		great.circle.distance=TRUE
+	)
+	summary(result)
+	result
+})
+
+
 
 # test plot method
 test_that('SpThin: plot method doesn\'t work', {
+	
+	# make plots with heuristic
 	result<-spThin(
 		Heteromys_anomalus_South_America,
 		x.col = "LONG", 
@@ -214,6 +261,23 @@ test_that('SpThin: plot method doesn\'t work', {
 		great.circle.distance=TRUE
 	)
 	plot(result)
+	plot(result, which=1)
+	plot(result, which=1:2)
+	plot(result, which=1:3)
+	
+	# make plot with lpsolve
+	result<-spThin(
+		Heteromys_anomalus_South_America,
+		x.col = "LONG", 
+        y.col = "LAT",
+		method='lpsolve',
+        10000,
+		10,
+		great.circle.distance=TRUE
+	)
+	plot(result)
+	
+	# kill plot window
 	dev.off()
 })
 
