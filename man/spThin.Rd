@@ -22,7 +22,7 @@ spThin(x, ...)
 \arguments{
 \item{x}{\code{SpatialPoints}, \code{SpatialPointsDataFrame}, \code{data.frame} or \code{numeric} object with x-coordinates.}
 
-\item{...}{additional arguments passed to \code{\link[lpSolveAPI]{lp.control}} if method=='lpsolve' or \code{\link[gurobi]{gurobi}} if method=='gurobi'.}
+\item{...}{additional arguments passed to \code{\link[lpSolveAPI]{lp.control}} if method=='lpsolve' or gurobi::gurobi() if method=='gurobi'.}
 
 \item{y}{\code{numeric} object with y-coordinates if argument x is \code{numeric}.}
 

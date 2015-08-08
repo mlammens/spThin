@@ -2,8 +2,18 @@ language: r
 sudo: required
 warnings_are_errors: true
 
+env:
+  global:
+    - NOT_CRAN=true
+
+before_install: echo "options(repos = c(CRAN='http://cran.rstudio.com'))" > ~/.Rprofile
+
 r_binary_packages:
+  - NMF
+  - igraph
   - rgdal
+  - raster
+  - lpSolveAPI
 
 r_github_packages:
   - rstudio/rmarkdown

@@ -7,11 +7,11 @@ Date: 2015-07-12
 Author: Matthew E. Aiello-Lammens, Robert A. Boria, Aleksandar Radosavljevic,
     Bruno Vilela, and Robert P. Anderson
 Maintainer: Matthew E. Aiello-Lammens <matt.lammens@gmail.com>
-Description: Functions to spatially rarefy and thin species
-    occurrence data. These procedures can ameliorate sampling bias, and fit
-    better ecological niche models. Data can be thinned used exact-algorithm 
-	solvers ('lp_solve' and 'Gurobi') and a heuristic. To thin data using Gurobi,
-	the gurobi R package will need to be installed from <http://www.gurobi.com/>.
+Description: Functions to spatially rarefy and thin species occurrence data.
+    These procedures can ameliorate sampling bias, and fit better ecological
+    niche models. Data can be thinned used exact-algorithm solvers ('lp_solve' and
+    'Gurobi') and a heuristic. To thin data using Gurobi, the gurobi R package will
+    need to be installed from <http://www.gurobi.com/>.
 Imports:
     gridExtra,
     hexbin,
@@ -33,7 +33,7 @@ VignetteBuilder: knitr
 Suggests:
     knitr,
     testthat,
-	fields
+    fields
 Enhances: gurobi
 SystemRequirements: C++11
 Collate:

@@ -239,7 +239,7 @@ cellsize<-function(x, ...) {UseMethod("cellsize")}
 #' }
 #' @param nrep \code{numeric} number of replicate thinned data sets to produce when using the \code{heuristic} method. 
 #' @param great.circle.distance \code{logical} if \code{TRUE} great circle distances will be used for distance calculations, else euclidean distances will be be used.
-#' @param ... additional arguments passed to \code{\link[lpSolveAPI]{lp.control}} if method=='lpsolve' or \code{\link[gurobi]{gurobi}} if method=='gurobi'.
+#' @param ... additional arguments passed to \code{\link[lpSolveAPI]{lp.control}} if method=='lpsolve' or gurobi::gurobi() if method=='gurobi'.
 #' @return \code{SpThin} object. 
 #' @details Thinning data is an integer programming problem. The objective is to maximise the number of retained points, whilst ensuring that all retained points
 #'			are at least a certain distance apart. LpSolve and Gurobi are guaranteed to identify the optimal solution.
