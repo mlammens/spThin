@@ -58,7 +58,7 @@ test_that('SpThin: thin_gurobi function doesn\'t work', {
 			)
 		)
 	} else {
-		warning('gurobi R package not installed')
+		cat('gurobi R package is not installed.\n')
 	}
 })
 
@@ -118,7 +118,7 @@ test_that('SpThin: thin(method="gurobi") function doesn\'t work', {
 			length(result@samples[[1]])==124
 		)
 	} else {
-		warning('gurobi R package is not installed.')
+		cat('gurobi R package is not installed.\n')
 	}
 })
 
