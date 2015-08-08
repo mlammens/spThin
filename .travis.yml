@@ -3,7 +3,7 @@ sudo: required
 warnings_are_errors: true
 
 r_binary_packages:
-- rgdal
+  - rgdal
 
 r_github_packages:
   - rstudio/rmarkdown
