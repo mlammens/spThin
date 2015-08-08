@@ -2,15 +2,9 @@ language: r
 sudo: required
 warnings_are_errors: true
 
-apt_packages:
-  - libgdal1h
-  - libnetcdf-dev
-  - libhdf4-alt-dev
-  - libhdf5-7
-  - libhdf5-dev
-  - libhdf5-serial-dev
-  - libgdal-dev
-  - libproj-dev
+before_install:
+  - sudo apt-get install -y libgdal-dev
+  - sudo apt-get install -y libproj-dev
 
 r_github_packages:
   - rstudio/rmarkdown
