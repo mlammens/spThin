@@ -35,11 +35,11 @@ library(devtools)
 library(roxygen2)
 check()
 
-# # local install
-# library(devtools)
-# install_local(
-	# file.path(Sys.getenv('HOME'), 'github', 'spThin')
-# )
+# local install
+library(devtools)
+install_local(
+	file.path(Sys.getenv('HOME'), 'github', 'spThin')
+)
 
 # # install from github
 # library(devtools)
