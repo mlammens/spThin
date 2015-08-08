@@ -333,9 +333,9 @@ spThin<-function(x, ...) {UseMethod('spThin')}
 #' @param y \code{numeric} with y-coordinates.
 #' @param x.col \code{character} name of column or \code{numeric} index of column with x-coordinates.
 #' @param y.col \code{character} name of column or \code{numeric} index of column with y-coordinates.
-#' @param grid either \code{numeric} size of grid cells, \code{RasterLayer}, or \code{SpatialPolygons}, or \code{SpatialPolygonsDataFrame} object.
+#' @param grid either \code{numeric} size of grid cells, or a \code{RasterLayer} object.
 #' @param nrep \code{numeric} number of replicate thinned data sets to produce.
-#' @param proj4string \code{CRS} object with coordinate system for coordinates (not needed for \code{Spatial objects}).
+#' @param proj4string \code{CRS} object with coordinate system for coordinates (not needed for \code{Spatial} objects).
 #' @param ... not used.
 #' @return \code{SpRarefy} object.
 #' @seealso \code{\link{SpRarefy}}

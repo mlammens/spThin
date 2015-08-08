@@ -24,12 +24,21 @@ test_that('SpRarefy: rarefy function makes wrong size grid', {
 })
 
 
-# test rarefy function
-test_that('SpRarefy: rarefy function doesn\'t work', {
+# test rarefy functions
+test_that('SpRarefy: rarefy.data.frame function doesn\'t work', {
 	result<-spRarefy(
 		Heteromys_anomalus_South_America[1:5,],
 		x.col = "X", 
         y.col = "Y",
+        10000,
+		10
+	)
+})
+
+test_that('SpRarefy: rarefy.numeric function doesn\'t work', {
+	result<-spRarefy(
+		Heteromys_anomalus_South_America[1:5,"X"],
+		Heteromys_anomalus_South_America[1:5,"Y"],
         10000,
 		10
 	)
