@@ -2,9 +2,8 @@ language: r
 sudo: required
 warnings_are_errors: true
 
-before_install:
-  - sudo apt-get install -y libgdal-dev
-  - sudo apt-get install -y libproj-dev
+r_binary_packages:
+- rgdal
 
 r_github_packages:
   - rstudio/rmarkdown
