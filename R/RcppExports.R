@@ -9,11 +9,15 @@ rcpp_make_lpsolve_file <- function(lon, lat, thin_par, great_circle_distance, fi
     .Call('spThin_rcpp_make_lpsolve_file', PACKAGE = 'spThin', lon, lat, thin_par, great_circle_distance, filepath)
 }
 
+rcpp_get_mindists <- function(x, y, great_circle_distance, solutions) {
+    .Call('spThin_rcpp_get_mindists', PACKAGE = 'spThin', x, y, great_circle_distance, solutions)
+}
+
 rcpp_rarefy_algorithm <- function(inpLIST, nrep) {
     .Call('spThin_rcpp_rarefy_algorithm', PACKAGE = 'spThin', inpLIST, nrep)
 }
 
-rcpp_thin_algorithm <- function(lon, lat, thin_par, reps, great_circle_distance) {
-    .Call('spThin_rcpp_thin_algorithm', PACKAGE = 'spThin', lon, lat, thin_par, reps, great_circle_distance)
+rcpp_thin_algorithm <- function(x, y, thin_par, reps, great_circle_distance) {
+    .Call('spThin_rcpp_thin_algorithm', PACKAGE = 'spThin', x, y, thin_par, reps, great_circle_distance)
 }
 

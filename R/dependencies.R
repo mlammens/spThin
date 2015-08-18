@@ -1,5 +1,6 @@
 #' @import ggplot2
 #' @import methods
+#' @importFrom slam col_sums
 #' @importFrom hexbin hexbin
 #' @importFrom lpSolveAPI solve.lpExtPtr
 #' @importFrom lpSolveAPI lp.control
@@ -26,6 +27,7 @@
 #' @importFrom sp spTransform
 #' @importFrom rgeos gIntersects
 #' @importFrom rgdal readOGR
+#' @importFrom rgdal CRSargs
 NULL
 
 #' @useDynLib spThin

@@ -23,8 +23,9 @@ result <-spRarefy(
 		Heteromys_anomalus_South_America,
 		x.col = "LONG",
      y.col = "LAT",
-     200000,
-		10
+     10000,
+		10,
+		great.circle.distance=TRUE
 	)
 
 # show map

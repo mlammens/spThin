@@ -23,9 +23,9 @@ data(Heteromys_anomalus_South_America)
 # make thinned dataset
 result <-spRarefy(
 		Heteromys_anomalus_South_America,
-		x.col = "LONG",
-     y.col = "LAT",
-     200000,
+		x.col = "X",
+     y.col = "Y",
+     10000,
 		10
 	)
 

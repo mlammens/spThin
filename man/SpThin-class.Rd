@@ -15,13 +15,17 @@ This class is used to store replicates of spatially thinned datasets.
 
 \item{\code{samples}}{\code{list} with indices for records in each replicate.}
 
-\item{\code{mindist}}{\code{numeric} minimum distance (m) between records.}
+\item{\code{method}}{\code{character} name of method used to thin the data.}
 
-\item{\code{method}}{\code{character} name of method used to solve problem.}
+\item{\code{thindist}}{\code{numeric} distance (m) used to thin records.}
+
+\item{\code{distname}}{\code{character} name of distance metric used to thin data. Either 'great circle distance' or 'Euclidean distance'.}
+
+\item{\code{mindist}}{\code{numeric} minimum distances (m) between records for each replicate.}
 
 \item{\code{call}}{\code{call} used to generate object.}
 }}
 \seealso{
-\code{\link{call}}, \code{\link{data}}, \code{\link{mindist}}, \code{\link{nrep}}, \code{\link{plot}},\code{\link{summary}}, \code{\link{write}}.
+\code{\link{call}}, \code{\link{data}}, \code{\link{mindist}}, \code{\link{nrep}}, \code{\link{plot}},\code{\link{summary}}, \code{\link{thindist}}, \code{\link{write}}.
 }
 

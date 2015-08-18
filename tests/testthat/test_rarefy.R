@@ -15,22 +15,31 @@ test_that('SpRarefy: rcpp_rarefy_algorithm function doesn\'t work', {
 test_that('SpRarefy: rarefy function makes wrong size grid', {
 	result<-spRarefy(
 		Heteromys_anomalus_South_America[1:5,],
-		x.col = "LONG", 
-        y.col = "LAT",
-        0.1,
+		x.col = "X", 
+        y.col = "Y",
+        10000,
 		10
 	)
-	expect_equal(res(result@grid), c(0.1,0.1))
+	expect_equal(res(result@grid), c(10000,10000))
 })
 
 
-# test rarefy function
-test_that('SpRarefy: rarefy function doesn\'t work', {
+# test rarefy functions
+test_that('SpRarefy: rarefy.data.frame function doesn\'t work', {
 	result<-spRarefy(
 		Heteromys_anomalus_South_America[1:5,],
-		x.col = "LONG", 
-        y.col = "LAT",
-        0.1,
+		x.col = "X", 
+        y.col = "Y",
+        10000,
+		10
+	)
+})
+
+test_that('SpRarefy: rarefy.numeric function doesn\'t work', {
+	result<-spRarefy(
+		Heteromys_anomalus_South_America[1:5,"X"],
+		Heteromys_anomalus_South_America[1:5,"Y"],
+        10000,
 		10
 	)
 })
@@ -39,9 +48,9 @@ test_that('SpRarefy: rarefy function doesn\'t work', {
 test_that('SpRarefy: [[ method doesn\'t work', {
 	result<-spRarefy(
 		Heteromys_anomalus_South_America,
-		x.col = "LONG", 
-        y.col = "LAT",
-        0.1,
+		x.col = "X", 
+        y.col = "Y",
+        10000,
 		10
 	)
 	x<-result[[1]]
@@ -50,9 +59,9 @@ test_that('SpRarefy: [[ method doesn\'t work', {
 test_that('SpRarefy: nrep method doesn\'t work', {
 	result<-spRarefy(
 		Heteromys_anomalus_South_America,
-		x.col = "LONG", 
-        y.col = "LAT",
-        0.1,
+		x.col = "X", 
+        y.col = "Y",
+        10000,
 		10
 	)
 	x=nrep(result)
@@ -62,9 +71,9 @@ test_that('SpRarefy: nrep method doesn\'t work', {
 test_that('SpRarefy: fulldata method doesn\'t work', {
 	result<-spRarefy(
 		Heteromys_anomalus_South_America,
-		x.col = "LONG", 
-        y.col = "LAT",
-        0.1,
+		x.col = "X", 
+        y.col = "Y",
+        10000,
 		10
 	)
 	x=fulldata(result)
@@ -73,9 +82,9 @@ test_that('SpRarefy: fulldata method doesn\'t work', {
 test_that('SpRarefy: cellsize method doesn\'t work', {
 	result<-spRarefy(
 		Heteromys_anomalus_South_America,
-		x.col = "LONG", 
-        y.col = "LAT",
-        0.1,
+		x.col = "X", 
+        y.col = "Y",
+        10000,
 		10
 	)
 	x=cellsize(result)
@@ -84,23 +93,21 @@ test_that('SpRarefy: cellsize method doesn\'t work', {
 test_that('SpRarefy: write.SpRarefy method doesn\'t work', {
 	result<-spRarefy(
 		Heteromys_anomalus_South_America,
-		x.col = "LONG", 
-        y.col = "LAT",
-        0.1,
+		x.col = "X", 
+        y.col = "Y",
+        10000,
 		10
 	)
 	x=write.SpRarefy(result, dir=tempdir())
 })
 
-
-
 # test summary method
 test_that('summary method doesn\'t work', {
 	result<-spRarefy(
 		Heteromys_anomalus_South_America,
-		x.col = "LONG", 
-        y.col = "LAT",
-        0.1,
+		x.col = "X", 
+        y.col = "Y",
+        10000,
 		10
 	)
 	summary(result)
@@ -110,9 +117,9 @@ test_that('summary method doesn\'t work', {
 test_that('plot method doesn\'t work', {
 	result<-suppressWarnings(spRarefy(
 		Heteromys_anomalus_South_America,
-		x.col = "LONG", 
-        y.col = "LAT",
-        0.1,
+		x.col = "X", 
+        y.col = "Y",
+        10000,
 		10
 	))
 	plot(result)

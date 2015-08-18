@@ -23,11 +23,11 @@ spRarefy(x, ...)
 
 \item{y}{\code{numeric} with y-coordinates.}
 
-\item{grid}{either \code{numeric} size of grid cells, \code{RasterLayer}, or \code{SpatialPolygons}, or \code{SpatialPolygonsDataFrame} object.}
+\item{grid}{either \code{numeric} size of grid cells, or a \code{RasterLayer} object.}
 
 \item{nrep}{\code{numeric} number of replicate thinned data sets to produce.}
 
-\item{proj4string}{\code{CRS} object with coordinate system for coordinates (not needed for \code{Spatial objects}).}
+\item{proj4string}{\code{CRS} object with coordinate system for coordinates (not needed for \code{Spatial} objects).}
 
 \item{x.col}{\code{character} name of column or \code{numeric} index of column with x-coordinates.}
 

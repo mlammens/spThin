@@ -4,15 +4,17 @@ Title: Functions for Spatial Thinning of Species Occurrence Records for Use in
     Ecological Models
 Version: 1.0.0
 Date: 2015-07-12
-Author: Matthew E. Aiello-Lammens, Jeff Hanson, Robert A. Boria, Aleksandar Radosavljevic,
-    Bruno Vilela, and Robert P. Anderson
-Maintainer: Matthew E. Aiello-Lammens <matt.lammens@gmail.com>
-Description: spThin contains functions to spatially rarefy and thin species
-    occurrence data. These procedures can ameliorate sampling bias, and in turn
-    result in better ecological niche models. The package contains functions to thin
-    datasets using exact-algorithm solvers (LpSolve and Gurobi) and a heuristic.
-    To thin data using Gurobi, the gurobi R package will need to be installed from
-    http://www.gurobi.com/.
+Authors@R: c(
+	person(c("Mathew", "E"), "Aiello-Lammens", email = "matt.lammens@gmail.com", role = c("aut", "cre")),
+	person(c("Robert", "A"), "Boria", role = c("aut")),
+	person("Aleksandar", "Radosavljevic", role = c("aut")),
+	person("Bruno", "Vilela", role = c("aut")),
+	person(c("Robert", "P"), "Anderson", role = c("aut")))
+Description: Functions to spatially rarefy and thin species occurrence data.
+    These procedures can ameliorate sampling bias, and fit better ecological
+    niche models. Data can be thinned used exact-algorithm solvers ('lp_solve' and
+    'Gurobi') and a heuristic. To thin data using Gurobi, the gurobi R package will
+    need to be installed from <http://www.gurobi.com/>.
 Imports:
     gridExtra,
     hexbin,
@@ -21,7 +23,8 @@ Imports:
     raster,
     rgeos,
     rgdal,
-    sp
+    sp,
+    slam
 Depends:
     ggplot2,
     methods
@@ -32,7 +35,8 @@ License: GPL-3
 VignetteBuilder: knitr
 Suggests:
     knitr,
-    testthat
+    testthat,
+    fields
 Enhances: gurobi
 SystemRequirements: C++11
 Collate:

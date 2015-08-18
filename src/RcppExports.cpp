@@ -35,6 +35,20 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// rcpp_get_mindists
+Rcpp::NumericVector rcpp_get_mindists(std::vector<double> x, std::vector<double> y, bool great_circle_distance, Rcpp::List solutions);
+RcppExport SEXP spThin_rcpp_get_mindists(SEXP xSEXP, SEXP ySEXP, SEXP great_circle_distanceSEXP, SEXP solutionsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< std::vector<double> >::type x(xSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type y(ySEXP);
+    Rcpp::traits::input_parameter< bool >::type great_circle_distance(great_circle_distanceSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type solutions(solutionsSEXP);
+    __result = Rcpp::wrap(rcpp_get_mindists(x, y, great_circle_distance, solutions));
+    return __result;
+END_RCPP
+}
 // rcpp_rarefy_algorithm
 Rcpp::List rcpp_rarefy_algorithm(Rcpp::List inpLIST, std::size_t nrep);
 RcppExport SEXP spThin_rcpp_rarefy_algorithm(SEXP inpLISTSEXP, SEXP nrepSEXP) {
@@ -48,17 +62,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // rcpp_thin_algorithm
-Rcpp::List rcpp_thin_algorithm(std::vector<double> lon, std::vector<double> lat, double thin_par, int reps, bool great_circle_distance);
-RcppExport SEXP spThin_rcpp_thin_algorithm(SEXP lonSEXP, SEXP latSEXP, SEXP thin_parSEXP, SEXP repsSEXP, SEXP great_circle_distanceSEXP) {
+Rcpp::List rcpp_thin_algorithm(std::vector<double> x, std::vector<double> y, double thin_par, int reps, bool great_circle_distance);
+RcppExport SEXP spThin_rcpp_thin_algorithm(SEXP xSEXP, SEXP ySEXP, SEXP thin_parSEXP, SEXP repsSEXP, SEXP great_circle_distanceSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< std::vector<double> >::type lon(lonSEXP);
-    Rcpp::traits::input_parameter< std::vector<double> >::type lat(latSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type x(xSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type y(ySEXP);
     Rcpp::traits::input_parameter< double >::type thin_par(thin_parSEXP);
     Rcpp::traits::input_parameter< int >::type reps(repsSEXP);
     Rcpp::traits::input_parameter< bool >::type great_circle_distance(great_circle_distanceSEXP);
-    __result = Rcpp::wrap(rcpp_thin_algorithm(lon, lat, thin_par, reps, great_circle_distance));
+    __result = Rcpp::wrap(rcpp_thin_algorithm(x, y, thin_par, reps, great_circle_distance));
     return __result;
 END_RCPP
 }

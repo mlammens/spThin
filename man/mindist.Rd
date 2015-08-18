@@ -3,7 +3,7 @@
 \name{mindist.SpThin}
 \alias{mindist}
 \alias{mindist.SpThin}
-\title{Minimum distance used to thin dataset.}
+\title{Minimum distance in thinned datasets.}
 \usage{
 \method{mindist}{SpThin}(x)
 
@@ -15,10 +15,10 @@ mindist(x, ...)
 \item{...}{not used.}
 }
 \value{
-\code{numeric} distance (m) used to thin records.
+\code{numeric} minimum distance (m) between records.
 }
 \description{
-This function returns the minimum distance used to thin records in a \code{SpThin} object.
+This function returns the minimum distances in the thinned dataset contained in a \code{SpThin} object.
 }
 \seealso{
 \code{\link{SpThin}}.
@@ -26,12 +26,12 @@ This function returns the minimum distance used to thin records in a \code{SpThi
 result <- spThin(
 		runif(100, -5, -5),
 		runif(100, -5, -5),
-		mindist=5,
+		dist=5,
 		method='heuristic',
 		1,
 )
 
-# show distance used to thin data
+# show minimum distance
 mindist(result)
 
 export

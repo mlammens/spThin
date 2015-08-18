@@ -20,7 +20,7 @@
 #'		testDF,
 #'		"x",
 #'		"y",
-#'		mindist=5,
+#'		dist=5,
 #'		method='heuristic',
 #'		nrep=10
 #' )
@@ -63,7 +63,7 @@ NULL
 #'		testDF,
 #'		"x",
 #'		"y",
-#'		mindist=5,
+#'		dist=5,
 #'		method='heuristic',
 #'		nrep=10
 #' )
@@ -106,7 +106,7 @@ nrep<-function(x, ...) {UseMethod("nrep")}
 #'		testDF,
 #'		"x",
 #'		"y",
-#'		mindist=5,
+#'		dist=5,
 #'		method='heuristic',
 #'		1
 #' )
@@ -129,9 +129,32 @@ nrep<-function(x, ...) {UseMethod("nrep")}
 #' @export
 fulldata<-function(x, ...) {UseMethod("fulldata")}
 
-#' Minimum distance used to thin dataset.
+#' Minimum distance in thinned datasets.
 #'
-#' This function returns the minimum distance used to thin records in a \code{SpThin} object.
+#' This function returns the minimum distances in the thinned dataset contained in a \code{SpThin} object.
+#'
+#' @param x \code{SpThin} object.
+#' @param ... not used.
+#' @return \code{numeric} minimum distance (m) between records.
+#' @seealso \code{\link{SpThin}}.
+#' # make thinned dataset using simulated data
+#' result <- spThin(
+#'		runif(100, -5, -5),
+#'		runif(100, -5, -5),
+#'		dist=5,
+#'		method='heuristic',
+#'		1,
+#' )
+#'
+#' # show minimum distance
+#' mindist(result)
+#'
+#' export
+mindist<-function(x, ...) {UseMethod("mindist")}
+
+#' Distance used to thin data.
+#'
+#' This function returns the distance used to thin datasets contained in a \code{SpThin} object.
 #'
 #' @param x \code{SpThin} object.
 #' @param ... not used.
@@ -141,16 +164,39 @@ fulldata<-function(x, ...) {UseMethod("fulldata")}
 #' result <- spThin(
 #'		runif(100, -5, -5),
 #'		runif(100, -5, -5),
-#'		mindist=5,
+#'		dist=5,
 #'		method='heuristic',
 #'		1,
 #' )
 #'
 #' # show distance used to thin data
-#' mindist(result)
+#' thindist(result)
 #'
 #' export
-mindist<-function(x, ...) {UseMethod("mindist")}
+thindist<-function(x, ...) {UseMethod("thindist")}
+
+#' Distance metric used to thin data.
+#'
+#' This function returns the name of the distance metric used to thin datasets contained in a \code{SpThin} object.
+#'
+#' @param x \code{SpThin} object.
+#' @param ... not used.
+#' @return \code{character} name of distance metric used to thin records.
+#' @seealso \code{\link{SpThin}}.
+#' # make thinned dataset using simulated data
+#' result <- spThin(
+#'		runif(100, -5, -5),
+#'		runif(100, -5, -5),
+#'		dist=5,
+#'		method='heuristic',
+#'		1,
+#' )
+#'
+#' # show distance name of metric
+#' distname(result)
+#'
+#' export
+distname<-function(x, ...) {UseMethod("distname")}
 
 #' Cell size distance used to rarefy dataset.
 #'
@@ -185,7 +231,7 @@ cellsize<-function(x, ...) {UseMethod("cellsize")}
 #' @param x.col \code{character} name of column or \code{numeric} index of column with x-coordinates.
 #' @param y.col \code{character} name of column or \code{numeric} index of column with y-coordinates.
 #' @param y \code{numeric} object with y-coordinates if argument x is \code{numeric}.
-#' @param mindist \code{numeric} minimum distance (m) between records.
+#' @param dist \code{numeric} minimum distance (m) between records.
 #' @param method \code{character} name of method to solve problem: \itemize{
 #'	\item{'heuristic': data is thinned using a stingy heuristic algorithm; this involves sequentially removing points until the smallest distance between any point is greater than \code{mindist}.}
 #'	\item{'lpsolve': the problem is expressed as an integer programming problem and solved using LpSolve.}
@@ -193,7 +239,7 @@ cellsize<-function(x, ...) {UseMethod("cellsize")}
 #' }
 #' @param nrep \code{numeric} number of replicate thinned data sets to produce when using the \code{heuristic} method. 
 #' @param great.circle.distance \code{logical} if \code{TRUE} great circle distances will be used for distance calculations, else euclidean distances will be be used.
-#' @param ... additional arguments passed to \code{\link[lpSolveAPI]{lp.control}} if method=='lpsolve' or \code{\link[gurobi]{gurobi}} if method=='gurobi'.
+#' @param ... additional arguments passed to \code{\link[lpSolveAPI]{lp.control}} if method=='lpsolve' or gurobi::gurobi() if method=='gurobi'.
 #' @return \code{SpThin} object. 
 #' @details Thinning data is an integer programming problem. The objective is to maximise the number of retained points, whilst ensuring that all retained points
 #'			are at least a certain distance apart. LpSolve and Gurobi are guaranteed to identify the optimal solution.
@@ -287,9 +333,9 @@ spThin<-function(x, ...) {UseMethod('spThin')}
 #' @param y \code{numeric} with y-coordinates.
 #' @param x.col \code{character} name of column or \code{numeric} index of column with x-coordinates.
 #' @param y.col \code{character} name of column or \code{numeric} index of column with y-coordinates.
-#' @param grid either \code{numeric} size of grid cells, \code{RasterLayer}, or \code{SpatialPolygons}, or \code{SpatialPolygonsDataFrame} object.
+#' @param grid either \code{numeric} size of grid cells, or a \code{RasterLayer} object.
 #' @param nrep \code{numeric} number of replicate thinned data sets to produce.
-#' @param proj4string \code{CRS} object with coordinate system for coordinates (not needed for \code{Spatial objects}).
+#' @param proj4string \code{CRS} object with coordinate system for coordinates (not needed for \code{Spatial} objects).
 #' @param ... not used.
 #' @return \code{SpRarefy} object.
 #' @seealso \code{\link{SpRarefy}}
