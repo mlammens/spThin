@@ -4,7 +4,7 @@
 \alias{summary.SpThin}
 \title{Summarize thinned datasets}
 \usage{
-\method{summary}{SpThin}(object, ...)
+summary.SpThin(object, ...)
 }
 \arguments{
 \item{object}{\code{SpThin} object.}
