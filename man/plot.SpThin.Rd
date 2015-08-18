@@ -32,8 +32,9 @@ result <-spThin(
 		x.col = "LONG",
      y.col = "LAT",
 		method='heuristic',
-     200000,
-		10
+     dist=10000,
+		nrep=10,
+		great.circle.distance=TRUE
 	)
 
 # show map + diagnostic plots

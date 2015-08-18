@@ -1,7 +1,6 @@
 #' @include RcppExports.R dependencies.R
 NULL
 
-
 utils::globalVariables(c("..density.."))
 
 .onUnload <- function (libpath) {
@@ -39,10 +38,13 @@ thin_lpsolve<-function(x, y, mindist, great.circle.distance, ...) {
 				return(which(as.logical(get.variables(lpmodel)[seq_along(x)])))
 			}
 		)
+	
 	)
 }
 
 thin_gurobi<-function(x, y, mindist, great.circle.distance, ...) {
+	if (!is.installed('gurobi'))
+		stop('gurobi R package is not installed. See ?thin for details.')
 	return(
 		list(
 			which(
@@ -66,7 +68,7 @@ thin_gurobi<-function(x, y, mindist, great.circle.distance, ...) {
 
 
 is.installed<-function(x) {
-	if (x %in% installed.packages()[,1])
+	if (!x %in% installed.packages()[,1])
 		return(FALSE)
 	if (!file.exists(
 			file.path(

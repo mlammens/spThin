@@ -26,7 +26,7 @@
 #  	Heteromys_anomalus_South_America,
 #  	x.col = "LONG",
 #  	y.col = "LAT",
-#  	mindist = 100000,
+#  	dist = 10000,
 #  	method="lpsolve",
 #  	great.circle.distance=TRUE,
 #  	timeout=10
@@ -44,7 +44,7 @@
 #  	Heteromys_anomalus_South_America,
 #  	x.col = "LONG",
 #  	y.col = "LAT",
-#  	mindist = 100000,
+#  	dist = 10000,
 #  	method="gurobi",
 #  	great.circle.distance=TRUE
 #  )
@@ -61,7 +61,7 @@
 #  	Heteromys_anomalus_South_America,
 #  	x.col = "LONG",
 #  	y.col = "LAT",
-#  	mindist = 100000,
+#  	dist = 10000,
 #  	method="heuristic",
 #  	nrep=100,
 #  	great.circle.distance=TRUE
@@ -99,7 +99,7 @@
 #  # rarefy data
 #  rarefy1 <- spRarefy(
 #  	Heteromys_anomalus_South_America_sp,
-#  	grid = 180000,
+#  	grid = 10000,
 #  	nrep = 100
 #  )
 #  

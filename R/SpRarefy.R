@@ -43,9 +43,9 @@ cellsize.SpRarefy <- function(x, ...) {
 #' # make thinned dataset 
 #' result <-spRarefy(
 #'		Heteromys_anomalus_South_America,
-#'		x.col = "LONG", 
-#'      y.col = "LAT",
-#'      200000,
+#'		x.col = "X", 
+#'      y.col = "Y",
+#'      10000,
 #'		10
 #'	)
 #'
@@ -104,8 +104,9 @@ plot.SpRarefy<-function(x, i=1, ...) {
 #'		Heteromys_anomalus_South_America,
 #'		x.col = "LONG", 
 #'      y.col = "LAT",
-#'      200000,
-#'		10
+#'      10000,
+#'		10,
+#'		great.circle.distance=TRUE
 #'	)
 #'
 #' # show map
@@ -114,13 +115,38 @@ plot.SpRarefy<-function(x, i=1, ...) {
 #' @export
 summary.SpRarefy <- function(object, ...) {
 	# init
-	cat('SpThin object.\n\n')
+	great.circle.distance=ifelse(
+		is.na(CRSargs(object@data@proj4string)),
+		FALSE,
+		ifelse(
+			grepl('+units', CRSargs(object@data@proj4string)),
+			ifelse(
+				grepl('+units=m', CRSargs(object@data@proj4string)),
+				FALSE,
+				TRUE
+			),
+			ifelse(
+				grepl('+proj=longlat', CRSargs(object@data@proj4string)),
+				TRUE,
+				FALSE
+			)
+		)
+	)
+	# cat summary
 	cat('Call:')
 	print(object@call)
 	cat('Cell size: ',object@cellsize[1], ', ', object@cellsize[2],'\n',sep="")
 	cat('Number of replicates: ',length(object@samples),'\n',sep="")
 	cat('Initial number of records: ',nrow(object@data@coords),'\n',sep="")
-	cat('Best thinned dataset: ',which.max(sapply(object@samples,length)),' (', max(sapply(object@samples,length)),' records)', '\n',sep="")
+	cat('Number records per replicate:', length(object@samples[[1]]), '\n', sep="")
+	cat(
+		'Mean min. distance between records: ',
+		round(mean(rcpp_get_mindists(object@data@coords[,1], object@data@coords[,2], great.circle.distance, object@samples)),3),
+		'm (assuming',
+		ifelse(great.circle.distance, 'great circle distances', 'Euclidean distances'),
+		')\n',
+		sep=""
+	)
 }
 
 #' Write rarefied dataset replicates to file.
@@ -140,9 +166,9 @@ summary.SpRarefy <- function(object, ...) {
 #' # make rarefied dataset 
 #' result <-spRarefy(
 #'		Heteromys_anomalus_South_America,
-#'		x.col = "LONG", 
-#'      y.col = "LAT",
-#'      200000,
+#'		x.col = "X", 
+#'      y.col = "Y",
+#'      10000,
 #'		10
 #'	)
 #'

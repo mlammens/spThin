@@ -55,8 +55,8 @@ spRarefy.data.frame<-function(x, x.col, y.col, grid, nrep, proj4string=CRS(), ..
 #' @inheritParams spRarefy
 #' @export
 spRarefy.SpatialPoints<-function(x, grid, nrep, ...) {
-	if (!is.numeric(grid) & !inherits(grid, 'RasterLayer') & !inherits(grid, 'SpatialPolygons'))
-		stop('grid is not a numeric vector, RasterLayer, or SpatialPolygons object')
+	if (!is.numeric(grid) & !inherits(grid, 'RasterLayer'))
+		stop('grid is not a numeric vector or RasterLayer')
 	if (!is.numeric(nrep))
 		stop('nrep is not numeric')
 	if (!is.numeric(nrep))
@@ -71,9 +71,6 @@ spRarefy.SpatialPoints<-function(x, grid, nrep, ...) {
 	# make grid
 	if (inherits(grid, c('numeric'))) {
 		grid<-make.grid(extent(x), grid, x@proj4string)
-	} else if (inherits(grid, 'SpatialPolygons')) {
-		ids<-sapply(gIntersects(x,grid,byid=TRUE,returnDense=TRUE), `[[`, 1)
-		cellsize<-as.numeric(NA)
 	}
 	if (inherits(grid, c('RasterLayer'))) {
 		ids<-extract(grid, x)

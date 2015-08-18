@@ -7,16 +7,20 @@ NULL
 #'
 #' @slot data \code{SpatialPoints} or \code{SpatialPointsDataFrame} object with all records.
 #' @slot samples \code{list} with indices for records in each replicate.
-#' @slot mindist \code{numeric} minimum distance (m) between records.
-#' @slot method \code{character} name of method used to solve problem.
+#' @slot method \code{character} name of method used to thin the data.
+#' @slot thindist \code{numeric} distance (m) used to thin records.
+#' @slot distname \code{character} name of distance metric used to thin data. Either 'great circle distance' or 'Euclidean distance'.
+#' @slot mindist \code{numeric} minimum distances (m) between records for each replicate.
 #' @slot call \code{call} used to generate object.
 #' @export
-#' @seealso \code{\link{call}}, \code{\link{data}}, \code{\link{mindist}}, \code{\link{nrep}}, \code{\link{plot}},\code{\link{summary}}, \code{\link{write}}.
+#' @seealso \code{\link{call}}, \code{\link{data}}, \code{\link{mindist}}, \code{\link{nrep}}, \code{\link{plot}},\code{\link{summary}}, \code{\link{thindist}}, \code{\link{write}}.
 SpThin <- setClass(
 	"SpThin",
 	representation(
-		mindist="numeric",
-		method="character"
+		method="character",
+		thindist="numeric",
+		distname='character',
+		mindist="numeric"
 	),
 	contains='SpPartial'
 )
@@ -27,6 +31,17 @@ mindist.SpThin<-function(x) {
 	return(x@mindist)
 }
 
+#' @export
+#' @rdname thindist
+thindist.SpThin<-function(x) {
+	return(x@thindist)
+}
+
+#' @export
+#' @rdname distname
+distname.SpThin<-function(x) {
+	return(x@distname)
+}
 
 #' Map and diagnostic plots for thinned datasets
 #' 
@@ -53,8 +68,9 @@ mindist.SpThin<-function(x) {
 #'		x.col = "LONG", 
 #'      y.col = "LAT",
 #'		method='heuristic',		
-#'      200000,
-#'		10
+#'      dist=10000,
+#'		nrep=10,
+#'		great.circle.distance=TRUE
 #'	)
 #'
 #' # show map + diagnostic plots
@@ -198,24 +214,34 @@ plot.SpThin<-function(x, which=1:4, ...) {
 #'		x.col = "LONG", 
 #'      y.col = "LAT",
 #'		method='heuristic',		
-#'      200000,
-#'		10
+#'      dist=10000,
+#'		nrep=10,
+#'		great.circle.distance=TRUE
 #'	)
 #'
 #' # show summary
 #' summary(result)
 #'
 #' @export
-summary.SpPartial <- function(object, ...) {
+summary.SpThin <- function(object, ...) {
 	# init
-	cat('SpThin object.\n\n')
 	cat('Call: ')
 	print(object@call)
 	cat('Method: ',object@method,'\n',sep="")
-	cat('Minimum distance: ',object@mindist,'\n',sep="")
+	cat('Distance metric: ',object@distname,'\n',sep="")
+	cat('Thinning distance (m): ',object@thindist,'\n',sep="")
 	cat('Number of replicates: ',length(object@samples),'\n',sep="")
 	cat('Initial number of records: ',nrow(object@data@coords),'\n',sep="")
-	cat('Best thinned dataset: ',which.max(sapply(object@samples,length)),' (', max(sapply(object@samples,length)),' records)', '\n',sep="")	
+	cat('Best thinned dataset: ',
+		which.max(sapply(object@samples,length)),
+		' (',
+		max(sapply(object@samples,length)),
+		' records; >= ',
+		round(object@mindist[[which.max(sapply(object@samples,length))]],3),
+		'm apart)',
+		'\n',
+		sep=""
+	)
 }
 
 
@@ -239,8 +265,9 @@ summary.SpPartial <- function(object, ...) {
 #'		x.col = "LONG", 
 #'      y.col = "LAT",
 #'		method='heuristic',		
-#'      200000,
-#'		10
+#'      dist=10000,
+#'		nrep=10,
+#'		great.circle.distance=TRUE
 #'	)
 #'
 #' # save data to temporary directory
