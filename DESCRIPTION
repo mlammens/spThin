@@ -6,6 +6,7 @@ Version: 1.0.0
 Date: 2015-07-12
 Authors@R: c(
 	person(c("Mathew", "E"), "Aiello-Lammens", email = "matt.lammens@gmail.com", role = c("aut", "cre")),
+	person("Jeff", "Hanson", role = c("aut", "cre")),
 	person(c("Robert", "A"), "Boria", role = c("aut")),
 	person("Aleksandar", "Radosavljevic", role = c("aut")),
 	person("Bruno", "Vilela", role = c("aut")),
