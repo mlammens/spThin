@@ -1,8 +1,8 @@
 spThin
 ============
 
-[![Build Status](https://travis-ci.org/paleo13/spThin.svg?branch=master)](https://travis-ci.org/paleo13/spThin)
-[![Coverage Status](https://codecov.io/github/paleo13/spThin/coverage.svg?branch=master)](https://codecov.io/github/paleo13/spThin?branch=master)
+[![Build Status](https://travis-ci.org/mlammens/spThin.svg?branch=master)](https://travis-ci.org/mlammens/spThin)
+[![Coverage Status](https://codecov.io/github/mlammens/spThin/coverage.svg?branch=master)](https://codecov.io/github/mlammens/spThin?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/spThin)](http://cran.r-project.org/package=spThin)
 
 #### spThin contains functions to spatially rarefy and thin species occurrence data. These procedures can ameliorate sampling bias, and in turn result in better ecological niche models. The package contains functions to thin datasets using exact-algorithm solvers ([lp_solve](http://lpsolve.sourceforge.net/) and [Gurobi](http://www.gurobi.com/)) and a stingy heuristic. This package also contains functions to rarefy datasets using grids.
