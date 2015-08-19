@@ -34,4 +34,4 @@ vignette('spThin', package='spThin')
 
 M.E. Aiello-Lammens, R.A. Boria, A. Radosavljevic, B. Vilela, R.P. Anderson (2015). spThin: an R package for spatial thinning of species occurrence records for use in ecological niche models. Ecography, **38**: 541-545.
 
-M.E. Aiello-Lammens, J. Hanson, R.A. Boria, A. Radosavljevic, B. Vilela, R.P. Anderson (2015). spThin (ver. 1.0.0): Functions to spatially rarefy and thin species occurrence data
+M.E. Aiello-Lammens, J. O. Hanson, R.A. Boria, A. Radosavljevic, B. Vilela, R.P. Anderson (2015). spThin (version 1.0.0): Functions to spatially rarefy and thin species occurrence data.
