@@ -155,8 +155,8 @@ summary.SpRarefy <- function(object, ...) {
 #'
 #' @param x \code{SpRarefy} object.
 #' @param coords \code{logical} if \code{TRUE} only coordinates of thinned data will be be saved, otherwise all columns of thinned data will be saved.
-#' @param dir \code{character} directory to save output files in.
-#' @param base \code{character} base name to save output files in.
+#' @param dir \code{character} directory to save output files in. Default is working directory.
+#' @param base \code{character} base name to save output files in. Default is 'rarefy_'.
 #' @param ... not used.
 #' @seealso \code{\link{SpRarefy}}.
 #' @examples
@@ -182,8 +182,8 @@ summary.SpRarefy <- function(object, ...) {
 #' unlink(dir(tempdir(), '^rarefy_.*.csv$'))
 #'
 #' @export
-write.SpRarefy<-function(x, coords=FALSE, dir=getwd(), base='thin_') {
-	write.spthin(x, coords=FALSE, dir=getwd(), base='thin_')
+write.SpRarefy<-function(x, coords=FALSE, dir=getwd(), base='rarefy_') {
+	write.spthin(x, coords=FALSE, dir=dir, base='rarefy_')
 }
 
 

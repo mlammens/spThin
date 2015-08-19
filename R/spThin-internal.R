@@ -92,7 +92,7 @@ write.spthin<-function(x, coords, dir, base) {
 	sapply(seq_along(x@samples), function(i) {
 		write.table(
 			z[x@samples[[i]],],
-			file.path(dir, paste0(base, formatC(i, width=4, flag=0), '.csv')),
+			file.path(dir, paste0(base, formatC(i, width=max(c(4, nchar(length(x@samples)))), flag=0), '.csv')),
 			row.names=FALSE,
 			sep=','
 		)

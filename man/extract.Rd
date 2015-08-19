@@ -10,7 +10,7 @@
 \arguments{
 \item{x}{\code{SpThin} or \code{SpRarefy} object.}
 
-\item{r}{\code{numeric} n'th replicate to extract samples from.}
+\item{r}{\code{numeric} n'th replicate to extract samples from. Zero can be used to extract samples using the best replicate.}
 
 \item{...}{not used.}
 }
