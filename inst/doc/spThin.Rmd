@@ -50,7 +50,7 @@ table(Heteromys_anomalus_South_America$REGION)
 
 ## Thin data
 
-Thinning data is an optimisation problem. The objective is to identify the maximum number of points that are at least a minimum distance apart. The `spThin` function can be used to thin data. This function can use several optimisation routines to acheive this. It can use exact algorithms, using the LpSolve and Gurobi programs, and it can also use a heuristic algorithm. 
+Thinning data is an optimisation problem. The objective is to identify the maximum number of points that are at least a minimum distance apart. The `spThin` function can be used to thin data. This function can use several optimisation routines to acheive this. It can use exact algorithms, using the lp_solve and Gurobi programs, and it can also use a heuristic algorithm. 
 
 
 ### lp_solve
@@ -107,7 +107,7 @@ plot(thin2)
 
 ### Heuristic algorithm
 
-The `spThin` function can also use a "stingy heuristic" algorithm to thin data. Unlike LpSolve and Gurobi, this routine does not guaranteeably identify the optimal thinned dataset. This means that the algorithm can thin a dataset, but we cannot not know if it is the optimal solution. On the other hand, an advantage of this heuristic routine is that it can produce multiple near-optimal thinned datasets, which in turn may be useful for generating bootstrap replicates for statistical analysis.
+The `spThin` function can also use a "stingy heuristic" algorithm to thin data. Unlike lp_solve and Gurobi, this routine does not guaranteeably identify the optimal thinned dataset. This means that the algorithm can thin a dataset, but we cannot not know if it is the optimal solution. On the other hand, an advantage of this heuristic routine is that it can produce multiple near-optimal thinned datasets, which in turn may be useful for generating bootstrap replicates for statistical analysis.
 
 This algorithm starts with all the records and sequentially removes them. At each step, the number of neighbours within a specified distance is computed for each record. One of the remaining records is then sampled for removal, weighted by the number of neighbours. This process is repeated until all the remaining records are at least a minimum distance apart.
 
@@ -227,6 +227,16 @@ legend(
 	col=c('red', 'black')
 )
 
+```
+
+For convenience, we can refer to the best replicate in `SpThin` object (ie. the replicate with the highest number of retained points) using as the 0'th index.
+
+```
+# retrieve the best thinned solution found by the heuristic
+t0 <- thin1[[0]]
+
+# plot the best thinnned solution found by the heuristic
+plot(t0)
 ```
 
 ### Save processed data

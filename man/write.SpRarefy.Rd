@@ -4,16 +4,16 @@
 \alias{write.SpRarefy}
 \title{Write rarefied dataset replicates to file.}
 \usage{
-write.SpRarefy(x, coords = FALSE, dir = getwd(), base = "thin_")
+write.SpRarefy(x, coords = FALSE, dir = getwd(), base = "rarefy_")
 }
 \arguments{
 \item{x}{\code{SpRarefy} object.}
 
 \item{coords}{\code{logical} if \code{TRUE} only coordinates of thinned data will be be saved, otherwise all columns of thinned data will be saved.}
 
-\item{dir}{\code{character} directory to save output files in.}
+\item{dir}{\code{character} directory to save output files in. Default is working directory.}
 
-\item{base}{\code{character} base name to save output files in.}
+\item{base}{\code{character} base name to save output files in. Default is 'rarefy_'.}
 
 \item{...}{not used.}
 }

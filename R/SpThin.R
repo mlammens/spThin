@@ -281,7 +281,7 @@ summary.SpThin <- function(object, ...) {
 #'
 #' @export
 write.SpThin<-function(x, coords=FALSE, dir=getwd(), base='thin_') {
-	write.spthin(x, coords=FALSE, dir=getwd(), base='thin_')
+	write.spthin(x, coords=FALSE, dir=dir, base='thin_')
 }
 
 

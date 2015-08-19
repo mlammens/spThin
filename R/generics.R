@@ -4,7 +4,7 @@
 #' This function extracts samples from a \code{SpRarefy} or a \code{SpThin} object.
 #'
 #' @param x \code{SpThin} or \code{SpRarefy} object.
-#' @param r \code{numeric} n'th replicate to extract samples from.
+#' @param r \code{numeric} n'th replicate to extract samples from. Zero can be used to extract samples using the best replicate.
 #' @param ... not used.
 #' @return \code{SpatialPoints} or  \code{SpatialPointsDataFrame} object
 #' @seealso \code{\link{SpThin}}.
