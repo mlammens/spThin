@@ -209,8 +209,8 @@ r1.data <- r1@data # extract data for solution
 t1 <- thin1[[1]]
 
 ## extract properties of thinned data
-t1.coords <- r1@coords # extract coordinates
-t1.data <- r1@data # extract data.frame for solution
+t1.coords <- t1@coords # extract coordinates
+t1.data <- t1@data # extract data.frame for solution
 
 #### make plot comparing both filtered datasets
 plot(
