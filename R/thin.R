@@ -9,8 +9,8 @@
 #' or biased, species occurence collections on spatial model outcomes.
 #' 
 #' @param loc.data A data.frame of occurence locations. It can include several
-#'   columnns, but must include at minimum a column of latitude and a
-#'   column of longitude values
+#'   columnns, but must include at minimum a column of latitude values,  a
+#'   column of longitude values, and a column of species names.
 #' @param lat.col Name of column of latitude values. Caps sensitive.
 #' @param long.col Name of column of longitude values. Caps sensitive.
 #' @param spec.col Name of column of species name. Caps sensitive.
