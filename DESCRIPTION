@@ -4,7 +4,7 @@ Title: Functions for Spatial Thinning of Species Occurrence Records for Use in
     Ecological Models
 Version: 0.2.0
 Date: 2019-11-14
-Author@R: as.person(c(
+Authors@R: as.person(c(
     "Matthew E. Aiello-Lammens <matt.lammens@gmail.com> [aut, cre]", 
     "Robert A. Boria [aut]", 
     "Aleksandar Radosavljevic [aut]",
