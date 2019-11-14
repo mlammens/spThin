@@ -17,140 +17,76 @@
 #' data.frame of spatially thinned presence records.
 #' 
 
-
-thin.algorithm <- function( rec.df.orig, thin.par, reps ) {
-
-  ## Create empty list object to store thinned occurrence datasets
-  reduced.rec.dfs <- list()
+thin.algorithm <- function(rec.df.orig, thin.par, reps) {
   
-  for ( Rep in 1:reps ){
-    
-    rec.df <- rec.df.orig
-    
-    ## Calculate distance matrix using fields::rdist.earth
-    ## ***
-    ## This function returns distances, correcting for change in distance
-    ## of degree of longitude based on distance from equator
-    DistMat <- rdist.earth( x1=rec.df, miles=FALSE )
-    
-    ## Set diagonal elements of distance matrix to NAs, as these are all 
-    ## 0 in this case.
-    diag(DistMat) <- NA
+  ## Create an empty list object of length `reps` to store thinned occs datasets
+  reduced.rec.dfs <- vector("list", reps)
+  
+  ## Calculate square distance matrix AND identify which elements
+  ## are less than the thin parameter
+  ## ***
+  ## Distances calculated using fields::rdist.earthThis function
+  ## which returns distances, correcting for change in distance
+  ## of degree of longitude based on distance from equator
+  DistMat.save <- rdist.earth(x1=rec.df.orig, miles=FALSE) < thin.par
+  
+  ## Set the diagonal of the dist matrix to FALSE values
+  diag(DistMat.save) <- FALSE
+  
+  ## Set any NA values in the dist matrix to FALSE
+  DistMat.save[is.na(DistMat.save)] <- FALSE
+  
+  ## Calculate the row sums of the DistMat.save object
+  ## This returns the number of elements that are less than
+  ## the thin.par for each row
+  SumVec.save <- rowSums(DistMat.save)
+  
+  ## Make a vector of TRUE values of length equal to the number
+  ## of rows in the DistMat
+  df.keep.save <- rep(TRUE, length(SumVec.save))
+  
+  for (Rep in seq_len(reps)) {
+    ## For each iteration in reps, reset the DistMat and
+    ## other indicator variables to original values
+    DistMat <- DistMat.save
+    SumVec <- SumVec.save
+    df.keep <- df.keep.save
     
     ## Perform while loop based on two criteria
-    ## 1. The minimum distance between to occurences is less than the 
+    ## 1. The minimum distance between two occurences is less than the 
     ##    thinning parameter 
-    ## 2. The number of rows in the data.frame is greater than 1
-    while( min( DistMat, na.rm=TRUE ) < thin.par & nrow( rec.df ) > 1 ) {
+    ## 2. The number of rows in the resulting data set is greater than 1
+    while (any(DistMat) && sum(df.keep) > 1) {
       
-      ## Find array indices for all occurrences that are less than thin.par
-      ## away from another occurence, and return the distance matrix **row** 
-      ## values for these occurrences
-      CloseRecs <- which( DistMat < thin.par, arr.ind=TRUE )[ , 1]
-      
-      ## Multiple steps in this one line:
-      ## ***
-      ## a. For each row (occurrence) in the distance matrix, determine how
-      ##    many other occurrences are within thin.par away.
-      ## b. Determine which occurence(s) have the greatest number of occurrences
-      ##    within thin.par distance.
-      ## c. Identify these occurences by name and convert them into numeric values
-      ##    (to be used as indexs of occurrences to remove).
-      RemoveRec <- as.numeric( names( which( table( CloseRecs ) == max( table( CloseRecs ) ) ) ) )
-      
-      ## If there are more than one occurrences meeting the above
-      ## conditions, choose one to remove at random.
-      if( length( RemoveRec ) > 1 ) {
-        RemoveRec <- sample( RemoveRec, 1 )
+      ## Identify the row(s) (occurence) that is within the thin.par distance
+      ## to the greatest number of other occurrences. 
+      ## If there is more than one row, choose one at random to remove
+      RemoveRec <- which(SumVec == max(SumVec))
+      if (length(RemoveRec) > 1) {
+        RemoveRec <- sample(RemoveRec, 1)
       }
       
-      ## Remove a single occurrence that has the most occurrences within 
-      ## thin.par distance from the dataset
-      rec.df <-rec.df[ -RemoveRec, ]
+      ## Assuming the row chosen above is removed, decrease the 
+      ## SumVec object by how many other rows are influenced by its removal
+      SumVec <- SumVec - DistMat[, RemoveRec]
       
-      ## Remove the occurence from the distance matrix
-      DistMat <- DistMat[ -RemoveRec, -RemoveRec ]
+      ## Set the SumVec value for the row to be removed equal to 0
+      SumVec[RemoveRec] <- 0L
       
-      ## Break out of while loop if there is only one record left
-      if( length( DistMat ) == 1 ){ break }
+      ## Set the occ to be ignored in the next iteration of the while loop
+      DistMat[RemoveRec, ] <- FALSE
+      DistMat[, RemoveRec] <- FALSE
       
+      ## Note the occurence for removal from the thinned data set
+      df.keep[RemoveRec] <- FALSE
     }
     
-    ## Save the thinned dataset to reduced.rec.dfs data.frame
+    ## Make the new, thinned, data set
+    rec.df <- rec.df.orig[df.keep, , drop=FALSE]
     colnames(rec.df) <- c("Longitude", "Latitude")
     reduced.rec.dfs[[Rep]] <- rec.df
   }
-  return( reduced.rec.dfs )
+  
+  return(reduced.rec.dfs)
 }
 
-
-## ******************************************************************** ##
-## Below is legacy code that is temporarly being stored in this file.
-## After a round of peer-review, we recieved a suggestion that in how
-## the algorithm works that fundamentally changed the alogirthm and
-## increased its efficiency by orders of magnitude.
-## The code below remains so that MA-L can incorporate comments
-## appropriately to the new code.
-## ******************************************************************** ##
-#   ##
-#   ## General Algorithm:
-#   ## ******************
-#   ## While at least one member of the nearest neighbor vector is less than 10 km
-#   ## remove one of the points associated with nearest neighbor less than 10km randomly
-#   ##
-#   ## A few more details:
-#   ## 1. Define thinning parameter
-#   ## 2. Find all points with nearest neighbor closer than thinning parameter
-#   ## 3. Randomly delete one of these points
-#   ## 4. Continue until no points have nearest neighbor closer than thinning parameter
-#   ## 5. Repeat many times 
-#   ##      
-#   
-#   reduced.rec.dfs <- list()
-#   
-#   # Value for which neighber is too close - i.e. thinning metric
-#   print( paste( "Thinning data using thin.par: ", thin.par ) )
-#   
-#   for ( Rep in 1:reps ){
-#     #print( paste( "Repetition: ", Rep ) ) ### Debug Line - uncomment to print repetition number
-#     rec.df <- rec.df.orig
-# 
-#     # Make distance matrix
-#     DistMat <- rdist.earth(x1=rec.df,miles=FALSE)
-#     # print(DistMat) ### DEBUG LINE - warning this could be very large!
-#     # Replace diagonal (which is all zeroes) with NAs
-#     diag(DistMat) <- NA
-#     # For each record, calculate nearest neighbor
-#     NearNeighbor <- apply( DistMat, MARGIN=2, FUN=min, na.rm=TRUE )
-#     MinNearNeighbor <- min(NearNeighbor)
-#     # print(MinNearNeighbor) ### DEBUG LINE
-#     
-#     while( MinNearNeighbor<thin.par & nrow(rec.df)>1 ){
-#       
-#       # Determine records with a minimum nearest neighbor distance less than thin.par 
-#       CloseRecs <- which( NearNeighbor < thin.par )
-#       # print( paste( 'Length of CloseRecs: ',length(CloseRecs)) ) ### DEBUG LINE
-#       
-#       # Choose one record to remove randomly
-#       RemoveRec <- sample(CloseRecs,1)
-#       # print( paste( 'RemoveRec: ',RemoveRec) ) ### DEBUG LINE
-#       
-#       # Remove random record from the complete records data.frame rec.df
-#       rec.df <-rec.df[ -RemoveRec, ]
-#       # print( paste( 'Number of remaining records: ', nrow(rec.df) )) ### DEBUG LINE
-#       
-#       # Remove random record from the distance matrix DistMat
-#       DistMat <- DistMat[ -RemoveRec, -RemoveRec ]
-# 
-#       # Calculate NEW nearest neighbors **UNLESS* there is only one location
-#       # remaining. 
-#       if ( nrow(rec.df)>1 ){
-#         NearNeighbor <- apply( DistMat, MARGIN=2, FUN=min, na.rm=TRUE )
-#         MinNearNeighbor <- min(NearNeighbor)
-#         # print(paste( 'MinNearNeighbor inside loop: ', MinNearNeighbor) ) DEBUG LINE
-#       }
-#     }
-#     reduced.rec.dfs[[Rep]] <- rec.df
-#   }
-#   return( reduced.rec.dfs )
-# }
