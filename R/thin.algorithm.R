@@ -87,6 +87,12 @@ thin.algorithm <- function(rec.df.orig, thin.par, reps) {
     reduced.rec.dfs[[Rep]] <- rec.df
   }
   
+  ## Order the list object of thinned records by most records
+  ## to least
+  reduced.rec.order <- unlist(lapply(reduced.rec.dfs, nrow))
+  reduced.rec.order <- order(reduced.rec.order, decreasing = TRUE)
+  reduced.rec.dfs <- reduced.rec.dfs[reduced.rec.order]
+  
   return(reduced.rec.dfs)
 }
 
