@@ -1,0 +1,34 @@
+Package: spThin
+Type: Package
+Title: Functions for Spatial Thinning of Species Occurrence Records for
+        Use in Ecological Models
+Version: 0.2.0
+Date: 2019-11-14
+Authors@R: as.person(c(
+    "Matthew E. Aiello-Lammens <matt.lammens@gmail.com> [aut, cre]", 
+    "Robert A. Boria [aut]", 
+    "Aleksandar Radosavljevic [aut]",
+    "Bruno Vilela [aut]",
+    "Robert P. Anderson [aut]",
+    "Robert Bjornson [ctb]",
+    "Steve Weston [ctb]"))
+Description: A set of functions that can be used to spatially thin
+    species occurrence data. The resulting thinned data can be used in ecological
+    modeling, such as ecological niche modeling.
+BugReports: https://github.com/mlammens/spThin/issues
+Depends: spam, grid, fields, knitr
+LazyData: TRUE
+License: GPL-3
+VignetteBuilder: knitr
+RoxygenNote: 7.0.0
+NeedsCompilation: no
+Packaged: 2019-11-14 21:48:26 UTC; maiellolammens
+Author: Matthew E. Aiello-Lammens [aut, cre],
+  Robert A. Boria [aut],
+  Aleksandar Radosavljevic [aut],
+  Bruno Vilela [aut],
+  Robert P. Anderson [aut],
+  Robert Bjornson [ctb],
+  Steve Weston [ctb]
+Maintainer: Matthew E. Aiello-Lammens <matt.lammens@gmail.com>
+Built: R 3.6.0; ; 2019-11-14 22:11:59 UTC; unix

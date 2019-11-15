@@ -1,0 +1,7 @@
+Heteromys_anomalus_South_America
+                        Occurrence record locations for Heteromys
+                        anomalus
+plotThin                Plot diagnosis for results of thin function
+summaryThin             Summary method for results of thin function
+thin                    Spatially thin species occurence data
+thin.algorithm          Implements random spatial thinning algorithm

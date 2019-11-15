@@ -1,0 +1,21 @@
+citHeader("To cite spThin in publications use:")
+
+citEntry(entry = "Article",
+  title        = "{spThin}: an {R} package for spatial thinning of species occurrence records for use in ecological niche models",
+  author       = personList(as.person("Matthew E. Aiello-Lammens"),
+                   as.person("Robert A. Boria"),
+                   as.person("Aleksandar Radosavljevic"),
+                   as.person("Bruno Vilela")),
+  journal      = "Ecography",
+  year         = "2015",
+  volume       = "38",
+  number       = "5",
+  pages        = "541--545",
+  url          = "https://onlinelibrary.wiley.com/doi/10.1111/ecog.01132",
+
+  textVersion  =
+  paste("Aiello-Lammens, M. E., Boria, R. A., Radosavljevic, A. , Vilela, B. and Anderson, R. P. (2015).",
+        "spThin: an R package for spatial thinning of species occurrence records for use in ecological niche models.",
+        "Ecography, 38: 541-545.",
+        "URL https://onlinelibrary.wiley.com/doi/10.1111/ecog.01132.")
+)
