@@ -20,7 +20,10 @@ Depends:
     spam,
     grid,
     fields,
-    knitr
+    knitr,
+    grDevices,
+    graphics,
+    utils
 LazyData: TRUE
 License: GPL-3
 VignetteBuilder: knitr
