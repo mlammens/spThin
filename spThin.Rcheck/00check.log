@@ -6,10 +6,8 @@
 * checking for file ‘spThin/DESCRIPTION’ ... OK
 * checking extension type ... Package
 * this is package ‘spThin’ version ‘0.2.0’
-* checking CRAN incoming feasibility ... NOTE
+* checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
 Maintainer: ‘Matthew E. Aiello-Lammens <matt.lammens@gmail.com>’
-
-Authors@R field should be a call to person(), or combine such calls.
 * checking package namespace information ... OK
 * checking package dependencies ... OK
 * checking if this is a source package ... OK
@@ -41,19 +39,7 @@ Authors@R field should be a call to person(), or combine such calls.
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... NOTE
-plotThin: no visible global function definition for ‘par’
-plotThin: no visible global function definition for ‘dev.interactive’
-plotThin: no visible global function definition for ‘plot’
-plotThin: no visible global function definition for ‘hist’
-thin: no visible global function definition for ‘write.csv’
-Undefined global functions or variables:
-  dev.interactive hist par plot write.csv
-Consider adding
-  importFrom("grDevices", "dev.interactive")
-  importFrom("graphics", "hist", "par", "plot")
-  importFrom("utils", "write.csv")
-to your NAMESPACE file.
+* checking R code for possible problems ... OK
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
@@ -74,4 +60,4 @@ to your NAMESPACE file.
 * checking re-building of vignette outputs ... OK
 * checking PDF version of manual ... OK
 * DONE
-Status: 2 NOTEs
+Status: OK

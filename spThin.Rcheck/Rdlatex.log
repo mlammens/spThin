@@ -74,7 +74,7 @@ ive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 (/usr/local/texlive/2016/texmf-dist/tex/latex/base/utf8.def)
 (/usr/local/texlive/2016/texmf-dist/tex/latex/base/utf8.def) [2]
 (/usr/local/texlive/2016/texmf-dist/tex/latex/base/utf8.def)
-Overfull \hbox (22.44649pt too wide) in paragraph at lines 140--145
+Overfull \hbox (22.44649pt too wide) in paragraph at lines 141--146
 []\T1/zi4/m/n/10 thin \T1/ptm/m/n/10 re-turns spa-tially thinned species oc-cur
 ence data sets. A ran-dom-izaiton al-go-rithm ([][]\T1/zi4/m/n/10 thin.algorith
 m[][][]\T1/ptm/m/n/10 )
@@ -95,7 +95,7 @@ fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/t
 ype1/urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/t
 imes/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmr8
 a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (5 pages, 82258 bytes).
+Output written on Rd2.pdf (5 pages, 82328 bytes).
 Transcript written on Rd2.log.
 This is makeindex, version 2.15 [TeX Live 2016] (kpathsea + Thai support).
 Scanning input file Rd2.idx....done (15 entries accepted, 0 rejected).
@@ -177,7 +177,7 @@ ive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 (/usr/local/texlive/2016/texmf-dist/tex/latex/base/utf8.def)
 (/usr/local/texlive/2016/texmf-dist/tex/latex/base/utf8.def) [2]
 (/usr/local/texlive/2016/texmf-dist/tex/latex/base/utf8.def)
-Overfull \hbox (22.44649pt too wide) in paragraph at lines 140--145
+Overfull \hbox (22.44649pt too wide) in paragraph at lines 141--146
 []\T1/zi4/m/n/10 thin \T1/ptm/m/n/10 re-turns spa-tially thinned species oc-cur
 ence data sets. A ran-dom-izaiton al-go-rithm ([][]\T1/zi4/m/n/10 thin.algorith
 m[][][]\T1/ptm/m/n/10 )
@@ -198,7 +198,7 @@ onts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/ty
 pe1/urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/ti
 mes/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmr8a
 .pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (6 pages, 92619 bytes).
+Output written on Rd2.pdf (6 pages, 92652 bytes).
 Transcript written on Rd2.log.
 This is makeindex, version 2.15 [TeX Live 2016] (kpathsea + Thai support).
 Scanning input file Rd2.idx....done (15 entries accepted, 0 rejected).
@@ -280,7 +280,7 @@ ive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 (/usr/local/texlive/2016/texmf-dist/tex/latex/base/utf8.def)
 (/usr/local/texlive/2016/texmf-dist/tex/latex/base/utf8.def) [2]
 (/usr/local/texlive/2016/texmf-dist/tex/latex/base/utf8.def)
-Overfull \hbox (22.44649pt too wide) in paragraph at lines 140--145
+Overfull \hbox (22.44649pt too wide) in paragraph at lines 141--146
 []\T1/zi4/m/n/10 thin \T1/ptm/m/n/10 re-turns spa-tially thinned species oc-cur
 ence data sets. A ran-dom-izaiton al-go-rithm ([][]\T1/zi4/m/n/10 thin.algorith
 m[][][]\T1/ptm/m/n/10 )
@@ -295,8 +295,8 @@ onts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/ty
 pe1/urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/ti
 mes/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmr8a
 .pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (6 pages, 92640 bytes).
+Output written on Rd2.pdf (6 pages, 92670 bytes).
 Transcript written on Rd2.log.
 Saving output to ‘spThin-manual.pdf’ ...
 Done
-You may want to clean up by 'rm -Rf /var/folders/6d/mf006n0n4lvfp9c09ntt_vfcspjr00/T//RtmpsEXjJl/Rd2pdf80ab1363acd'
+You may want to clean up by 'rm -Rf /var/folders/6d/mf006n0n4lvfp9c09ntt_vfcspjr00/T//RtmpVPVmX4/Rd2pdf56adec0ae0d'

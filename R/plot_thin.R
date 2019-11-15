@@ -1,4 +1,6 @@
 #' @export plotThin
+#' @import graphics
+#' @import grDevices
 #' @title Plot diagnosis for results of thin function 
 #' 
 #' @description

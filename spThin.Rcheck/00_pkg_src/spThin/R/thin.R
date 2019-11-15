@@ -1,4 +1,5 @@
 #' @export thin
+#' @importFrom utils write.csv
 #' @title Spatially thin species occurence data
 #' 
 #' @description

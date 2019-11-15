@@ -4,14 +4,14 @@ Title: Functions for Spatial Thinning of Species Occurrence Records for Use in
     Ecological Models
 Version: 0.2.0
 Date: 2019-11-14
-Authors@R: as.person(c(
-    "Matthew E. Aiello-Lammens <matt.lammens@gmail.com> [aut, cre]", 
-    "Robert A. Boria [aut]", 
-    "Aleksandar Radosavljevic [aut]",
-    "Bruno Vilela [aut]",
-    "Robert P. Anderson [aut]",
-    "Robert Bjornson [ctb]",
-    "Steve Weston [ctb]"))
+Authors@R: c(
+    person("Matthew E.", "Aiello-Lammens", email = "matt.lammens@gmail.com", role = c("aut", "cre")), 
+    person("Robert A.", "Boria", role = "aut"), 
+    person("Aleksandar", "Radosavljevic", role = "aut"),
+    person("Bruno", "Vilela", role = "aut"),
+    person("Robert P.", "Anderson", role = "aut"),
+    person("Robert", "Bjornson", role = "ctb"),
+    person("Steve", "Weston", role = "ctb"))
 Description:A set of functions that can be used to spatially thin
     species occurrence data. The resulting thinned data can be used in ecological
     modeling, such as ecological niche modeling.
@@ -20,7 +20,8 @@ Depends:
     spam,
     grid,
     fields,
-    knitr,
+    knitr
+Imports:
     grDevices,
     graphics,
     utils
