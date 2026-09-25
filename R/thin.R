@@ -4,7 +4,7 @@
 #' 
 #' @description
 #' \code{thin} returns spatially thinned species occurence data sets.
-#' A randomizaiton algorithm (\code{\link{thin.algorithm}}) is used to create
+#' A randomization algorithm (\code{\link{thin.algorithm}}) is used to create
 #' data set in which all occurnece locations are at least \code{thin.par}
 #' distance apart. Spatial thinning helps to reduce the effect of uneven,
 #' or biased, species occurence collections on spatial model outcomes.
